@@ -4,7 +4,7 @@
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/smart4l/smart4l)](https://GitHub.com/smart4l/smart4l/pulls)
 [![GitHub issues](https://img.shields.io/github/issues/smart4l/smart4l)](https://GitHub.com/smart4l/smart4l/issues/)
 [![GitHub contributors](https://img.shields.io/github/contributors/smart4l/smart4l)](https://GitHub.com/smart4l/smart4l/contributors/)
-[![HitCount](http://hits.dwyl.com/smart4l/smart4l.svg)](http://hits.dwyl.com/smart4l/smart4l)
+[![HitCount](http://hits.dwyl.com/Smart4L/Smart4L.svg)](http://hits.dwyl.com/Smart4L/Smart4L)
 [![GitHub license](https://img.shields.io/github/license/smart4l/smart4l)](https://github.com/smart4l/smart4l/blob/master/LICENSE)
 
 L'association RAID44L participe au 4LTrophy 2021 🏁, ses membres Jules PEGUET @Jaden37, Alexis LEGEAY @witrem et Clément BARANGER @cbarange sont tous les trois étudiants en informatique 👨‍🎓. L'occasion était trop belle, le projet Smart4L est né. L'objectif concevoir un système informatique embarqué dans la Renault 4L 🚗 pour suivre l'aventure de l'équipage. Au programme; télémétries GPS 🌍, prises de vues 📷, suivi des températures moteur 🌡, allumage à distance ⚡, gestion automatique de l'éclairage et de la ventilation 🛠 ...

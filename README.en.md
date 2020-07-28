@@ -4,7 +4,7 @@
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/smart4l/smart4l)](https://GitHub.com/smart4l/smart4l/pulls)
 [![GitHub issues](https://img.shields.io/github/issues/smart4l/smart4l)](https://GitHub.com/smart4l/smart4l/issues/)
 [![GitHub contributors](https://img.shields.io/github/contributors/smart4l/smart4l)](https://GitHub.com/smart4l/smart4l/contributors/)
-[![HitCount](http://hits.dwyl.com/smart4l/smart4l.svg)](http://hits.dwyl.com/smart4l/smart4l)
+[![HitCount](http://hits.dwyl.com/Smart4L/Smart4L.svg)](http://hits.dwyl.com/Smart4L/Smart4L)
 [![GitHub license](https://img.shields.io/github/license/smart4l/smart4l)](https://github.com/smart4l/smart4l/blob/master/LICENSE)
 
 In translation...
