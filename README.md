@@ -16,7 +16,7 @@ Nous développons une solution opensource 👍, ce repository héberge les sourc
 
 <!--![](https://www.societegenerale.com/sites/default/files/2018/societe-generale-logo.png =250)-->
 <!-- <img alt="Société Generale chargement..." src="https://github.com/smart4l/smart4l/raw/master/doc/Sponsor/societe_generale.png" style="height: 7%;" />  -->
-<img alt="Société Generale chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Sponsor/societe_generale.png" height="7%" /> 
+<img alt="Société Generale chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Sponsor/societe_generale.png" height="60px" /> 
 
 
 ### Soyez le prochain !
@@ -27,7 +27,7 @@ Nous développons une solution opensource 👍, ce repository héberge les sourc
 
 <!-- <img alt="Schema capteur chargement..." src="https://github.com/smart4l/smart4l/raw/master/doc/Schema_Smat4L-Schema_Smart4LCapteur.png" style="height: 80%;" /> -->
 <!--![*Schema capteur chargement...*](https://github.com/smart4l/smart4l/raw/master/doc/Schema_Smat4L-Schema_Smart4LCapteur.png)-->
-<img alt="Schema capteur chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Schema_Smat4L-Schema_Smart4LCapteur.png" style="height: 80%;" />
+<img alt="Schema capteur chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Schema_Smat4L-Schema_Smart4LCapteur.png" />
 
 
 
@@ -35,7 +35,7 @@ Nous développons une solution opensource 👍, ce repository héberge les sourc
 
 <!--![_Schema service chargement..._](https://github.com/smart4l/smart4l/raw/master/doc/Schema_Smat4L-Schema_Smart4LService.png)-->
 <!-- <img alt="Schema service chargement..." src="https://github.com/smart4l/smart4l/raw/master/doc/Schema_Smat4L-Schema_Smart4LService.png" style="height: 80%;" /> -->
-<img alt="Schema service chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Schema_Smat4L-Schema_Smart4LService.png" style="height: 80%;" />
+<img alt="Schema service chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Schema_Smat4L-Schema_Smart4LService.png" />
 
 
 Vous pouvez suivre en la 4L n'importe où, les données sont envoyées sur un serveur via une connexion 4G. [raid44l.fr/smart4l](https://raid44l.fr/smart4l) 
@@ -49,7 +49,7 @@ La 4L est équipée d'un Ipad2 pour afficher les données en temps réel, il est
 
 <!-- <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D29%253A17&chrome=DOCUMENTATION" allowfullscreen></iframe> -->
 
-![_Maquette accueil chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/accueil.png)![_Maquette accueil téléphone chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/accueilTel.png)
+![_Maquette accueil chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/accueil.png)
 
 ### Carte 🗺
 
@@ -86,7 +86,7 @@ Actions automatiques : allumage phares 🔅, allumage ventillateur, passage en v
 
 
 <!-- Ancre utilisée dans le badge sprint  -->
-<h2 id="sprint" Avancée/>
+<h2 id="sprint">Avancée</h2>
 
 ### Sprint 1
 
