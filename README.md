@@ -16,7 +16,7 @@ Nous développons une solution opensource 👍, ce repository héberge les sourc
 
 <!--![](https://www.societegenerale.com/sites/default/files/2018/societe-generale-logo.png =250)-->
 <!-- <img alt="Société Generale chargement..." src="https://github.com/smart4l/smart4l/raw/master/doc/Sponsor/societe_generale.png" style="height: 7%;" />  -->
-<img alt="Société Generale chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Sponsor/societe_generale.png" style="height: 7%;" /> 
+<img alt="Société Generale chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Sponsor/societe_generale.png" height="7%" /> 
 
 
 ### Soyez le prochain !
@@ -47,34 +47,33 @@ La 4L est équipée d'un Ipad2 pour afficher les données en temps réel, il est
 
 ### Accueil
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D29%253A17&chrome=DOCUMENTATION" allowfullscreen></iframe>
+<!-- <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D29%253A17&chrome=DOCUMENTATION" allowfullscreen></iframe> -->
 
-<!--![_Maquette accueil chargement..._](https://github.com/smart4l/smart4l/raw/master/doc/Maquette/accueil.png)-->
-<!--![_Maquette accueil téléphone chargement..._](https://github.com/smart4l/smart4l/raw/master/doc/Maquette/accueilTel.png)-->
+![_Maquette accueil chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/accueil.png)![_Maquette accueil téléphone chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/accueilTel.png)
 
 ### Carte 🗺
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D37%253A113&chrome=DOCUMENTATION" allowfullscreen></iframe>
-<!--![_Maquette carte chargement..._](https://github.com/smart4l/smart4l/raw/master/doc/Maquette/carte.png)-->
+<!-- <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D37%253A113&chrome=DOCUMENTATION" allowfullscreen></iframe> -->
+![_Maquette carte chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/carte.png)
 
 ### Caméras 📷
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D11%253A13&chrome=DOCUMENTATION" allowfullscreen></iframe>
-<!--![_Maquette caméra chargement..._](https://github.com/smart4l/smart4l/raw/master/doc/Maquette/camera.png)-->
+<!-- <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D11%253A13&chrome=DOCUMENTATION" allowfullscreen></iframe> -->
+![_Maquette caméra chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/camera.png)
 
 ### Radar
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D11%253A16&chrome=DOCUMENTATION" allowfullscreen></iframe>
-<!--![_Maquette radar chargement..._](https://github.com/smart4l/smart4l/raw/master/doc/Maquette/configuration.png)-->
+<!-- <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D11%253A16&chrome=DOCUMENTATION" allowfullscreen></iframe> -->
+![_Maquette radar chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/configuration.png)
 
 ### Graphiques 📊
 
-![_Maquette graphique en cours chargement..._](https://github.com/smart4l/smart4l/raw/master/doc/Maquette/graphique.png)
+![_Maquette graphique en cours chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/graphique.png)
 
 ### Paramètres ⚙
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D11%253A17&chrome=DOCUMENTATION" allowfullscreen></iframe>
-<!--![_Maquette paramètres chargement..._](https://github.com/smart4l/smart4l/raw/master/doc/Maquette/radar.png)-->
+<!-- <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D11%253A17&chrome=DOCUMENTATION" allowfullscreen></iframe> -->
+![_Maquette paramètres chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/radar.png)
 
 
 ## Fonctions
@@ -87,16 +86,14 @@ Actions automatiques : allumage phares 🔅, allumage ventillateur, passage en v
 
 
 <!-- Ancre utilisée dans le badge sprint  -->
-<o id="sprint"/>
-
-## Avancée
+<h2 id="sprint" Avancée/>
 
 ### Sprint 1
 
 * [ ] #Front - Structure du site 
-* [ ] #Front - Menu navigation
+* [X] #Front - Menu navigation
 * [ ] #Front - Page d'accueil, carte 🗺
-* [ ] #Back - Capteur température 🌡, distance, humidité
+* [X] #Back - Capteur température 🌡, distance, humidité
 * [ ] #Back - Caméra avant 📷
 * [ ] #Back - Api web
 
@@ -129,20 +126,20 @@ Actions automatiques : allumage phares 🔅, allumage ventillateur, passage en v
 
 Le raspberry ne possédant pas de Convertisseur Analogique Numérique (CAN), les mesures sont faites avec des capteurs numériques.
 
-Température : DS18B20
-Température + Humidité : DHT11
-Accélération + Inclinaison : Gy-61
-Pression + Température + Altitude : BMP280 
-Luminosité : Photo-résistance WYTP10
-Distance : HC-SR04
-Courant(Niveau batterie) : INA219
-Module de charge : TC4056
-Boost : MT3608 
-Bucks : MP1584EN
-Batterie : 18650 5000mah
-Caméra avant : SC0261
-Caméra arrière : OV5647 5MP 1080p
-Clé 4G / GPS : SIM7600G-H
+* Température : DS18B20
+* Température + Humidité : DHT11
+* Accélération + Inclinaison : Gy-61
+* Pression + Température + Altitude : BMP280 
+* Luminosité : Photo-résistance WYTP10
+* Distance : HC-SR04
+* Courant(Niveau batterie) : INA219
+* Module de charge : TC4056
+* Boost : MT3608 
+* Bucks : MP1584EN
+* Batterie : 18650 5000mah
+* Caméra avant : SC0261
+* Caméra arrière : OV5647 5MP 1080p
+* Clé 4G / GPS : SIM7600G-H
 
 
 ## Alimentation Électrique ⚡
