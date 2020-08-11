@@ -4,8 +4,16 @@
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/smart4l/smart4l)](https://GitHub.com/smart4l/smart4l/pulls)
 [![GitHub issues](https://img.shields.io/github/issues/smart4l/smart4l)](https://GitHub.com/smart4l/smart4l/issues/)
 [![GitHub contributors](https://img.shields.io/github/contributors/smart4l/smart4l)](https://GitHub.com/smart4l/smart4l/contributors/)
-[![HitCount](http://hits.dwyl.com/Smart4L/Smart4L.svg)](http://hits.dwyl.com/Smart4L/Smart4L)
+[![VisitorCount](https://visitor-badge.glitch.me/badge?page_id=Smart4L.Smart4L)](https://visitor-badge.glitch.me/badge?page_id=Smart4L.Smart4L)
 [![GitHub license](https://img.shields.io/github/license/smart4l/smart4l)](https://github.com/smart4l/smart4l/blob/master/LICENSE)
+
+
+<!--
+[![HitCount](http://hits.dwyl.com/Smart4L/Smart4L.svg)](http://hits.dwyl.com/Smart4L/Smart4L)
+[![HitCount](http://hits.dwyl.com/smart4l/smart4l.svg)](http://hits.dwyl.com/smart4l/smart4l)
+[![VisitorCount](https://visitor-badge.glitch.me/badge?page_id=Smart4L.Smart4L)](https://visitor-badge.glitch.me/badge?page_id=Smart4L.Smart4L)
+[![ViewCount](https://views.whatilearened.today/views/github/Smart4L/Smart4L.svg)](https://views.whatilearened.today/views/github/Smart4L/Smart4L.svg)
+-->
 
 L'association RAID44L participe au 4LTrophy 2021 🏁, ses membres Jules PEGUET @Jaden37, Alexis LEGEAY @witrem et Clément BARANGER @cbarange sont tous les trois étudiants en informatique 👨‍🎓. L'occasion était trop belle, le projet Smart4L est né. L'objectif concevoir un système informatique embarqué dans la Renault 4L 🚗 pour suivre l'aventure de l'équipage. Au programme; télémétries GPS 🌍, prises de vues 📷, suivi des températures moteur 🌡, allumage à distance ⚡, gestion automatique de l'éclairage et de la ventilation 🛠 ...
 
@@ -19,7 +27,7 @@ Nous développons une solution opensource 👍, ce repository héberge les sourc
 <img alt="Société Generale chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Sponsor/societe_generale.png" height="60px" /> 
 
 
-### Soyez le prochain !
+<h3 align="center"> Soyez le prochain !</h3>
 
 
 
@@ -38,7 +46,7 @@ Nous développons une solution opensource 👍, ce repository héberge les sourc
 <img alt="Schema service chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Schema_Smat4L-Schema_Smart4LService.png" />
 
 
-Vous pouvez suivre en la 4L n'importe où, les données sont envoyées sur un serveur via une connexion 4G. [raid44l.fr/smart4l](https://raid44l.fr/smart4l) 
+Vous pouvez suivre la 4L n'importe où, les données sont envoyées sur un serveur via une connexion 4G. [raid44l.fr/smart4l](https://raid44l.fr/smart4l) 
 
 
 ## Maquettes
@@ -64,7 +72,7 @@ La 4L est équipée d'un Ipad2 pour afficher les données en temps réel, il est
 ### Radar
 
 <!-- <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D11%253A16&chrome=DOCUMENTATION" allowfullscreen></iframe> -->
-![_Maquette radar chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/configuration.png)
+![_Maquette radar chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/radar.png)
 
 ### Graphiques 📊
 
@@ -73,7 +81,7 @@ La 4L est équipée d'un Ipad2 pour afficher les données en temps réel, il est
 ### Paramètres ⚙
 
 <!-- <iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FrqgEGYUbpiQ6HuLgqxjAV4%2FSmart4L%3Fnode-id%3D11%253A17&chrome=DOCUMENTATION" allowfullscreen></iframe> -->
-![_Maquette paramètres chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/radar.png)
+![_Maquette paramètres chargement..._](https://raw.github.com/smart4l/smart4l/master/doc/Maquette/configuration.png)
 
 
 ## Fonctions
@@ -128,7 +136,7 @@ Le raspberry ne possédant pas de Convertisseur Analogique Numérique (CAN), les
 
 * Température : DS18B20
 * Température + Humidité : DHT11
-* Accélération + Inclinaison : Gy-61
+* Accélération + Inclinaison : GY-61 ADXL345, GY-521 MPU-6050
 * Pression + Température + Altitude : BMP280 
 * Luminosité : Photo-résistance WYTP10
 * Distance : HC-SR04
