@@ -1,0 +1,23 @@
+.navbar_container{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+    background-color: $main-back-color;
+    height: 50px;
+}
+
+.navbar_item{
+    color: $second-text-color;
+    transition: all 0.5s ease-in-out;
+}
+
+.shine{
+    fill: yellow;
+    border-radius: 5px;
+}
+
+.turn{
+    animation:spin 3s linear infinite;
+}
+@keyframes spin { 100% { transform:rotate(360deg); } }
