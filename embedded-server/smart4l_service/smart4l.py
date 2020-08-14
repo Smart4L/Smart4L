@@ -16,7 +16,8 @@ sys.path.insert(1, '../sensor_camera-module')
 import DHT11 as DHT11
 from utils import Message, Status
 
-
+# Class de gestions du service de mesure temps réelle, et peut-etre aussi pour les mesures enregistrées en base
+# C'est peut-etre pas opti de faire deux services qui accèdent aux capteurs, je sais pas... 
 class MeasurementService(Thread):
 	status = Status.START.value
 	def __init__(self):
@@ -31,18 +32,30 @@ class MeasurementService(Thread):
 		self.status = Status.STOP.value
 		# Clean GPIO
 
-
+# Class des gestions de l'application / service
 class Smart4l():
 	measurementService = MeasurementService()
 	def start(self):
 		print("Started !")
+		# Si le service le fonctionne pas deja
+		# Existance du fichier pid + le pid repond au nom du programme
+		#	lancement du process, creation du fichier pid
+		# Si le service fonctionne ouvrir un PIPE avec le pid du fichier pid
+		# 	envoyer les parametre dans le pipe
+
 		# Run thread
 		self.measurementService.start()
+
 		print("Running ...")
 
 	def stop(self):
 		print("Cleaning ...")
+
+		# Supprimer le fichier pid
+
+		# Stop Measurement Service Thread
 		self.measurementService.stop()
+
 		print("Stopped !")
 
 
@@ -51,7 +64,9 @@ if __name__ == "__main__":
 	app = Smart4l()
 	try:
 		app.start()
-		while not input() == Status.STOP.value:
+		# Si on sort de la boucle, l'exception KeyboardInterrupt n'est plus gérée
+		#while not input() == Status.STOP.value:
+		while True:
 			pass
 		#app.stop()
 	except KeyboardInterrupt:
@@ -61,6 +76,8 @@ else:
 
 
 """
+# Communication inter process via un fichier, pas mal mais peut etre plus opti avec des pipes
+
 import os, time
 
 pipe_path = "/tmp/mypipe"
@@ -86,7 +103,8 @@ https://docs.python.org/2/library/os.html
 """
 
 """
-MARCHE ?
+# Communication je sais pas comment ^^, par fichier visiblement. Apres un pipe c'est aussi un fichier mais un peut différent quand meme
+# MARCHE peut etre ?
 import errno, os, sys
 
 try:
@@ -107,7 +125,8 @@ os.write(pipeout, ' '.join(sys.argv[1:]))
 """
 
 """
-MARCHE PAS
+# Communication inter process, je sais pas comment ^^
+# MARCHE PAS
 server.py:
 
 def start_server():

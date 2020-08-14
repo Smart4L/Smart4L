@@ -10,4 +10,4 @@ class Status(Enum):
 class Message():
 	def error(self, msg):
 		sys.stderr.write("Error : " + msg)
-		sys.exit(1)
+		#sys.exit(1)
