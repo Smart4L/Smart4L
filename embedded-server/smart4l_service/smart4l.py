@@ -6,67 +6,126 @@ __date__ = "11-08-2020"
 __version__ = "1.0.0"
 __status__ = "Prototype"
 
-import os    # standard library
+# Standard Library
+import os
 import sys
+from threading import Thread
+import time
+# Custom Modules
 sys.path.insert(1, '../sensor_camera-module')
-
-import time as time
-
-import threading
-import multiprocessing
-
-from flask import Flask
 import DHT11 as DHT11
+from utils import Message, Status
 
 
-app = Flask(__name__)
-flaskProc = multiprocessing.Process(target=app.run, args=())
+class MeasurementService(Thread):
+	status = Status.START.value
+	def __init__(self):
+		super().__init__()
 
-def measurementService():
-	pass
+	def run(self):
+		while self.status==Status.START.value:
+			print(" Run")
+			time.sleep(3)
 
-def start():
-	print("Started !")
-	# Start web service
-	#threading.Thread(target=app.run).start()
-	flaskProc.start()
-	# Start measurement service
-	print("Running ...")
-	while True:
-		print(DHT11.measure())
-		time.sleep(2)
-
-	print("! Starting completion !")
+	def stop(self):
+		self.status = Status.STOP.value
+		# Clean GPIO
 
 
-def stop():
-	# Stop services
-	print("\nCleaning ...")
-	# Close socket & db connection
-	
-	# Stop web service
-	#threading.Thread(target=app.run)
-	flaskProc.terminate()  # sends a SIGTERM
-	# Stop measurement service 
-	
-	# Cleanup GPIO
-	
-	print("Stopped !")
-	sys.exit()
+class Smart4l():
+	measurementService = MeasurementService()
+	def start(self):
+		print("Started !")
+		# Run thread
+		self.measurementService.start()
+		print("Running ...")
 
-
-@app.route('/')
-def index():
-	return str(DHT11.measure())
+	def stop(self):
+		print("Cleaning ...")
+		self.measurementService.stop()
+		print("Stopped !")
 
 
 # execute only if run as a script
 if __name__ == "__main__":
-    try:
-    	start()
-    except KeyboardInterrupt:
-    	stop()
+	app = Smart4l()
+	try:
+		app.start()
+		while not input() == Status.STOP.value:
+			pass
+		#app.stop()
+	except KeyboardInterrupt:
+		app.stop()
 else:
-	sys.stderr.write("Error : smart4l.py : must be run as a script\n")
+	Message().error("smart4l.py : must be run as a script\n")
 
+
+"""
+import os, time
+
+pipe_path = "/tmp/mypipe"
+if not os.path.exists(pipe_path):
+    os.mkfifo(pipe_path)
+# Open the fifo. We need to open in non-blocking mode or it will stalls until
+# someone opens it for writting
+pipe_fd = os.open(pipe_path, os.O_RDONLY | os.O_NONBLOCK)
+with os.fdopen(pipe_fd) as pipe:
+    while True:
+        message = pipe.read()
+        if message:
+            print("Received: '%s'" % message)
+        print("Doing other stuff")
+        time.sleep(0.5)
+
+
+echo "your message" > /tmp/mypipe
+
+
+https://docs.python.org/3/library/os.html
+https://docs.python.org/2/library/os.html
+"""
+
+"""
+MARCHE ?
+import errno, os, sys
+
+try:
+    os.mkfifo('some_pipe_name')
+except OSError as oe:
+    if oe.errno != errno.EEXIST:
+        raise     # can't open pipe
+while True:
+    with open('some_pipe_name') as fifo:
+        data = fifo.read()
+        print data
+
+Client:
+
+import os, sys
+pipeout = os.open('some_pipe_name', os.O_WRONLY)
+os.write(pipeout, ' '.join(sys.argv[1:]))
+"""
+
+"""
+MARCHE PAS
+server.py:
+
+def start_server():
+    # create process
+    e = receive_messages()
+    while true:
+        e.wait()
+        if e.message == 'quit':
+            sys.exit(1)
+        # some message handling
+
+And then a client script with this type of function:
+
+client.py:
+
+def send_message(pid):
+    pipe = get_pipe_to_process_by_pid(pid)
+    pipe.send_message('Hello, World!\n')
+
+"""
 
