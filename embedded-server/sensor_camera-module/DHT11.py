@@ -8,6 +8,11 @@ __status__ = "Prototype"
 
 import os    # standard library
 import sys
+import random
 
-def measure():
-	return 42
+class DHT11:
+	def __init__(self, id):
+		self.id = id
+
+	def measure(self):
+		return 42+random.randint(0,5)

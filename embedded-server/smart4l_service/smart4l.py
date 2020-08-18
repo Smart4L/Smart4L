@@ -13,20 +13,22 @@ from threading import Thread
 import time
 # Custom Modules
 sys.path.insert(1, '../sensor_camera-module')
-import DHT11 as DHT11
+import DHT11
 from utils import Message, Status
 
 # Class de gestions du service de mesure temps réelle, et peut-etre aussi pour les mesures enregistrées en base
 # C'est peut-etre pas opti de faire deux services qui accèdent aux capteurs, je sais pas... 
 class MeasurementService(Thread):
 	status = Status.START.value
-	def __init__(self):
+	def __init__(self, capteur=None, delay=None):
 		super().__init__()
+		self.capteur = capteur
+		self.delay = delay
 
 	def run(self):
 		while self.status==Status.START.value:
-			print(" Run")
-			time.sleep(3)
+			Smart4l.lastMeasure[self.capteur.id]=self.capteur.measure()
+			time.sleep(self.delay)
 
 	def stop(self):
 		self.status = Status.STOP.value
@@ -34,7 +36,13 @@ class MeasurementService(Thread):
 
 # Class des gestions de l'application / service
 class Smart4l():
-	measurementService = MeasurementService()
+	lastMeasure = {"DHT11 ext":None, "DHT11 int":None}
+	measurementServices = []
+	def __init__(self):
+		self.measurementServices.append(MeasurementService(DHT11.DHT11("DHT11 ext"),2))
+		self.measurementServices.append(MeasurementService(DHT11.DHT11("DHT11 int"),2))
+
+
 	def start(self):
 		print("Started !")
 		# Si le service le fonctionne pas deja
@@ -44,9 +52,10 @@ class Smart4l():
 		# 	envoyer les parametre dans le pipe
 
 		# Run thread
-		self.measurementService.start()
-
+		[service.start() for service in self.measurementServices]
+		
 		print("Running ...")
+
 
 	def stop(self):
 		print("Cleaning ...")
@@ -54,7 +63,7 @@ class Smart4l():
 		# Supprimer le fichier pid
 
 		# Stop Measurement Service Thread
-		self.measurementService.stop()
+		[service.stop() for service in self.measurementServices]
 
 		print("Stopped !")
 
@@ -67,7 +76,8 @@ if __name__ == "__main__":
 		# Si on sort de la boucle, l'exception KeyboardInterrupt n'est plus gérée
 		#while not input() == Status.STOP.value:
 		while True:
-			pass
+			print(Smart4l.lastMeasure)
+			time.sleep(2)
 		#app.stop()
 	except KeyboardInterrupt:
 		app.stop()
