@@ -16,8 +16,30 @@ sys.path.insert(1, '../sensor_camera-module')
 import DHT11
 from utils import Message, Status
 
-# Class de gestions du service de mesure temps réelle, et peut-etre aussi pour les mesures enregistrées en base
-# C'est peut-etre pas opti de faire deux services qui accèdent aux capteurs, je sais pas... 
+
+
+# Class de gestions du service d'enregistrement en base
+class PersistentService(Thread):
+	status = Status.START.value
+	def __init__(self, delay=None):
+		super().__init__()
+		self.delay = delay
+	def run(self):
+		while self.status==Status.START.value:
+			# TODO Save date in DB
+			# if date is not empty
+			#db.save(Smart4l.lastMeasure)
+			print(" Data saved !")
+			# TODO Add sleep interuption system
+			time.sleep(self.delay)
+			
+	def stop(self):
+		self.status = Status.STOP.value
+		# TODO Emit event for sleep interuption
+		# TODO Close DB connection
+
+
+# Class de gestions du service des mesures temps réelle
 class MeasurementService(Thread):
 	status = Status.START.value
 	def __init__(self, capteur=None, delay=None):
@@ -28,43 +50,45 @@ class MeasurementService(Thread):
 	def run(self):
 		while self.status==Status.START.value:
 			Smart4l.lastMeasure[self.capteur.id]=self.capteur.measure()
+			# TODO Add sleep interuption system
 			time.sleep(self.delay)
 
 	def stop(self):
 		self.status = Status.STOP.value
-		# Clean GPIO
+		# TODO Clean GPIO
+
+
 
 # Class des gestions de l'application / service
 class Smart4l():
 	lastMeasure = {"DHT11 ext":None, "DHT11 int":None}
-	measurementServices = []
+	services = []
 	def __init__(self):
-		self.measurementServices.append(MeasurementService(DHT11.DHT11("DHT11 ext"),2))
-		self.measurementServices.append(MeasurementService(DHT11.DHT11("DHT11 int"),2))
-
+		self.services.append(MeasurementService(capteur=DHT11.DHT11("DHT11 ext"),delay=2))
+		self.services.append(MeasurementService(capteur=DHT11.DHT11("DHT11 int"),delay=2))
+		self.services.append(PersistentService(delay=20))
 
 	def start(self):
 		print("Started !")
-		# Si le service le fonctionne pas deja
+		# TODO Si le service le fonctionne pas deja
 		# Existance du fichier pid + le pid repond au nom du programme
 		#	lancement du process, creation du fichier pid
 		# Si le service fonctionne ouvrir un PIPE avec le pid du fichier pid
 		# 	envoyer les parametre dans le pipe
 
 		# Run thread
-		[service.start() for service in self.measurementServices]
+		[service.start() for service in self.services]
 		
 		print("Running ...")
 
 
 	def stop(self):
 		print("Cleaning ...")
-
-		# Supprimer le fichier pid
+		# TODO Supprimer le fichier pid
 
 		# Stop Measurement Service Thread
-		[service.stop() for service in self.measurementServices]
-
+		[service.stop() for service in self.services]
+		# TODO Clean GPIO
 		print("Stopped !")
 
 
@@ -82,7 +106,7 @@ if __name__ == "__main__":
 	except KeyboardInterrupt:
 		app.stop()
 else:
-	Message().error("smart4l.py : must be run as a script\n")
+	Message.error("smart4l.py : must be run as a script\n")
 
 
 """
