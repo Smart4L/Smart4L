@@ -9,64 +9,84 @@ __status__ = "Prototype"
 # Standard Library
 import os
 import sys
-from threading import Thread
+from threading import Thread, Event
 import time
+import abc
+from random import randint
+from flask import Flask
+from flask import jsonify
+import logging
+
 # Custom Modules
 sys.path.insert(1, '../sensor_camera-module')
-import DHT11
+from DHT11 import DHT11
 from utils import Message, Status
 
 
+class ServiceObjectInterface(abc.ABC):
+    @abc.abstractmethod
+    def do(self):
+        pass
+    def stop(self):
+        pass
 
-# Class de gestions du service d'enregistrement en base
-class PersistentService(Thread):
-	status = Status.START.value
-	def __init__(self, delay=None):
+# https://dvic.devinci.fr/resource/tutorial/api-python/
+
+# Class de gestions de service
+class Service(Thread):
+	def __init__(self, serviceObject:ServiceObjectInterface, timeout):
 		super().__init__()
-		self.delay = delay
-	def run(self):
-		while self.status==Status.START.value:
-			# TODO Save date in DB
-			# if date is not empty
-			#db.save(Smart4l.lastMeasure)
-			print(" Data saved !")
-			# TODO Add sleep interuption system
-			time.sleep(self.delay)
-			
-	def stop(self):
-		self.status = Status.STOP.value
-		# TODO Emit event for sleep interuption
-		# TODO Close DB connection
-
-
-# Class de gestions du service des mesures temps réelle
-class MeasurementService(Thread):
-	status = Status.START.value
-	def __init__(self, capteur=None, delay=None):
-		super().__init__()
-		self.capteur = capteur
-		self.delay = delay
+		self.serviceObject = serviceObject
+		self.timeout = timeout
+		self.status = Status.START.value
+		self.eventStopService = Event()
 
 	def run(self):
 		while self.status==Status.START.value:
-			Smart4l.lastMeasure[self.capteur.id]=self.capteur.measure()
-			# TODO Add sleep interuption system
-			time.sleep(self.delay)
+			self.serviceObject.do()
+			self.eventStopService.wait(self.timeout)
 
 	def stop(self):
 		self.status = Status.STOP.value
-		# TODO Clean GPIO
+		self.eventStopService.set()
+		self.serviceObject.stop()
 
 
+class Capteur(ServiceObjectInterface):
+	def __init__(self, sensorObject, uid, doFun):
+		self.sensorObject = sensorObject
+		self.uid = uid
+		self.action = doFun
+
+	def do(self):
+		self.action(self.uid, self.sensorObject.measure())
+
+	def stop(self):
+		self.sensorObject.clean()
+
+class Persistent(ServiceObjectInterface):
+	def __init__(self):
+		pass
+	def do(self):
+		# TODO DB registration
+		print("DB registration")
+		pass
+	def stop(self):
+		# TODO close DB connection
+		pass
 
 # Class des gestions de l'application / service
 class Smart4l():
-	lastMeasure = {"DHT11 ext":None, "DHT11 int":None}
+	lastMeasure = {}
 	services = []
+	
 	def __init__(self):
-		self.services.append(MeasurementService(capteur=DHT11.DHT11("DHT11 ext"),delay=2))
-		self.services.append(MeasurementService(capteur=DHT11.DHT11("DHT11 int"),delay=2))
-		self.services.append(PersistentService(delay=20))
+		self.services.append(Service(serviceObject=Capteur(DHT11(),"DHT11 ext",self.updateMeasure), timeout=2))
+		self.services.append(Service(serviceObject=Capteur(DHT11(),"DHT11 int",self.updateMeasure), timeout=5))
+		self.services.append(Service(serviceObject=Persistent(), timeout=20))
+
+	def updateMeasure(self, uid, value):
+		self.lastMeasure[uid] = value
 
 	def start(self):
 		print("Started !")
@@ -77,13 +97,22 @@ class Smart4l():
 		# 	envoyer les parametre dans le pipe
 
 		# Run thread
-		[service.start() for service in self.services]
+		[service.start() for service in self.services if not service.is_alive()]
 		
 		print("Running ...")
 
+	def reload(self):
+		for service in self.services:
+			if not service.is_alive():
+				service.start()
+				print(f"Service \"{service.serviceObject.uid}\" was not running, now started")
+
+	def addService(self, service):
+		self.services.append(service)
+		# Must use reload function to start new service
 
 	def stop(self):
-		print("Cleaning ...")
+		print("\nCleaning ...")
 		# TODO Supprimer le fichier pid
 
 		# Stop Measurement Service Thread
@@ -91,22 +120,57 @@ class Smart4l():
 		# TODO Clean GPIO
 		print("Stopped !")
 
-
 # execute only if run as a script
 if __name__ == "__main__":
 	app = Smart4l()
+
+	flaskApp = Flask(__name__)
+	log = logging.getLogger('werkzeug')
+	log.disabled = True
+	flaskApp.logger.disabled = True
+
+	@flaskApp.route("/")
+	def send_data():
+	    # convert into JSON format first
+	    return jsonify(app.lastMeasure)
+
+	def startFlask(host, port):
+	    # get the host and the port as keywords attributes for flaskApp.run()
+	    app_kwargs = {'host':host, 'port':port}
+	    # run the flaskApp on a thread
+	    return Thread(target=flaskApp.run, kwargs=app_kwargs).start()
+
+
+	
 	try:
 		app.start()
+		flaskThread = startFlask("localhost",80)
 		# Si on sort de la boucle, l'exception KeyboardInterrupt n'est plus gérée
 		#while not input() == Status.STOP.value:
-		while True:
-			print(Smart4l.lastMeasure)
-			time.sleep(2)
-		#app.stop()
+		switcher = {
+				"measure"  : lambda : print(app.lastMeasure)
+				, "add"    : lambda : app.addService(Service(Capteur(DHT11(),str(randint(100,999)), lambda x, y: app.updateMeasure(x,y)),5))
+				, "reload" : lambda : app.reload()
+				, "stop"   : lambda : app.stop()
+				, "service": lambda : print(app.services)
+			}
+		run = True
+		while run:
+			try :
+				print(switcher.get(input("Saisir une action : "))())
+			except KeyboardInterrupt:
+				run = False
+			except:
+				print("Invalid input")
+			#time.sleep(2)
+		app.stop()
 	except KeyboardInterrupt:
 		app.stop()
+		flaskThread._stop()
+		flaskThread.terminate()
 else:
 	Message.error("smart4l.py : must be run as a script\n")
+
 
 
 """

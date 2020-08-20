@@ -6,13 +6,12 @@ __date__ = "11-08-2020"
 __version__ = "1.0.0"
 __status__ = "Prototype"
 
-import os    # standard library
-import sys
 import random
 
 class DHT11:
-	def __init__(self, id):
-		self.id = id
 
 	def measure(self):
 		return 42+random.randint(0,5)
+
+	def clean(self):
+		pass
