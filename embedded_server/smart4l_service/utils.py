@@ -28,7 +28,7 @@ class Message():
 		#sys.exit(1)
 	
 	@staticmethod
-	def std(msg=""):
+	def out(msg=""):
 		sys.stdout.write(f"{msg}\n")
 
 	@staticmethod

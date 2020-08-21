@@ -15,14 +15,16 @@ Some example : https://realpython.com/flask-by-example-part-1-project-setup/
 Conf Flask : https://www.youtube.com/watch?v=1ByQhAM5c1I
 Conf GIL : https://www.youtube.com/watch?v=7SSYhuk5hmc
 Conf expert : https://github.com/austin-taylor/code-vault/blob/master/python_expert_notebook.ipynb
-
+SQL Lite avec base en mémoire ♥: http://www.python-simple.com/python-autres-modules-non-standards/sqlite3.php
 """
 
 # Standard Library
 import abc
+import json
 import logging
 import os
 import requests
+import sqlite3
 import sys
 import time
 from threading import Thread, Event
@@ -56,7 +58,7 @@ class Service(Thread):
 
     def __start__(self):
         if hasattr(self.serviceObject, 'uid'):
-            Message.std(f"Service \"{self.serviceObject.uid}\" now started")
+            Message.out(f"Service \"{self.serviceObject.uid}\" now started")
         self.start()
 
     def stop(self):
@@ -70,6 +72,7 @@ class FlaskAPI(ServiceObjectInterface):
         self.app = Flask("flask_api")
         self.app.add_url_rule('/', 'index', self.index)
         self.app.add_url_rule('/shutdown', 'shutdown', self.shutdown)
+        self.app.add_url_rule('/history', 'history', self.history)
         self.thread = None
 
     def do(self,):
@@ -81,6 +84,22 @@ class FlaskAPI(ServiceObjectInterface):
     def index(self):
         # TODO fix this ugly thing, should not use app variable
         return jsonify(app.lastMeasure)
+
+    def history(self):
+        # TODO fix this ugly thing, should not use app variable
+        con = sqlite3.connect('smart4l.db')
+        cur = con.cursor()
+        cur.execute('select date, data from smart4l')
+        row = cur.fetchone()
+        res = []
+        while row != None:
+            res.append({"date": row[0], "data": json.loads(row[1])})
+            row = cur.fetchone()
+
+        cur.close()
+        con.close()
+        return jsonify(res)
+
 
     # Must be call from HTTP request
     def shutdown(self):
@@ -100,10 +119,10 @@ class Capteur(ServiceObjectInterface):
     def __init__(self, sensor_object, uid, do_func):
         self.sensorObject = sensor_object
         self.uid = uid
-        self.action = do_func
+        self.doFunc = do_func
 
     def do(self):
-        self.action(self.uid, self.sensorObject.measure())
+        self.doFunc(self.uid, self.sensorObject.measure())
 
     def stop(self):
         self.sensorObject.clean()
@@ -111,19 +130,37 @@ class Capteur(ServiceObjectInterface):
 
 class Persistent(ServiceObjectInterface):
     def __init__(self):
-        pass
+        self.con = sqlite3.connect('smart4l.db')
+        cur = self.con.cursor()
+        cur.execute("create table if not exists smart4l(date varchar(50), data json)")
+        cur.close()
+        self.con.close()
+
     def do(self):
         # TODO DB registration
-        Message.std("DB registration")
+        self.con = sqlite3.connect('smart4l.db')
+        cur = self.con.cursor()
+
+        cur.execute('insert into smart4l(date, data) values(?,?)', [str(time.time()),json.dumps(app.lastMeasure)])
+        cur.close()
+        self.con.commit()
+        self.con.close()
+        # TODO Close connection here too
+        Message.out("DB registration")
+
+    def history(self):
         pass
+
     def stop(self):
         # TODO close DB connection
-        pass
+        try:
+            self.con.close()
+        except:
+            pass
 
 
 # Class des gestions de l'application / service
 class Smart4l():
-    
     def __init__(self):
         self.lastMeasure = {}
         self.services = []
@@ -136,10 +173,10 @@ class Smart4l():
         self.lastMeasure[uid] = value
 
     def start(self):
-        Message.std("Started !")
+        Message.out("Started !")
         # Run thread
         [service.__start__() for service in self.services if not service.is_alive()]
-        Message.std("Running ...")
+        Message.out("Running ...")
 
     def reload(self):
         [service.__start__() for service in self.services if not service.is_alive()]
@@ -149,11 +186,11 @@ class Smart4l():
         # Must use reload function to start new service
 
     def stop(self):
-        Message.std("\nCleaning ...")
+        Message.out("\nCleaning ...")
         # Stop Measurement Service Thread
         [service.stop() for service in self.services]
         # TODO Clean GPIO
-        Message.std("Stopped !")
+        Message.out("Stopped !")
 
 
 # execute only if run as a script
@@ -173,19 +210,19 @@ if __name__ == "__main__":
         run = True
         
         switcher = {
-                "measure"  : lambda : Message.std(app.lastMeasure)
+                "measure"  : lambda : Message.out(app.lastMeasure)
                 , "add"    : lambda : app.addService(Service(Capteur(DHT11(),str(randint(100,999)), lambda x, y: app.update_measure(x,y)),5))
                 , "reload" : app.reload
-                , "service": lambda : Message.std(app.services)
+                , "service": lambda : Message.out(app.services)
             }
         
         while run:
             try :
-                Message.std(switcher.get(input("Saisir une action : "))())
+                Message.out(switcher.get(input("Saisir une action : "))())
             except KeyboardInterrupt:
                 run = False
             except:
-                Message.std("Invalid input")
+                Message.out("Invalid input")
             #time.sleep(2)
     except KeyboardInterrupt:
         pass
