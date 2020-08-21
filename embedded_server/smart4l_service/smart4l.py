@@ -19,7 +19,7 @@ from flask import jsonify
 
 # Custom Modules
 from embedded_server.sensor_camera_module.DHT11 import DHT11
-from .utils import Message, Status
+from embedded_server.smart4l_service.utils import Message, Status
 
 
 class ServiceObjectInterface(abc.ABC):
@@ -86,9 +86,9 @@ class Smart4l:
     services = []
 
     def __init__(self):
-        self.services.append(Service(serviceObject=Capteur(DHT11(), "DHT11 ext", self.update_measure), timeout=2))
-        self.services.append(Service(serviceObject=Capteur(DHT11(), "DHT11 int", self.update_measure), timeout=5))
-        self.services.append(Service(serviceObject=Persistent(), timeout=20))
+        self.services.append(Service(service_object=Capteur(DHT11(), "DHT11 ext", self.update_measure), timeout=2))
+        self.services.append(Service(service_object=Capteur(DHT11(), "DHT11 int", self.update_measure), timeout=5))
+        self.services.append(Service(service_object=Persistent(), timeout=20))
 
     def update_measure(self, uid, value):
         self.lastMeasure[uid] = value
@@ -110,7 +110,9 @@ class Smart4l:
         for service in self.services:
             if not service.is_alive():
                 service.start()
-                print(f"Service \"{service.serviceObject.uid}\" was not running, now started")
+                print("Service is not started")
+                # Getting a Syntax error here, commenting this print()
+                # print(f"Service \"{service.serviceObject.uid}\" was not running, now started")
 
     def add_service(self, service):
         self.services.append(service)
