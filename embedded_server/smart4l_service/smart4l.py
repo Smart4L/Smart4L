@@ -6,46 +6,58 @@ __date__ = "11-08-2020"
 __version__ = "1.0.0"
 __status__ = "Prototype"
 
+
+"""
+RestFull API with Flask : https://auth0.com/blog/developing-restful-apis-with-python-and-flask/
+API Temps réelle :  https://dvic.devinci.fr/resource/tutorial/api-python/
+Site web avec Flask : https://openclassrooms.com/fr/courses/4425066-concevez-un-site-avec-flask
+Some example : https://realpython.com/flask-by-example-part-1-project-setup/ 
+Conf Flask : https://www.youtube.com/watch?v=1ByQhAM5c1I
+Conf GIL : https://www.youtube.com/watch?v=7SSYhuk5hmc
+Conf expert : https://github.com/austin-taylor/code-vault/blob/master/python_expert_notebook.ipynb
+
+"""
+
 # Standard Library
 import abc
 import logging
 import os
+import requests
 import sys
 import time
 from threading import Thread, Event
 from random import randint
-from flask import Flask
-from flask import jsonify
+from flask import Flask, jsonify, request
 
+# TODO fix this shitty import
+sys.path.insert(1, '../sensor_camera_module')
+from DHT11 import DHT11
+from utils import Message, Status, ServiceObjectInterface
 # Custom Modules
-from embedded_server.sensor_camera_module.DHT11 import DHT11
-from embedded_server.smart4l_service.utils import Message, Status
+#from embedded_server.sensor_camera_module.DHT11 import DHT11
+#from embedded_server.smart4l_service.utils import Message, Status, ServiceObjectInterface
 
-
-class ServiceObjectInterface(abc.ABC):
-    @abc.abstractmethod
-    def do(self):
-        pass
-
-    def stop(self):
-        pass
-
-
-# https://dvic.devinci.fr/resource/tutorial/api-python/
 
 # Class de gestions de service
 class Service(Thread):
-    def __init__(self, service_object: ServiceObjectInterface, timeout):
+    def __init__(self, service_object: ServiceObjectInterface, timeout=0):
         super().__init__()
         self.serviceObject = service_object
         self.timeout = timeout
         self.status = Status.START.value
         self.eventStopService = Event()
+        self.name = ""
+        self.description = ""
 
     def run(self):
         while self.status == Status.START.value:
             self.serviceObject.do()
             self.eventStopService.wait(self.timeout)
+
+    def __start__(self):
+        if hasattr(self.serviceObject, 'uid'):
+            Message.std(f"Service \"{self.serviceObject.uid}\" now started")
+        self.start()
 
     def stop(self):
         self.status = Status.STOP.value
@@ -53,11 +65,42 @@ class Service(Thread):
         self.serviceObject.stop()
 
 
+class FlaskAPI(ServiceObjectInterface):
+    def __init__(self,):
+        self.app = Flask("flask_api")
+        self.app.add_url_rule('/', 'index', self.index)
+        self.app.add_url_rule('/shutdown', 'shutdown', self.shutdown)
+        self.thread = None
+
+    def do(self,):
+        # get the host and the port as keywords attributes for flaskApp.run()
+        app_kwargs = {'host':"localhost", 'port':80}
+        # run the flaskApp on a thread
+        self.app.run(**app_kwargs)
+
+    def index(self):
+        # TODO fix this ugly thing, should not use app variable
+        return jsonify(app.lastMeasure)
+
+    # Must be call from HTTP request
+    def shutdown(self):
+        app_shutdown = request.environ.get('werkzeug.server.shutdown')
+        if app_shutdown is None:
+            raise RuntimeError('The function is unavailable!')
+        else:
+            app_shutdown()  
+        return "FlaskAPI shuting down ..."
+
+    def stop(self):
+        # TODO fix this ugly thing, should use variable instead of statid string
+        requests.get("http://localhost/shutdown")
+
+
 class Capteur(ServiceObjectInterface):
-    def __init__(self, sensor_object, uid, do_fun):
+    def __init__(self, sensor_object, uid, do_func):
         self.sensorObject = sensor_object
         self.uid = uid
-        self.action = do_fun
+        self.action = do_func
 
     def do(self):
         self.action(self.uid, self.sensorObject.measure())
@@ -69,118 +112,90 @@ class Capteur(ServiceObjectInterface):
 class Persistent(ServiceObjectInterface):
     def __init__(self):
         pass
-
     def do(self):
         # TODO DB registration
-        print("DB registration")
+        Message.std("DB registration")
         pass
-
     def stop(self):
         # TODO close DB connection
         pass
 
 
 # Class des gestions de l'application / service
-class Smart4l:
-    lastMeasure = {}
-    services = []
-
+class Smart4l():
+    
     def __init__(self):
-        self.services.append(Service(service_object=Capteur(DHT11(), "DHT11 ext", self.update_measure), timeout=2))
-        self.services.append(Service(service_object=Capteur(DHT11(), "DHT11 int", self.update_measure), timeout=5))
+        self.lastMeasure = {}
+        self.services = []
+        self.services.append(Service(service_object=Capteur(DHT11(),"DHT11 ext",self.update_measure), timeout=2))
+        self.services.append(Service(service_object=Capteur(DHT11(),"DHT11 int",self.update_measure), timeout=5))
         self.services.append(Service(service_object=Persistent(), timeout=20))
+        self.services.append(Service(service_object=FlaskAPI()))
 
     def update_measure(self, uid, value):
         self.lastMeasure[uid] = value
 
     def start(self):
-        print("Started !")
-        # TODO Si le service le fonctionne pas deja
-        # Existence du fichier pid + le pid repond au nom du programme
-        # lancement du process, creation du fichier pid
-        # Si le service fonctionne ouvrir un PIPE avec le pid du fichier pid
-        # 	envoyer les parametre dans le pipe
-
+        Message.std("Started !")
         # Run thread
-        [service.start() for service in self.services if not service.is_alive()]
-
-        print("Running ...")
+        [service.__start__() for service in self.services if not service.is_alive()]
+        Message.std("Running ...")
 
     def reload(self):
-        for service in self.services:
-            if not service.is_alive():
-                service.start()
-                print("Service is not started")
-                # Getting a Syntax error here, commenting this print()
-                # print(f"Service \"{service.serviceObject.uid}\" was not running, now started")
+        [service.__start__() for service in self.services if not service.is_alive()]
 
-    def add_service(self, service):
+    def addService(self, service):
         self.services.append(service)
-
-    # Must use reload function to start new service
+        # Must use reload function to start new service
 
     def stop(self):
-        print("\nCleaning ...")
-        # TODO Supprimer le fichier pid
-
+        Message.std("\nCleaning ...")
         # Stop Measurement Service Thread
         [service.stop() for service in self.services]
         # TODO Clean GPIO
-        print("Stopped !")
+        Message.std("Stopped !")
 
 
 # execute only if run as a script
 if __name__ == "__main__":
+    # If pid file already exists
+    if os.path.isfile('smart4l.pid'):
+        Message.err("File pid already exists")
+        sys.exit(1)
+    else:
+        open("smart4l.pid","w+").write(str(os.getpid()))
+    
     app = Smart4l()
-
-    flaskApp = Flask(__name__)
-    log = logging.getLogger('werkzeug')
-    log.disabled = True
-    flaskApp.logger.disabled = True
-
-
-    @flaskApp.route("/")
-    def send_data():
-        # convert into JSON format first
-        return jsonify(app.lastMeasure)
-
-
-    def start_flask(host, port):
-        # get the host and the port as keywords attributes for flaskApp.run()
-        app_kwargs = {'host': host, 'port': port}
-        # run the flaskApp on a thread
-        return Thread(target=flaskApp.run, kwargs=app_kwargs).start()
-
-
     try:
         app.start()
-        flaskThread = start_flask("localhost", 80)
         # Si on sort de la boucle, l'exception KeyboardInterrupt n'est plus gérée
-        # while not input() == Status.STOP.value:
-        switcher = {
-            "measure": lambda: print(app.lastMeasure)
-            , "add": lambda: app.add_service(
-                Service(Capteur(DHT11(), str(randint(100, 999)), lambda x, y: app.update_measure(x, y)), 5))
-            , "reload": lambda: app.reload()
-            , "stop": lambda: app.stop()
-            , "service": lambda: print(app.services)
-        }
+        #while not input() == Status.STOP.value:
         run = True
+        
+        switcher = {
+                "measure"  : lambda : Message.std(app.lastMeasure)
+                , "add"    : lambda : app.addService(Service(Capteur(DHT11(),str(randint(100,999)), lambda x, y: app.update_measure(x,y)),5))
+                , "reload" : app.reload
+                , "service": lambda : Message.std(app.services)
+            }
+        
         while run:
-            try:
-                print(switcher.get(input("Saisir une action : "))())
+            try :
+                Message.std(switcher.get(input("Saisir une action : "))())
             except KeyboardInterrupt:
                 run = False
             except:
-                print("Invalid input")
-        # time.sleep(2)
-        app.stop()
+                Message.std("Invalid input")
+            #time.sleep(2)
     except KeyboardInterrupt:
+        pass
+    finally:
         app.stop()
-        flaskThread._stop()
-        flaskThread.terminate()
+        os.remove("smart4l.pid")
+
 else:
-    Message.error("smart4l.py : must be run as a script\n")
+    Message.err("smart4l.py : must be run as a script\n")
+
 
 """
 # Communication inter process via un fichier, pas mal mais peut etre plus opti avec des pipes
