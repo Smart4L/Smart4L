@@ -9,5 +9,6 @@ __status__ = "Prototype"
 import os    # standard library
 import sys
 
+
 def measure():
 	return 42

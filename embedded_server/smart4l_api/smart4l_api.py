@@ -6,8 +6,10 @@ __date__ = "11-08-2020"
 __version__ = "1.0.0"
 __status__ = "Prototype"
 
-import os    # standard library
+import os  # standard library
 import sys
 
-def measure():
-	return 42
+
+def run():
+    # DO SOMETHING
+    pass
