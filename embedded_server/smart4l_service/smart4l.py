@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 __author__ = "cbarange"
 __license__ = "MIT"
-__date__ = "11-08-2020"
-__version__ = "1.0.0"
+__date__ = "25-08-2020"
+__version__ = "1.1.0"
 __status__ = "Prototype"
 
 """
@@ -12,10 +12,19 @@ API Temps réelle :  https://dvic.devinci.fr/resource/tutorial/api-python/
 Site web avec Flask : https://openclassrooms.com/fr/courses/4425066-concevez-un-site-avec-flask
 Some example : https://realpython.com/flask-by-example-part-1-project-setup/ 
 Conf Flask : https://www.youtube.com/watch?v=1ByQhAM5c1I
+Flask Socket : https://www.youtube.com/watch?v=uJC8A_7VZOA
 Conf GIL : https://www.youtube.com/watch?v=7SSYhuk5hmc
 Conf expert : https://github.com/austin-taylor/code-vault/blob/master/python_expert_notebook.ipynb
+Conf everything : https://github.com/hellerve/programming-talks#python
 SQL Lite avec base en mémoire ♥: http://www.python-simple.com/python-autres-modules-non-standards/sqlite3.php
+Decorateur property : https://www.freecodecamp.org/news/python-property-decorator/
+Decorateur property : https://www.journaldev.com/14893/python-property-decorator
+Socket : https://www.youtube.com/watch?v=T0rYSFPAR0A
+Socket : https://www.youtube.com/watch?v=Lbfe3-v7yE0
+Socket : https://www.youtube.com/watch?v=3QiPPX-KeSc
+Fichier property : 
 """
+
 
 """
 Les classes doivent porter leurs fonctions métier
@@ -24,7 +33,7 @@ Résoudre un problème d'import cyclique en créant une classe plus haut niveau,
 
 Une classe n'est pas "programme" en soit, elle est piloté depuis l'extérieur
 
-
+Singleton doit donner acces qu'a des variables imutables ou parfaitement encapsulé
 """
 
 
@@ -67,7 +76,7 @@ class Service(Thread):
             self.eventStopService.wait(self.timeout)
 
     def __start__(self):
-        Message.out(f"Service \"{self.name}\" now started")
+        Message.out(f"Service \"{self.name}\" is now started")
         self.start()
 
     def __repr__(self):
@@ -80,10 +89,11 @@ class Service(Thread):
 
 
 class FlaskAPI(ServiceObjectInterface):
-    def __init__(self,):
+    def __init__(self,db):
+        self.db = db
         self.conf = {"host":"localhost", "port":80}
         
-        self.app = Flask("flask_api")
+        self.app = Flask(__name__)
         self.app.add_url_rule('/', 'index', self.index)
         self.app.add_url_rule('/shutdown', 'shutdown', self.shutdown)
         self.app.add_url_rule('/history', 'history', self.history)
@@ -94,11 +104,11 @@ class FlaskAPI(ServiceObjectInterface):
 
     def index(self):
         # TODO fix this ugly thing, should not use app variable
-        return jsonify(Smart4l.lastMeasure)
+        return jsonify(self.db.data)
 
     def history(self):
         # TODO fix this ugly thing, should not use app variable
-        return jsonify(Persistent().history())
+        return jsonify(self.db.history())
 
     def service(self):
         return jsonify(str(Smart4l.services))
@@ -131,7 +141,8 @@ class Capteur(ServiceObjectInterface):
 
 
 class Persistent(ServiceObjectInterface):
-    def __init__(self):
+    def __init__(self, data):
+        self.data = data
         con = sqlite3.connect('smart4l.db')
         cur = con.cursor()
         cur.execute("create table if not exists smart4l(date varchar(50), data json)")
@@ -143,7 +154,7 @@ class Persistent(ServiceObjectInterface):
         # TODO DB registration
         con = sqlite3.connect('smart4l.db')
         cur = con.cursor()
-        cur.execute('insert into smart4l(date, data) values(?,?)', [str(time.time()), json.dumps(Smart4l.lastMeasure)])
+        cur.execute('insert into smart4l(date, data) values(?,?)', [str(time.time()), json.dumps(self.data)])
         cur.close()
         con.commit()
         con.close()
@@ -170,30 +181,33 @@ class Persistent(ServiceObjectInterface):
 
 # Class des gestions de l'application / service
 class Smart4l():
+    # TODO implement Early Loading Singleton
+    """
+    https://medium.com/@sinethneranjana/5-ways-to-write-a-singleton-and-why-you-shouldnt-1cf078562376
+    """
     lastMeasure = {}
     services = []
     def __init__(self):
         # TODO implement message Queue
-        # TODO implement singleton pattern
         #self.lastMeasure = {}
         #self.services = []
         Message.out("Started !")
         Message.out("Running ...")
 
-    @staticmethod
-    def update_measure(uid, value):
+    def update_measure(self, uid, value):
         Smart4l.lastMeasure[uid] = value
 
     def reload(self):
         [service.__start__() for service in Smart4l.services if not service.is_alive()]
 
-    def addService(self, service):
+    def add_service(self, service):
         Smart4l.services.append(service)
         # Must use reload function to start the new service
 
     def stop(self):
         Message.out("\nCleaning ...")
         [service.stop() for service in Smart4l.services]
+        Smart4l.services = []
         Message.out("Stopped !")
 
 
@@ -206,11 +220,12 @@ if __name__ == "__main__":
     open("smart4l.pid","w+").write(str(os.getpid()))
 
     app = Smart4l()
+    persistent = Persistent(data=app.lastMeasure)
     
-    app.addService(Service(service_object=Capteur(DHT11(),"DHT11 ext",Smart4l.update_measure), timeout=2, name="DHT11 ext", description=""))
-    app.addService(Service(service_object=Capteur(DHT11(),"DHT11 int",Smart4l.update_measure), timeout=5, name="DHT11 int", description=""))
-    app.addService(Service(service_object=Persistent(), timeout=20))
-    app.addService(Service(service_object=FlaskAPI()))
+    app.add_service(Service(service_object=persistent, timeout=20, name="Persistent"))
+    app.add_service(Service(service_object=FlaskAPI(db=persistent), name="Http API"))
+    app.add_service(Service(service_object=Capteur(DHT11(), "DHT11 ext", app.update_measure), timeout=2, name="DHT11 ext", description="Capteur de température extérieur"))
+    app.add_service(Service(service_object=Capteur(DHT11(), "DHT11 int", app.update_measure), timeout=5, name="DHT11 int"))
 
     app.reload()
 

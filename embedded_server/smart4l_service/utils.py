@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import abc
+import datetime
 import sys
 from enum import Enum
 
@@ -69,3 +70,19 @@ class Message():
 	@staticmethod
 	def okblue(msg):
 		sys.stdout.write(f"{bcolors.OKBLUE}{msg}{bcolors.ENDC}\n")
+
+
+
+"""
+Good example of method overriding
+"""
+class Logger(object):
+    def log(self, message):
+        print(message)
+
+class TimestampLogger(Logger):
+    def log(self, message):
+        message = "{ts} {msg}".format(ts=datetime.datetime.now().isoformat(), msg=message)
+        super(TimestampLogger, self).log(message)
+
+
