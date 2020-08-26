@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>POC WebSocket</title>
+</head>
+<body>
+	<h1>Affichage temps réel</h1>
+	<span id="lastMeasure"></span>
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script type="text/javascript">
+	const socket = io.connect("http://127.0.0.1:80/measure");
+
+	document.getElementById("lastMeasure").innerHTML = "En attente de données ..."
+	socket.on('receive_message', function (data) {
+		document.getElementById("lastMeasure").innerHTML = data
+    });
+</script>
+</html>

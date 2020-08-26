@@ -45,7 +45,8 @@ import requests
 import sqlite3
 import sys
 import time
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
+from flask_socketio import SocketIO, join_room, leave_room
 from random import randint
 from threading import Thread, Event
 
@@ -53,6 +54,7 @@ from threading import Thread, Event
 sys.path.insert(1, '../sensor_camera_module')
 from DHT11 import DHT11
 from utils import Message, Status, ServiceObjectInterface
+import smart4_websocket
 # Custom Modules
 #from embedded_server.sensor_camera_module.DHT11 import DHT11
 #from embedded_server.smart4l_service.utils import Message, Status, ServiceObjectInterface
@@ -89,22 +91,47 @@ class Service(Thread):
 
 
 class FlaskAPI(ServiceObjectInterface):
-    def __init__(self,db):
+    def __init__(self, db):
         self.db = db
-        self.conf = {"host":"localhost", "port":80}
+        self.conf = {"host": "localhost", "port": 80}
         
         self.app = Flask(__name__)
+        self.socketio = SocketIO(self.app)
         self.app.add_url_rule('/', 'index', self.index)
         self.app.add_url_rule('/shutdown', 'shutdown', self.shutdown)
         self.app.add_url_rule('/history', 'history', self.history)
         self.app.add_url_rule('/service', 'service', self.service)
+        self.app.add_url_rule('/measure', 'measure', self.measure)
 
-    def do(self,):
+    def do(self):
         self.app.run(**self.conf)
 
     def index(self):
         # TODO fix this ugly thing, should not use app variable
-        return jsonify(self.db.data)
+        #return jsonify(self.db.data)
+        return ("""
+<!DOCTYPE html>
+<html>
+<head>
+    <title>POC WebSocket</title>
+</head>
+<body>
+    <h1>Affichage temps réel</h1>
+    <span id="lastMeasure"></span>
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script type="text/javascript">
+    const socket = io.connect("http://localhost");
+
+    document.getElementById("lastMeasure").innerHTML = "En attente de données ..."
+    socket.on('receive_message', function (data) {
+        document.getElementById("lastMeasure").innerHTML = JSON.stringify(data)
+    });
+</script>
+</html>
+            """)
 
     def history(self):
         # TODO fix this ugly thing, should not use app variable
@@ -113,20 +140,25 @@ class FlaskAPI(ServiceObjectInterface):
     def service(self):
         return jsonify(str(Smart4l.services))
 
+    def measure(self, data):
+        self.socketio.emit('receive_message', data)
+
+
+
     # Must be call from HTTP request
     def shutdown(self):
         app_shutdown = request.environ.get('werkzeug.server.shutdown')
         if app_shutdown is None:
-            raise RuntimeError('The function is unavailable!')
+            raise RuntimeError("Http FlaskAPI can\'t be shutdown with this server version, check for WSGI version")
         else:
             app_shutdown()  
         return "FlaskAPI shuting down ..."
 
     def stop(self):
-        # TODO fix this ugly thing, should use variable instead of statid string
         requests.get(f"http://{self.conf.get('host')}:{self.conf.get('port')}/shutdown")
 
 
+# TODO rework this class
 class Capteur(ServiceObjectInterface):
     def __init__(self, sensor_object, uid, do_func):
         self.sensorObject = sensor_object
@@ -140,6 +172,7 @@ class Capteur(ServiceObjectInterface):
         self.sensorObject.clean()
 
 
+# TODO rework this class
 class Persistent(ServiceObjectInterface):
     def __init__(self, data):
         self.data = data
@@ -196,6 +229,8 @@ class Smart4l():
 
     def update_measure(self, uid, value):
         Smart4l.lastMeasure[uid] = value
+        # emit websocket event
+        self.services[1].serviceObject.measure(self.lastMeasure)
 
     def reload(self):
         [service.__start__() for service in Smart4l.services if not service.is_alive()]
@@ -224,8 +259,8 @@ if __name__ == "__main__":
     
     app.add_service(Service(service_object=persistent, timeout=20, name="Persistent"))
     app.add_service(Service(service_object=FlaskAPI(db=persistent), name="Http API"))
-    app.add_service(Service(service_object=Capteur(DHT11(), "DHT11 ext", app.update_measure), timeout=2, name="DHT11 ext", description="Capteur de température extérieur"))
-    app.add_service(Service(service_object=Capteur(DHT11(), "DHT11 int", app.update_measure), timeout=5, name="DHT11 int"))
+    app.add_service(Service(service_object=Capteur(DHT11(), "DHT11 ext", app.update_measure), timeout=0.2, name="DHT11 ext", description="Capteur de température extérieur"))
+    app.add_service(Service(service_object=Capteur(DHT11(), "DHT11 int", app.update_measure), timeout=0.2, name="DHT11 int"))
 
     app.reload()
 
