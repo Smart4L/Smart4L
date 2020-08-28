@@ -12,6 +12,13 @@ sys.path.insert(1, '../sensor_camera_module')
 from DHT11 import DHT11
 from utils import Message, Status, ServiceObjectInterface
 
+"""
+https://raspberry-valley.azurewebsites.net/CoAP-Getting-Started/
+https://www.framboise314.fr/utiliser-le-protocole-mqtt-pour-communiquer-des-donnees-entre-2-raspberry-pi/
+
+"""
+
+
 class Service(Thread):
     def __init__(self, service_object: ServiceObjectInterface, timeout=0, name="unname", description="description unavailable"):
         Thread.__init__(self)
@@ -102,6 +109,10 @@ pickle module allow to pass python object via socket
 
 https://www.youtube.com/watch?v=Lbfe3-v7yE0
 https://www.youtube.com/watch?v=3QiPPX-KeSc
+
+https://www.framboise314.fr/utiliser-le-protocole-mqtt-pour-communiquer-des-donnees-entre-2-raspberry-pi/
+
+
 --- ---
 Socket Begening : https://www.youtube.com/watch?v=T0rYSFPAR0A
 

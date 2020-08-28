@@ -22,6 +22,8 @@ Decorateur property : https://www.journaldev.com/14893/python-property-decorator
 Socket : https://www.youtube.com/watch?v=T0rYSFPAR0A
 Socket : https://www.youtube.com/watch?v=Lbfe3-v7yE0
 Socket : https://www.youtube.com/watch?v=3QiPPX-KeSc
+Wifi : https://www.framboise314.fr/raspap-creez-votre-hotspot-wifi-avec-un-raspberry-pi-de-facon-express/
+MQTT : https://www.framboise314.fr/utiliser-le-protocole-mqtt-pour-communiquer-des-donnees-entre-2-raspberry-pi/
 Fichier property : 
 """
 
