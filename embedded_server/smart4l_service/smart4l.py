@@ -24,6 +24,9 @@ Socket : https://www.youtube.com/watch?v=Lbfe3-v7yE0
 Socket : https://www.youtube.com/watch?v=3QiPPX-KeSc
 Wifi : https://www.framboise314.fr/raspap-creez-votre-hotspot-wifi-avec-un-raspberry-pi-de-facon-express/
 MQTT : https://www.framboise314.fr/utiliser-le-protocole-mqtt-pour-communiquer-des-donnees-entre-2-raspberry-pi/
+websocket : https://websockets.readthedocs.io/en/stable/intro.html
+websocket : https://pypi.org/project/websocket_client/
+
 Fichier property : 
 """
 
