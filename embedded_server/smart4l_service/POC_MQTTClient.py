@@ -45,16 +45,16 @@ import paho.mqtt.client as mqtt
 # client.username_pw_set(ACCESS_TOKEN)
 
 try:
-	client = mqtt.Client()
-	client.connect("127.0.0.1", 1883, 60)
-	client.loop_start()
-	while True:
-		client.publish("channel1", "New Message", 1)
-		time.sleep(5)
+    client = mqtt.Client()
+    client.connect("127.0.0.1", 1883, 60)
+    client.loop_start()
+    while True:
+        client.publish("channel1", "New Message", 1)
+        time.sleep(5)
 except KeyboardInterrupt:
-	pass
+    pass
 finally:
-	client.loop_stop()
-	client.disconnect()
+    client.loop_stop()
+    client.disconnect()
 
 
