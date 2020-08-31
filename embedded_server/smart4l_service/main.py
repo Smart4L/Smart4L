@@ -60,6 +60,15 @@ from sensor import Sensor
 from http_api import FlaskAPI
 from persistent import Persistent
 from service import Service
+from socket_smart4l import Smart4lServeur
+
+
+"""
+dic = {'1Key':'1Value', '2Key':'2Value', '3Key':'3Value', '4Key':'4Value'}
+
+for k,v in dic.items():
+    print(f"{k}:{v}")
+"""
 
 # execute only if run as a script
 if __name__ == "__main__":
@@ -74,6 +83,8 @@ if __name__ == "__main__":
 
     app.persistent = Persistent(app)
     app.httpApi = FlaskAPI(app.persistent)
+    app.socket = Smart4lServeur(app.update_measure)
+
 
     app.add_service(Service(Sensor(DHT11(), "DHT11", app.update_measure), 1, "Temperature"))
     app.add_service(Service(app.persistent, 20, "DB"))
