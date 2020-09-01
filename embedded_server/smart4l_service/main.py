@@ -73,10 +73,11 @@ for k,v in dic.items():
 # execute only if run as a script
 if __name__ == "__main__":
     # --- PID FILE EXISTS ---
-    if os.path.isfile('smart4l.pid'):
+    if os.path.isfile('smart4l.lock'):
+        # TODO check if python process run with this pid
         Message.wrn("PID file  already exists")
-        os.remove("smart4l.pid")
-    open("smart4l.pid","w+").write(str(os.getpid()))
+        os.remove("smart4l.lock")
+    open("smart4l.lock","w+").write(str(os.getpid()))
     # --- === ---
 
     app = Smart4l()
@@ -99,6 +100,6 @@ if __name__ == "__main__":
             continue
     except KeyboardInterrupt:
         app.stop()
-        os.remove("smart4l.pid")
+        os.remove("smart4l.lock")
 else:
     Message.err(f"{__name__} : must be run as a script\n")
