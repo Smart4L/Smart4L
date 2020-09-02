@@ -35,12 +35,14 @@ asyncio.get_event_loop().run_forever()
 """
 
 
+
 import time
 import websockets
 import asyncio
 import logging
 from random import randint
 from websockets import WebSocketServerProtocol
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -57,7 +59,7 @@ class ServerWS():
 
     async def send_to_clients(self, message: str) -> None:
         if self.clients:
-            await asyncio.wait(client.send(message) for client in self.clients)
+            await asyncio.wait([client.send(message) for client in self.clients])
 
     async def ws_handler(self, ws: WebSocketServerProtocol, uri: str) -> None:
         await self.register(ws)

@@ -5,6 +5,11 @@
 # Regarder Google doc websockets
 # regarder tornado websockets
 
+"""
+https://stackoverflow.com/questions/40158596/which-python-library-should-i-use-socketserver-or-asyncio
+
+"""
+
 # --- Cours 1 ---
 """
 https://www.youtube.com/watch?v=7i0-lYjtvIE
@@ -29,6 +34,25 @@ start_server = websockets.serve(response, 'localhost', 8520)
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
 
+
+
+
+import asyncio
+import websockets
+
+
+async def response(websocket, path):
+    while True:
+        message = await websocket.recv()
+        print(f"Message from client : {message}")
+        await websocket.send(f"Hey {message}")
+
+
+
+
+start_server = websockets.serve(response, 'localhost', 8520)
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()
 
 # --- -------------------------------------- ---
 
@@ -64,7 +88,6 @@ onClose → delete client from wsList
 
 En websockets il faut implémenter le drop de connexion, les erreurs diverses etc...
 """
-
 
 
 
