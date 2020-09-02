@@ -22,6 +22,13 @@ onMessage → add it to messageList and send it to every client
 onClose → delete client from wsList
 
 En websockets il faut implémenter le drop de connexion, les erreurs diverses etc...
+
+
+
+
+
+https://www.freecodecamp.org/news/how-to-secure-your-websocket-connections-d0be0996c556/
+
 """
 
 class ServerWS():
@@ -36,7 +43,7 @@ class ServerWS():
 
     # remove client from clients list
     async def unregister(self, ws: WebSocketServerProtocol) -> None:
-        ws.close(1000,"Normal Closure")
+        await ws.close(1000,"Normal Closure")
         self.clients.remove(ws)
         logging.info(f"{ws.remote_address} disconnects.")
 
@@ -103,17 +110,18 @@ t.start()
 try:
     while True:
         asyncio.run_coroutine_threadsafe(server.send_to_clients(str(randint(100,999))), loop)
-        time.sleep(2)
+        time.sleep(0.001)
 except KeyboardInterrupt:
-    asyncio.run_coroutine_threadsafe(server.close_all_connections(), loop)
+    task = asyncio.run_coroutine_threadsafe(server.close_all_connections(), loop)
     loop.stop()
-    
+    """
     while loop.is_running():
         pass
-    try:
-        loop.close()
-    except:
+    task.cancel()
+    while task.done():
         pass
+    loop.close()
+    """
 
 
 

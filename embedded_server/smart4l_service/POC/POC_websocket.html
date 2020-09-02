@@ -51,25 +51,25 @@
     }
 
     socket.onopen = function(e) {
-    	document.getElementById("lastMeasure").innerHTML += ("<br/>[open] Connection established")
+    	document.getElementById("lastMeasure").innerHTML = ("<br/>[open] Connection established")
     }
 
     socket.onmessage = function(event) {
-    	document.getElementById("lastMeasure").innerHTML += `<br/>[message] Data received from server: ${event.data}`
+    	document.getElementById("lastMeasure").innerHTML = `<br/>[message] Data received from server: ${event.data}`
     }
 
     socket.onclose = function(event) {
     	if (event.wasClean) {
-    		document.getElementById("lastMeasure").innerHTML += (`<br/>[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`)
+    		document.getElementById("lastMeasure").innerHTML = (`<br/>[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`)
     	} else {
 		    // e.g. server process killed or network down
 		    // event.code is usually 1006 in this case
-		    document.getElementById("lastMeasure").innerHTML += ('<br/>[close] Connection died')
+		    document.getElementById("lastMeasure").innerHTML = ('<br/>[close] Connection died')
 		}
 	}
 
 	socket.onerror = function(error) {
-		document.getElementById("lastMeasure").innerHTML += (`<br/>[error] ${error.message}`)
+		document.getElementById("lastMeasure").innerHTML = (`<br/>[error] ${error.message}`)
 	}
 
 </script>
