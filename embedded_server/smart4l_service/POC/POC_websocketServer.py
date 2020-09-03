@@ -23,12 +23,20 @@ onClose → delete client from wsList
 
 En websockets il faut implémenter le drop de connexion, les erreurs diverses etc...
 
+https://www.youtube.com/watch?v=n9mRjkQg3VE
+Short Polling
+Long Polling
+SSE Server-Sent Events
+WebSockets
 
-
+Multiplex connection
+Bidirectional connection
 
 
 https://www.freecodecamp.org/news/how-to-secure-your-websocket-connections-d0be0996c556/
+https://www.youtube.com/watch?v=sUEq35F-ELY
 
+https://www.youtube.com/watch?v=cXxEiWudIUY
 """
 
 class ServerWS():
