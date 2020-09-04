@@ -9,11 +9,26 @@
     flex-flow: column nowrap;
     justify-content: center;
     background-color: $third-back-color;
+    padding: 0 15px;
 }
 
 .right_home_container{
     background-color: $second-back-color;
     flex-grow: 1;
+}
+
+.title{
+    color: $third-text-color;
+    font-size: 30px;
+
+    &.little{
+        font-size: 20px;
+    }
+}
+
+.content{
+    color: $second-text-color;
+    font-size: 25px;
 }
 
 .circle {

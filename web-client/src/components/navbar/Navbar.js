@@ -2,7 +2,7 @@ import React from 'react';
 import { FaFan, FaRegLightbulb, FaRegMap, FaBullhorn } from 'react-icons/fa';
 import { GoGraph } from "react-icons/go";
 import { GiRadarSweep } from "react-icons/gi";
-import { AiFillCamera, AiFillVideoCamera, AiFillSetting } from "react-icons/ai";
+import { AiFillVideoCamera, AiFillSetting } from "react-icons/ai";
 
 export default class Navbar extends React.Component{
     constructor(props) {
