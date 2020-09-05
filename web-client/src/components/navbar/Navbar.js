@@ -26,14 +26,14 @@ export default class Navbar extends React.Component{
     render(){
         return(
             <div className="navbar_container">
-                <FaRegMap className={`navbar_item`}/>
-                <AiFillVideoCamera className={`navbar_item`}/>
-                <GiRadarSweep className={`navbar_item`}/>
-                <GoGraph className={`navbar_item`}/>
-                <FaRegLightbulb className={`navbar_item light ${this.state.light_on ? "shine" : ""}`} onClick={() => this.setLight()}/>
-                <FaFan className={`navbar_item ${this.state.fan_turn ? "turn" : ""}`} onClick={() => this.setFan()}/>
-                <FaBullhorn className={`navbar_item`}/>
-                <AiFillSetting className={`navbar_item`}/>
+                <FaRegMap size={32} className={`navbar_item`}/>
+                <AiFillVideoCamera size={32} className={`navbar_item`}/>
+                <GiRadarSweep size={32} className={`navbar_item`}/>
+                <GoGraph size={32} className={`navbar_item`}/>
+                <FaRegLightbulb size={32} className={`navbar_item light ${this.state.light_on ? "shine" : ""}`} onClick={() => this.setLight()}/>
+                <FaFan size={32} className={`navbar_item ${this.state.fan_turn ? "turn" : ""}`} onClick={() => this.setFan()}/>
+                <FaBullhorn size={32} className={`navbar_item`}/>
+                <AiFillSetting size={32} className={`navbar_item`}/>
             </div>
         )
     }
