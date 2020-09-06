@@ -2,15 +2,18 @@ import React from 'react';
 import moment from 'moment'
 import { Capitalize } from '../../utils/utils';
 import { Line as ProgressLine} from 'rc-progress';
+import { w3cwebsocket as WebSocket } from 'websocket';
 import { MdSignalCellularConnectedNoInternet0Bar, MdSignalCellular1Bar, MdSignalCellular2Bar, MdSignalCellular3Bar, MdSignalCellular4Bar } from "react-icons/md";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+
+const client = WebSocket('ws://aws.cbarange.ovh:8520');
 
 export default class Home extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             now :  moment(),
-            temp: Math.floor(Math.random() * Math.floor(30)),
+            temp: "NaN",
             fuel: Math.floor(Math.random() * Math.floor(100)),
             connect: Math.floor(Math.random() * Math.floor(5))
         }
@@ -18,6 +21,17 @@ export default class Home extends React.Component{
 
     componentDidMount() {
         this.interval = setInterval(() => this.setState({ now: moment() }), 500);
+        client.onpen = () => {
+            console.log('WebSocket Client Connected');
+        };
+        client.onmessage = (message) => {
+            let data = JSON.parse(message.data);
+            if(data.type === "UPDATE_SENSOR"){
+                if(data.content.id === "DHT11_in"){
+                    this.setState({ temp: data.content.value });
+                }
+            }
+        };
     }
     
     componentWillUnmount() {

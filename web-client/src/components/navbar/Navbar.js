@@ -30,7 +30,7 @@ export default class Navbar extends React.Component{
                 <NavLink to="/"><FaRegMap size={32} className={`navbar_item`}/></NavLink>
                 <NavLink to="/"><AiFillVideoCamera size={32} className={`navbar_item`}/></NavLink>
                 <NavLink to="/"><GiRadarSweep size={32} className={`navbar_item`}/></NavLink>
-                <NavLink to="/"><GoGraph size={32} className={`navbar_item`}/></NavLink>
+                <NavLink to="/stats"><GoGraph size={32} className={`navbar_item`}/></NavLink>
                 <FaRegLightbulb size={32} className={`navbar_item light ${this.state.light_on ? "shine" : ""}`} onClick={() => this.setLight()}/>
                 <FaFan size={32} className={`navbar_item ${this.state.fan_turn ? "turn" : ""}`} onClick={() => this.setFan()}/>
                 <NavLink to="/"><FaBullhorn size={32} className={`navbar_item`}/></NavLink>

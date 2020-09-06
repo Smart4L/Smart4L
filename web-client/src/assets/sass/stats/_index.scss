@@ -1,0 +1,16 @@
+.stats_container{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    background-color: $third-back-color;
+
+    .stats_item{
+        display: flex;
+        flex-flow: column;
+        justify-items: center;
+        align-items: center;
+        min-width: 500px;
+    }
+}
