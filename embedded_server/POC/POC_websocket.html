@@ -34,7 +34,7 @@
     // --- === ---
 
     
-    var socket = new WebSocket("ws://127.0.0.1:8520")
+    var socket = new WebSocket("wss://localhost:8520")
   
 
     function sendMessage(message){
@@ -71,7 +71,9 @@
 	socket.onerror = function(error) {
 		document.getElementById("lastMeasure").innerHTML = (`<br/>[error] ${error.message}`)
 	}
-
+	window.onbeforeunload = function(){
+   		disconnect()
+	}
 </script>
 
 </html>

@@ -4,11 +4,6 @@
 
 """
 pip3 install websockets
-https://websockets.readthedocs.io/en/stable/intro.html
-https://websockets.readthedocs.io/en/stable/intro.html
-https://pypi.org/project/websocket_client/
-https://medium.com/better-programming/how-to-create-a-websocket-in-python-b68d65dbd549
-
 Learn asyncio, async, await, signal
 """
 

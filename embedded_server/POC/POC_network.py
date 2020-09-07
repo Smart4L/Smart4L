@@ -12,11 +12,6 @@ sys.path.insert(1, '../sensor_camera_module')
 from DHT11 import DHT11
 from utils import Message, Status, ServiceObjectInterface
 
-"""
-https://raspberry-valley.azurewebsites.net/CoAP-Getting-Started/
-https://www.framboise314.fr/utiliser-le-protocole-mqtt-pour-communiquer-des-donnees-entre-2-raspberry-pi/
-
-"""
 
 
 class Service(Thread):

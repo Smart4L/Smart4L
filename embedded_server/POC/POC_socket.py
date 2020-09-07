@@ -4,13 +4,6 @@ import socket
 from random import randint
 
 """
-Sécuriser les sockets
-
-https://realpython.com/python-sockets/
-https://openclassrooms.com/fr/courses/235344-apprenez-a-programmer-en-python/234698-gerez-les-reseaux
-https://docs.python.org/fr//3/howto/sockets.html
-
-
 1 - Le serveur ouvre un socket d'écoute et attend
 2 - Un client se connecte au socket d'écoute du serveur
 3 - Le serveur crée un nouveau socket unique et l'envoie au client pour communiquer avec lui

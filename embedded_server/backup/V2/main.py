@@ -7,25 +7,44 @@ __version__ = "1.1.0"
 __status__ = "Prototype"
 
 """
-RestFull API with Flask : https://auth0.com/blog/developing-restful-apis-with-python-and-flask/
-API Temps réelle :  https://dvic.devinci.fr/resource/tutorial/api-python/
-Site web avec Flask : https://openclassrooms.com/fr/courses/4425066-concevez-un-site-avec-flask
-Some example : https://realpython.com/flask-by-example-part-1-project-setup/ 
-Conf Flask : https://www.youtube.com/watch?v=1ByQhAM5c1I
-Flask Socket : https://www.youtube.com/watch?v=uJC8A_7VZOA
 Conf GIL : https://www.youtube.com/watch?v=7SSYhuk5hmc
 Conf expert : https://github.com/austin-taylor/code-vault/blob/master/python_expert_notebook.ipynb
 Conf everything : https://github.com/hellerve/programming-talks#python
+
 SQL Lite avec base en mémoire ♥: http://www.python-simple.com/python-autres-modules-non-standards/sqlite3.php
+
 Decorateur property : https://www.freecodecamp.org/news/python-property-decorator/
 Decorateur property : https://www.journaldev.com/14893/python-property-decorator
+
+RestFull API with Flask : https://auth0.com/blog/developing-restful-apis-with-python-and-flask/
+API Temps réelle :  https://dvic.devinci.fr/resource/tutorial/api-python/
+Site web avec Flask : https://openclassrooms.com/fr/courses/4425066-concevez-un-site-avec-flask
+Conf Flask : https://www.youtube.com/watch?v=1ByQhAM5c1I
+Flask Socket : https://www.youtube.com/watch?v=uJC8A_7VZOA
+Flask : https://realpython.com/flask-by-example-part-1-project-setup/ 
+
+websocket : https://websockets.readthedocs.io/en/stable/intro.html
+websocket : https://pypi.org/project/websocket_client/
+websocket : https://websockets.readthedocs.io/en/stable/intro.html
+websocket : https://pypi.org/project/websocket_client/
+websocket : https://medium.com/better-programming/how-to-create-a-websocket-in-python-b68d65dbd549
+websocket : https://stackoverflow.com/questions/10112178/differences-between-socket-io-and-websockets
+websocket : https://developerinsider.co/difference-between-http-and-http-2-0-websocket/#:~:text=WebSocket%20is%20a%20protocol%20providing,HTTP%20providing%20half%2Dduplex%20communication.&text=Means%2C%20server%20can%20push%20information,does%20not%20allow%20direct%20HTTP).
+websocket : https://openclassrooms.com/fr/courses/1056721-des-applications-ultra-rapides-avec-node-js/1057825-socket-io-passez-au-temps-reel
+
 Socket : https://www.youtube.com/watch?v=T0rYSFPAR0A
 Socket : https://www.youtube.com/watch?v=Lbfe3-v7yE0
 Socket : https://www.youtube.com/watch?v=3QiPPX-KeSc
+Socket : https://realpython.com/python-sockets/
+Socket : https://openclassrooms.com/fr/courses/235344-apprenez-a-programmer-en-python/234698-gerez-les-reseaux
+Socket : https://docs.python.org/fr//3/howto/sockets.html
+
 Wifi : https://www.framboise314.fr/raspap-creez-votre-hotspot-wifi-avec-un-raspberry-pi-de-facon-express/
+
 MQTT : https://www.framboise314.fr/utiliser-le-protocole-mqtt-pour-communiquer-des-donnees-entre-2-raspberry-pi/
-websocket : https://websockets.readthedocs.io/en/stable/intro.html
-websocket : https://pypi.org/project/websocket_client/
+COAP : https://raspberry-valley.azurewebsites.net/CoAP-Getting-Started/
+
+Singleton : https://medium.com/@sinethneranjana/5-ways-to-write-a-singleton-and-why-you-shouldnt-1cf078562376
 
 Fichier property : 
 """
@@ -60,7 +79,6 @@ from sensor import Sensor
 from http_api import FlaskAPI
 from persistent import Persistent
 from service import Service
-from socket_smart4l import Smart4lServeur
 
 
 """
