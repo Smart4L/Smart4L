@@ -6,7 +6,7 @@ import { w3cwebsocket as WebSocket } from 'websocket';
 import { MdSignalCellularConnectedNoInternet0Bar, MdSignalCellular1Bar, MdSignalCellular2Bar, MdSignalCellular3Bar, MdSignalCellular4Bar } from "react-icons/md";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
-const client = WebSocket('ws://aws.cbarange.ovh:8520');
+const client = WebSocket('wss://aws.cbarange.ovh:8520');
 
 export default class Home extends React.Component{
     constructor(props){
@@ -28,7 +28,7 @@ export default class Home extends React.Component{
             let data = JSON.parse(message.data);
             if(data.type === "UPDATE_SENSOR"){
                 if(data.content.id === "DHT11_in"){
-                    this.setState({ temp: data.content.value });
+                    this.setState({ temp: data.content.value[0].measure });
                 }
             }
         };
@@ -36,6 +36,7 @@ export default class Home extends React.Component{
     
     componentWillUnmount() {
         clearInterval(this.interval);
+        client.close(1000, "End of connection");
     }
 
     getConnection = () => {

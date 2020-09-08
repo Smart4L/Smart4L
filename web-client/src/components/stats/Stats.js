@@ -4,18 +4,13 @@ import { FaTemperatureHigh, FaTools } from "react-icons/fa";
 import { IoMdSpeedometer } from "react-icons/io";
 import { GiGears } from "react-icons/gi";
 
-const client = WebSocket('ws://aws.cbarange.ovh:8520');
+const client = WebSocket('wss://aws.cbarange.ovh:8520');
 
 export default class Stats extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            tab: [
-                {
-                    id: "Capteur",
-                    value: "Valeur"
-                }
-            ]
+            tab: []
         }
     }
 
@@ -69,7 +64,13 @@ export default class Stats extends React.Component{
                             return (
                                 <div className="stats_item">
                                     <span>{el.id}:</span>
-                                    <span>{el.value}</span>
+                                    {
+                                        el.value.map((item) => {
+                                            return(
+                                                <span>{item.type}: {item.measure} {item.unit}</span>
+                                            )
+                                        })
+                                    }
                                     <span>{this.getIcon(el.id)}</span>
                                 </div>
                             )                        
