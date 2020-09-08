@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>POC WebSocket</title>
+</head>
+<body>
+	<h1>Affichage temps réel</h1>
+	<form action="javascript:void(0)">
+		<input id="inputMessage" type="text" placeholder=" enter your message here"/>
+		<button type="submit" onclick="onSubmit()">Send</button>
+		<button onclick="disconnect()">Disconnect</button>
+	</form>
+	<button onclick="open()">Connect</button>
+	<br/><br/>
+	<span id="lastMeasure"></span>
+
+
+</body>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>-->
+<script type="text/javascript">
+	document.getElementById("lastMeasure").innerHTML = "En attente ..."
+
+	function onSubmit(){
+		sendMessage(document.getElementById("inputMessage").value)
+	}
+
+	// --- SocketIO example ---
+	/*const socket = io.connect("http://127.0.0.1:80/measure")
+
+	socket.on('receive_message', function (data) {
+		document.getElementById("lastMeasure").innerHTML = data
+    })
+	*/
+    // --- === ---
+
+    
+    var socket = new WebSocket("wss://localhost:8520")
+  
+
+    function sendMessage(message){
+    	socket.send(message)
+    	document.getElementById("lastMeasure").innerHTML += (`<br/>[message] You sent : ${message}`)    	
+    }
+
+    function disconnect(){
+    	socket.close(1000, "Normal Closure")
+    }
+
+    function open(){
+		socket = new WebSocket("wss://localhost:8520")    	
+    }
+
+    socket.onopen = function(e) {
+    	document.getElementById("lastMeasure").innerHTML = ("<br/>[open] Connection established")
+    }
+
+    socket.onmessage = function(event) {
+    	document.getElementById("lastMeasure").innerHTML = `<br/>[message] Data received from server: ${JSON.parse(event.data)}`
+    }
+
+    socket.onclose = function(event) {
+    	if (event.wasClean) {
+    		document.getElementById("lastMeasure").innerHTML = (`<br/>[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`)
+    	} else {
+		    // e.g. server process killed or network down
+		    // event.code is usually 1006 in this case
+		    document.getElementById("lastMeasure").innerHTML = ('<br/>[close] Connection died')
+		}
+	}
+
+	socket.onerror = function(error) {
+		document.getElementById("lastMeasure").innerHTML = (`<br/>[error] ${error.message}`)
+	}
+	window.onbeforeunload = function(){
+   		disconnect()
+	}
+</script>
+
+</html>

@@ -10,20 +10,25 @@ Reverse Python code to UML :
 sudo apt install pylint
 sudo apt install graphviz
 pyreverse -o png -p smart4l .
-
 """
 
+import asyncio
 import datetime
+import json
 import logging
 import sys
+import signal
+import time
 from random import randint
 from threading import Thread, Event
 from persistence import Persistent
 from utils import RunnableObjectInterface, Status, SensorInterface
 from flask_api import FlaskAPI
+from smart4l_ws_server import Smart4lWebSocket
+
+
 
 """
-
 --- Logging Level ---
     CRITICAL    50
     ERROR       40
@@ -39,7 +44,6 @@ from flask_api import FlaskAPI
     logging.exception
     logging.warning
     logging.debug
-
 """
 
 
@@ -110,17 +114,24 @@ class Smart4LApp():
     def __init__(self):
         self.services = {}
         self.data = {}
+        loop = asyncio.get_event_loop()
+        self.ws_server = Smart4lWebSocket(loop, host="0.0.0.0", port=8520, ssl_key_path="ws_cert.key", ssl_cert_path="ws_cert.pem")
+        """
+        openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ws_cert.key -out ws_cert.pem
+        enable self signed certs on chrome : chrome://flags/#allow-insecure-localhost    
+        """
+        self.db = Persistent({"measure": self.data, "service": self.services})
+        self.http_api = FlaskAPI(self.db, host="0.0.0.0", port=8080, ssl_key_path="ws_cert.key", ssl_cert_path="ws_cert.pem")
 
     def start(self):
-        # Parse file
         # Init main service
+        self.add_service(service_id = "DB", service = Service(self.db, delay=20))
+        self.add_service(service_id = "HTTP", service = Service(self.http_api))
+        self.add_service(service_id = "WS_SERVER", service = Service(self.ws_server))
+        # Parse file and add sensor service
         self.add_service(service_id = "SENSOR_1", service = Service(Sensor(DHT11(), name="DHT11_in", on_measure=self.update_data), delay=2))
         self.add_service(service_id = "SENSOR_2", service = Service(Sensor(DHT11(), name="DHT11_out", on_measure=self.update_data), delay=1))
-        db = Persistent({"measure": self.data, "service": self.services})
-    
-        self.add_service(service_id = "DB", service = Service(db, delay=20))
-        self.add_service(service_id = "HTTP", service = Service(FlaskAPI(db)))
-
+        
         # Launch service
         self.reload_services()
 
@@ -133,9 +144,10 @@ class Smart4LApp():
     def add_service(self, service_id:int, service:Service):
         # TODO : Check if service_id not already exists
         self.services[service_id]=service
+        
 
     def update_data(self, uid, value):
-
+        self.ws_server.send_message(json.dumps( f"{{\"type\": \"UPDATE_SENSOR\", \"content\": {{\"id\": \"{uid}\",\"value\": {json.dumps(value)})}}}}" ))
         self.data[uid] = value
 
     def parse_service_file(self):
@@ -143,7 +155,6 @@ class Smart4LApp():
 
 
 app = Smart4LApp()
-
 
 def start():
     logging.info('--- Started ! ---')
@@ -171,6 +182,8 @@ if __name__ == "__main__":
     #logging.basicConfig(filename='example.log',level=logging.DEBUG)
     #logging.basicConfig(filename=f'smart4l.log',level=logging.DEBUG, format='%(asctime)s - %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
     logging.basicConfig(filename=f'smart4l.log',level=logging.DEBUG, datefmt='%d-%m-%Y %H:%M:%S')
+    #logging.basicConfig(level=logging.DEBUG, datefmt='%d-%m-%Y %H:%M:%S')
+    signal.signal(signal.SIGTERM, stop)
     try:
         start()
     except KeyboardInterrupt:
@@ -182,4 +195,4 @@ if __name__ == "__main__":
     finally:
         stop()
 else:
-    logging.error(f"{__name__} : must be run as a script\n")
+    logging.critical(f"{__name__} : must be run as a script\n")
