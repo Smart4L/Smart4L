@@ -27,7 +27,7 @@ export default class Navbar extends React.Component{
     render(){
         return(
             <div className="navbar_container">
-                <NavLink to="/"><FaRegMap size={32} className={`navbar_item`}/></NavLink>
+                <NavLink to="/map"><FaRegMap size={32} className={`navbar_item`}/></NavLink>
                 <NavLink to="/"><AiFillVideoCamera size={32} className={`navbar_item`}/></NavLink>
                 <NavLink to="/"><GiRadarSweep size={32} className={`navbar_item`}/></NavLink>
                 <NavLink to="/stats"><GoGraph size={32} className={`navbar_item`}/></NavLink>
