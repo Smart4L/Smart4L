@@ -9,15 +9,20 @@ from flask import Flask, jsonify, request, render_template
 from utils import RunnableObjectInterface
 
 class FlaskAPI(RunnableObjectInterface):
-    def __init__(self, data, host, port, ssl_key_path, ssl_cert_path):
+    
+    def __init__(self, data, host, port, ssl_key_path=None, ssl_cert_path=None):
         self.app = Flask(__name__)
-
-        context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-        context.load_cert_chain(ssl_cert_path, ssl_key_path)
-
-        self.conf = {"host": host, "port": port, "ssl_context":context}
-
+        if ssl_key_path is not None:
+            context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+            context.load_cert_chain(ssl_cert_path, ssl_key_path)
+            self.conf = {"host": host, "port": port, "ssl_context":context}
+        else:
+            self.conf = {"host": host, "port": port}
         self.db = data
+    
+        self.router()
+   
+    def router(self):
         self.app.add_url_rule('/', 'index', self.index)
         self.app.add_url_rule('/service', 'service', self.service)
         self.app.add_url_rule('/history', 'history', self.history)
@@ -51,7 +56,10 @@ class FlaskAPI(RunnableObjectInterface):
             return smart4l_log_file.readlines()
 
     def stop(self):
-        requests.get(f"https://{self.conf.get('host')}:{self.conf.get('port')}/shutdown", verify=False)
+        if self.conf.get("ssl_context", None) is None:
+            requests.get(f"http://{self.conf.get('host')}:{self.conf.get('port')}/shutdown", verify=False)
+        else:
+            requests.get(f"https://{self.conf.get('host')}:{self.conf.get('port')}/shutdown", verify=False)
 
 
 

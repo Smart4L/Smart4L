@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import asyncio
+import json
 import logging
 import ssl
 import time
@@ -13,6 +14,9 @@ from websockets import WebSocketServerProtocol
 
 class ServerWS():
     clients = set()
+    def __init__(self, data):
+        self.data = data
+
     # add client to clients list
     async def register(self, ws: WebSocketServerProtocol) -> None:
         self.clients.add(ws)
@@ -38,6 +42,8 @@ class ServerWS():
         await self.register(ws)
         try:
             # Start communication
+            # Flush messages to the new client
+            await asyncio.wait([ self.send_to_client(ws, json.dumps( {"type": "UPDATE_SENSOR", "content": {"id": k,"value": v}})) for k,v in self.data.items()])
             await self.distribute(ws)
         finally:
             # Remove client from clients list
@@ -55,9 +61,9 @@ class ServerWS():
 
 
 class Smart4lWebSocket:
-    def __init__(self, loop: asyncio.AbstractEventLoop, host:str, port:int, ssl_key_path:str, ssl_cert_path:str):
+    def __init__(self, loop: asyncio.AbstractEventLoop, host:str, port:int, ssl_key_path:str, ssl_cert_path:str, data):
         self.loop = loop
-        self.ws_server = ServerWS()
+        self.ws_server = ServerWS(data)
         self.conf = {"host": host, "port": port, "ssl_cert": ssl_cert_path, "ssl_key": ssl_key_path}
 
     def do(self,):

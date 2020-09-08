@@ -12,6 +12,8 @@
 	</form>
 	<button onclick="open()">Connect</button>
 	<br/><br/>
+	<span id="allMeasure"></span>
+	<br/><br/>
 	<span id="lastMeasure"></span>
 
 
@@ -34,8 +36,9 @@
     // --- === ---
 
     
-    var socket = new WebSocket("wss://aws.cbarange.ovh:8520")
-  
+    //var socket = new WebSocket("wss://aws.cbarange.ovh:8520")
+    var socket = new WebSocket("wss://localhost:8520")
+  	var sensor_data = new Map();
 
     function sendMessage(message){
     	socket.send(message)
@@ -55,7 +58,16 @@
     }
 
     socket.onmessage = function(event) {
-    	document.getElementById("lastMeasure").innerHTML = `<br/>[message] Data received from server: ${JSON.parse(event.data)}`
+    	document.getElementById("lastMeasure").innerHTML = `<br/>[message] Data received from server: ${event.data}`
+    	data = JSON.parse(event.data)
+    	
+    	sensor_data.set(JSON.stringify(data.content.id), JSON.stringify(data.content.value))
+		
+		document.getElementById("allMeasure").innerHTML=""
+    	
+    	sensor_data.forEach( (value, key) => document.getElementById("allMeasure").innerHTML += `${key} : ${value}<br/>` )
+
+
     }
 
     socket.onclose = function(event) {

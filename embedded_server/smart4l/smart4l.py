@@ -36,9 +36,10 @@ from persistence import Persistent
 from utils import RunnableObjectInterface, Status, SensorInterface
 from flask_api import FlaskAPI
 from smart4l_ws_server import Smart4lWebSocket
+sys.path.insert(1, './sensor_camera_module')
 from DHT11 import DHT11
-
-
+from DS18B20 import DS18B20
+from HCSR04 import HCSR04
 """
 --- Logging Level ---
     CRITICAL    50
@@ -66,6 +67,10 @@ sudo crontab -e
 
 # every 1 minute pull changes (if any)
 */1 * * * * su -s /bin/sh $user -c 'cd /var/www/html/src && /usr/bin/git pull origin master'
+
+
+import RPi.GPIO as GPIO
+GPIO.cleanup()
 
 """
 
@@ -122,13 +127,14 @@ class Smart4LApp():
         self.services = {}
         self.data = {}
         loop = asyncio.get_event_loop()
-        self.ws_server = Smart4lWebSocket(loop, host="0.0.0.0", port=8520, ssl_key_path="ws_cert.key", ssl_cert_path="ws_cert.pem")
+        self.ws_server = Smart4lWebSocket(loop, host="0.0.0.0", port=8520, ssl_key_path="ws_cert.key", ssl_cert_path="ws_cert.pem", data=self.data)
         """
         openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ws_cert.key -out ws_cert.pem
         enable self signed certs on chrome : chrome://flags/#allow-insecure-localhost    
         """
         self.db = Persistent({"measure": self.data, "service": self.services})
-        self.http_api = FlaskAPI(self.db, host="0.0.0.0", port=8080, ssl_key_path="ws_cert.key", ssl_cert_path="ws_cert.pem")
+        self.http_api = FlaskAPI(self.db, host="localhost", port=8080)
+        #self.http_api = FlaskAPI(self.db, host="localhost", port=8080, ssl_key_path="ws_cert.key", ssl_cert_path="ws_cert.pem")
 
     def start(self):
         # Init main service
@@ -137,7 +143,9 @@ class Smart4LApp():
         self.add_service(service_id = "WS_SERVER", service = Service(self.ws_server))
         # Parse file and add sensor service
         self.add_service(service_id = "SENSOR_1", service = Service(Sensor(DHT11(), name="DHT11_in", on_measure=self.update_data), delay=2))
-        self.add_service(service_id = "SENSOR_2", service = Service(Sensor(DHT11(), name="DHT11_out", on_measure=self.update_data), delay=1))
+        self.add_service(service_id = "SENSOR_2", service = Service(Sensor(DHT11(), name="DHT11_out", on_measure=self.update_data), delay=3))
+        self.add_service(service_id = "SENSOR_ENGINE", service = Service(Sensor(DS18B20(), name="DS18B20_engine", on_measure=self.update_data), delay=1))
+        self.add_service(service_id = "SENSOR_DISTANCE", service = Service(Sensor(HCSR04(), name="HC-SR04_arriere", on_measure=self.update_data), delay=1))
         
         # Launch service
         self.reload_services()
@@ -154,9 +162,13 @@ class Smart4LApp():
         
 
     def update_data(self, uid, value):
-        self.ws_server.send_message(json.dumps( f"{{\"type\": \"UPDATE_SENSOR\", \"content\": {{\"id\": \"{uid}\",\"value\": {json.dumps(value)})}}}}" ))
-        self.data[uid] = value
+        # If value has not changed exit
+        if uid in self.data.keys() and self.data[uid] == value:
+            return
 
+        self.ws_server.send_message(json.dumps( {"type": "UPDATE_SENSOR", "content": {"id": uid,"value": value}}))
+        self.data[uid] = value
+        
     def parse_service_file(self):
         pass
 
@@ -186,10 +198,10 @@ def stop():
 
 # Execute only if run as a script
 if __name__ == "__main__":
-    #logging.basicConfig(filename='example.log',level=logging.DEBUG)
+    #logging.basicConfig(filename=f'example{datetime.time}.log',level=logging.DEBUG)
     #logging.basicConfig(filename=f'smart4l.log',level=logging.DEBUG, format='%(asctime)s - %(message)s', datefmt='%d-%m-%Y %H:%M:%S')
-    logging.basicConfig(filename=f'smart4l.log',level=logging.DEBUG, datefmt='%d-%m-%Y %H:%M:%S')
-    #logging.basicConfig(level=logging.DEBUG, datefmt='%d-%m-%Y %H:%M:%S')
+    #logging.basicConfig(filename=f'smart4l.log',level=logging.DEBUG, datefmt='%d-%m-%Y %H:%M:%S')
+    logging.basicConfig(level=logging.DEBUG, datefmt='%d-%m-%Y %H:%M:%S')
     signal.signal(signal.SIGTERM, stop)
     try:
         start()
@@ -199,6 +211,8 @@ if __name__ == "__main__":
         # Get exception that is currently being handled
         e = sys.exc_info()
         logging.exception(e)
+        logging.exception(e.message)
+
     finally:
         stop()
 else:
