@@ -4,6 +4,17 @@
 """
 Python Camel and SnaKe Case : https://towardsdatascience.com/why-does-python-recommend-the-snake-case-nomenclature-bf908777c2dc#:~:text=It%20should%20be%20noted%20that,%2Dshaped%20naming%20(lower_case_with_underscores).
 
+Logging :
+https://docs.python.org/fr/3/howto/logging.html
+https://docs.python.org/3/library/logging.html
+https://realpython.com/python-logging/
+https://docs.python.org/3/library/logging.html#logging.Formatter.formatTime
+https://www.google.com/search?rlz=1C1GCEB_enFR867FR867&sxsrf=ALeKk023DVKRCALrsEaiUlRuIZrZvlORDg%3A1599471612043&ei=_P9VX_qPAs6LlwTe_b6QBw&q=python+logging+best+practices&oq=logging+datefmt&gs_lcp=CgZwc3ktYWIQAxgDMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHUABYAGDMGGgAcAF4AIABAIgBAJIBAJgBAKoBB2d3cy13aXrAAQE&sclient=psy-ab
+https://www.loggly.com/use-cases/6-python-logging-best-practices-you-should-be-aware-of/
+https://docs.python-guide.org/writing/logging/
+https://www.toptal.com/python/in-depth-python-logging
+https://www.datadoghq.com/blog/python-logging-best-practices/
+
 
 
 Reverse Python code to UML :
@@ -25,7 +36,7 @@ from persistence import Persistent
 from utils import RunnableObjectInterface, Status, SensorInterface
 from flask_api import FlaskAPI
 from smart4l_ws_server import Smart4lWebSocket
-
+from DHT11 import DHT11
 
 
 """
@@ -44,24 +55,20 @@ from smart4l_ws_server import Smart4lWebSocket
     logging.exception
     logging.warning
     logging.debug
+
+# Git repository may not allow root to pull down updates
+# Pull updates where $user is allowed to read/write remote.
+# command line:
+su -s /bin/sh $user -c 'cd /var/www/html/src && /usr/bin/git pull origin master'
+
+# crontab (by executing sudo opens up root crontab)
+sudo crontab -e 
+
+# every 1 minute pull changes (if any)
+*/1 * * * * su -s /bin/sh $user -c 'cd /var/www/html/src && /usr/bin/git pull origin master'
+
 """
 
-
-class DHT11(SensorInterface):
-    def __init__(self):
-        pass
-
-    def measure(self):
-        return randint(100,999)
-
-    def stop(self):
-        pass
-
-    def __str__(self):
-        return "DHT11"
-
-    def __repr__(self):
-        return str(self)
 
 
 class Sensor(RunnableObjectInterface):

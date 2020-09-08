@@ -6,6 +6,10 @@ __date__ = "11-08-2020"
 __version__ = "1.0.0"
 __status__ = "Prototype"
 
+"""
+Python module for SIM7600G-H GPS UsbKey
+"""
+
 import os  # standard library
 import sys
 
