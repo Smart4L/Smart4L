@@ -10,7 +10,46 @@ import websockets
 from random import randint
 from threading import Thread
 from websockets import WebSocketServerProtocol
+"""
+# Message convention :
 
+{
+  "event": "connection_established",
+  "data": {
+        "socket_id": String
+        "activity_timeout": Number
+        }
+}
+
+{
+  "event": "subscribe",
+  "data": {
+    "channel": String,
+    "auth": String,
+    "channel_data": String
+  }
+}
+
+{
+    "event": "message",
+    "data": {
+        "date": "1358878749.000002",
+        "user": "U023BECGF",
+        "text": "Hello"
+        }
+}
+
+{
+  "event": "error",
+  "data": {
+    "message": String,
+    "code": Integer
+  }
+}
+
+
+
+"""
 
 class ServerWS():
     clients = set()

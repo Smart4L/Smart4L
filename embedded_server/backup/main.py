@@ -28,6 +28,19 @@ websocket : https://websockets.readthedocs.io/en/stable/intro.html
 websocket : https://pypi.org/project/websocket_client/
 
 Fichier property : 
+
+
+https://openclassrooms.com/forum/sujet/securisee-des-communications-avec-le-module-socket
+https://riptutorial.com/fr/python/example/8622/hachage-de-mot-de-passe-securise
+https://zestedesavoir.com/forums/sujet/9779/securiser-un-acces-socket/
+https://diu-eil.gricad-pages.univ-grenoble-alpes.fr/archi-robotique-systeme-reseau/reseaux/cours_sockets_python.pdf
+https://www.codeflow.site/fr/article/python-sockets
+https://www.supinfo.com/articles/single/1027-cripts-python-faire-audits-securite
+https://docs.python.org/fr//3/howto/sockets.html
+https://connect.ed-diamond.com/GNU-Linux-Magazine/GLMFHS-040/Python-et-le-reseau
+https://fr.wikipedia.org/wiki/Low_Orbit_Ion_Cannon
+https://fr.wikipedia.org/wiki/Script_kiddie
+
 """
 
 
