@@ -5,19 +5,40 @@
     align-items: center;
     background-color: $main-back-color;
     height: 10vh;
+
+    a{
+        display: flex;
+        align-items: center;
+        height: 100%;
+        padding: 0 15px;
+        .navbar_item{
+            color: $second-text-color;
+            transition: all 0.5s ease-in-out;
+    
+            &.shine{
+                fill: yellow;
+                border-radius: 5px;
+            }
+            
+            &.turn{
+                animation:spin 3s linear infinite;
+            }
+    
+            &.active{
+                fill: $main-text-color;
+            }
+        }
+
+        &.active{
+            background-color: $second-text-color;
+            border-bottom-left-radius: 50%;
+            border-bottom-right-radius: 50%;
+
+            .navbar_item{             
+                fill: $main-text-color;
+            }
+        }
+    }
 }
 
-.navbar_item{
-    color: $second-text-color;
-    transition: all 0.5s ease-in-out;
-}
-
-.shine{
-    fill: yellow;
-    border-radius: 5px;
-}
-
-.turn{
-    animation:spin 3s linear infinite;
-}
 @keyframes spin { 100% { transform:rotate(360deg); } }

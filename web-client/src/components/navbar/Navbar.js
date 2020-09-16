@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FaFan, FaRegLightbulb, FaRegMap, FaBullhorn } from 'react-icons/fa';
 import { GoGraph } from "react-icons/go";
 import { GiRadarSweep } from "react-icons/gi";
-import { AiFillVideoCamera, AiFillSetting } from "react-icons/ai";
+import { AiFillHome, AiFillVideoCamera, AiFillSetting } from "react-icons/ai";
 
 export default class Navbar extends React.Component{
     constructor(props) {
@@ -27,14 +27,15 @@ export default class Navbar extends React.Component{
     render(){
         return(
             <div className="navbar_container">
-                <NavLink to="/map"><FaRegMap size={32} className={`navbar_item`}/></NavLink>
-                <NavLink to="/"><AiFillVideoCamera size={32} className={`navbar_item`}/></NavLink>
-                <NavLink to="/"><GiRadarSweep size={32} className={`navbar_item`}/></NavLink>
-                <NavLink to="/stats"><GoGraph size={32} className={`navbar_item`}/></NavLink>
-                <FaRegLightbulb size={32} className={`navbar_item light ${this.state.light_on ? "shine" : ""}`} onClick={() => this.setLight()}/>
-                <FaFan size={32} className={`navbar_item ${this.state.fan_turn ? "turn" : ""}`} onClick={() => this.setFan()}/>
-                <NavLink to="/"><FaBullhorn size={32} className={`navbar_item`}/></NavLink>
-                <NavLink to="/"><AiFillSetting size={32} className={`navbar_item`}/></NavLink>
+                <NavLink exact to="/" activeClassName="active"><AiFillHome size={32} className={`navbar_item`}/></NavLink>
+                <NavLink exact to="/map" activeClassName="active"><FaRegMap size={32} className={`navbar_item`}/></NavLink>
+                <NavLink exact to="/" activeClassName="active"><AiFillVideoCamera size={32} className={`navbar_item`}/></NavLink>
+                <NavLink exact to="/" activeClassName="active"><GiRadarSweep size={32} className={`navbar_item`}/></NavLink>
+                <NavLink exact to="/stats" activeClassName="active"><GoGraph size={32} className={`navbar_item`}/></NavLink>
+                <a><FaRegLightbulb size={32} className={`navbar_item light ${this.state.light_on ? "shine" : ""}`} onClick={() => this.setLight()}/></a>
+                <a><FaFan size={32} className={`navbar_item ${this.state.fan_turn ? "turn" : ""}`} onClick={() => this.setFan()}/></a>
+                <NavLink exact to="/" activeClassName="active"><FaBullhorn size={32} className={`navbar_item`}/></NavLink>
+                <NavLink exact to="/" activeClassName="active"><AiFillSetting size={32} className={`navbar_item`}/></NavLink>
             </div>
         )
     }
