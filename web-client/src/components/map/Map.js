@@ -85,8 +85,19 @@ export default class Map extends React.Component{
         }
     }
 
+    /**
+     * 
+     * @param {L.LatLng} obj Object you want to get the position
+     * @return {[]} Object position in array
+     */
     getPosition = (obj) => {
-        return [obj.lat, obj.lng]
+        try{
+            return [obj.lat, obj.lng];
+        }
+        catch(e){
+            console.error(e.message);
+            throw new Error(e.message);
+        }
     }
 
     onMoveEvent = () => {

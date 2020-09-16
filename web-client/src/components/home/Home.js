@@ -39,6 +39,9 @@ export default class Home extends React.Component{
         client.close(1000, "End of connection");
     }
 
+    /**
+     * @return {Icon} Return the icon match whith the actual connection level
+     */
     getConnection = () => {
         if(this.state.connect === 0){
             return <MdSignalCellularConnectedNoInternet0Bar/>

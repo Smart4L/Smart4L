@@ -42,6 +42,11 @@ export default class Stats extends React.Component{
         }
     }
 
+    /**
+     * 
+     * @param {String} name Name of the icon you want
+     * @return {Icon} Return the icon
+     */
     getIcon = (name) => {
         let str = name.split('_')[1];
         if(str === "temp"){
