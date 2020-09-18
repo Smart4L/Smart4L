@@ -31,8 +31,8 @@
 
         &.active{
             background-color: $second-text-color;
-            border-bottom-left-radius: 50%;
-            border-bottom-right-radius: 50%;
+            // border-radius create with https://9elements.github.io/fancy-border-radius/
+            border-radius: 0% 0% 28% 28% / 0% 0% 38% 38%;
 
             .navbar_item{             
                 fill: $main-text-color;

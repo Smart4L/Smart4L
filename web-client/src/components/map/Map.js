@@ -73,8 +73,6 @@ export default class Map extends React.Component{
     }
 
     updateCar = (newPosition) => {
-        console.log('CarUpdate');
-        console.log(newPosition);
         this.setState({ 
             carPosition: newPosition
         })
