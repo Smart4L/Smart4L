@@ -19,11 +19,7 @@ class Smart4lServer(RunnableObjectInterface):
 		pass
 
 	def __str__(self):
-        return f"Socket Server"
+        return "Socket Server"
 
     def __repr__(self):
         return str(self)
-
-
-
-

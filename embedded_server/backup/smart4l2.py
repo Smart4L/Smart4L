@@ -11,105 +11,110 @@ import os
 import sys
 from threading import Thread, Event
 import time
+
 # Custom Modules
 sys.path.insert(1, '../sensor_camera-module')
 import DHT11
 from utils import Message, Status
 
 
-
 # Class de gestions du service d'enregistrement en base
 class PersistentService(Thread):
-	status = Status.START.value
-	eventStopService = None
-	def __init__(self, delay=None):
-		super().__init__()
-		self.delay = delay
-		self.eventStopService = event
-	def run(self):
-		while self.status==Status.START.value:
-			# TODO Save date in DB
-			# if date is not empty
-			#db.save(Smart4l.lastMeasure)
-			print(" Data saved !")
-			self.eventStopService.wait(self.delay)
-			
-	def stop(self):
-		self.status = Status.STOP.value
-		# TODO Emit event for sleep interuption
-		# TODO Close DB connection
+    status = Status.START.value
+    eventStopService = None
+
+    def __init__(self, delay=None):
+        super().__init__()
+        self.delay = delay
+        self.eventStopService = event
+
+    def run(self):
+        while self.status == Status.START.value:
+            # TODO Save date in DB
+            # if date is not empty
+            # db.save(Smart4l.lastMeasure)
+            print(" Data saved !")
+            self.eventStopService.wait(self.delay)
+
+    def stop(self):
+        self.status = Status.STOP.value
+        # TODO Emit event for sleep interuption
+        # TODO Close DB connection
 
 
 # Class de gestions du service des mesures temps réelle
 class MeasurementService(Thread):
-	status = Status.START.value
-	eventStopService = None
-	def __init__(self, capteur=None, delay=None):
-		super().__init__()
-		self.capteur = capteur
-		self.delay = delay
-		self.eventStopService = Event()
+    status = Status.START.value
+    eventStopService = None
 
-	def run(self):
-		while self.status==Status.START.value:
-			Smart4l.lastMeasure[self.capteur.id]=self.capteur.measure()
-			self.eventStopService.wait(self.delay)
+    def __init__(self, capteur=None, delay=None):
+        super().__init__()
+        self.capteur = capteur
+        self.delay = delay
+        self.eventStopService = Event()
 
-	def stop(self):
-		self.status = Status.STOP.value
-		# TODO Clean GPIO
+    def run(self):
+        while self.status == Status.START.value:
+            Smart4l.lastMeasure[self.capteur.id] = self.capteur.measure()
+            self.eventStopService.wait(self.delay)
 
+    def stop(self):
+        self.status = Status.STOP.value
+        # TODO Clean GPIO
 
 
 # Class des gestions de l'application / service
-class Smart4l():
-	lastMeasure = {"DHT11 ext":None, "DHT11 int":None}
-	services = []
-	
-	def __init__(self):
-		self.services.append(MeasurementService(capteur=DHT11.DHT11("DHT11 ext"),delay=2))
-		self.services.append(MeasurementService(capteur=DHT11.DHT11("DHT11 int"),delay=2))
-		self.services.append(PersistentService(delay=20))
+class Smart4l:
+    lastMeasure = {"DHT11 ext": None, "DHT11 int": None}
+    services = []
 
-	def start(self):
-		print("Started !")
-		# TODO Si le service le fonctionne pas deja
-		# Existance du fichier pid + le pid repond au nom du programme
-		#	lancement du process, creation du fichier pid
-		# Si le service fonctionne ouvrir un PIPE avec le pid du fichier pid
-		# 	envoyer les parametre dans le pipe
+    def __init__(self):
+        self.services.append(
+            MeasurementService(capteur=DHT11.DHT11("DHT11 ext"), delay=2)
+        )
+        self.services.append(
+            MeasurementService(capteur=DHT11.DHT11("DHT11 int"), delay=2)
+        )
+        self.services.append(PersistentService(delay=20))
 
-		# Run thread
-		[service.start() for service in self.services]
-		
-		print("Running ...")
+    def start(self):
+        print("Started !")
+        # TODO Si le service le fonctionne pas deja
+        # Existance du fichier pid + le pid repond au nom du programme
+        # 	lancement du process, creation du fichier pid
+        # Si le service fonctionne ouvrir un PIPE avec le pid du fichier pid
+        # 	envoyer les parametre dans le pipe
 
+        # Run thread
+        [service.start() for service in self.services]
 
-	def stop(self):
-		print("Cleaning ...")
-		# TODO Supprimer le fichier pid
+        print("Running ...")
 
-		# Stop Measurement Service Thread
-		[service.stop() for service in self.services]
-		# TODO Clean GPIO
-		print("Stopped !")
+    def stop(self):
+        print("Cleaning ...")
+        # TODO Supprimer le fichier pid
+
+        # Stop Measurement Service Thread
+        [service.stop() for service in self.services]
+        # TODO Clean GPIO
+        print("Stopped !")
 
 
 # execute only if run as a script
 if __name__ == "__main__":
-	app = Smart4l()
-	try:
-		app.start()
-		# Si on sort de la boucle, l'exception KeyboardInterrupt n'est plus gérée
-		#while not input() == Status.STOP.value:
-		while True:
-			print(Smart4l.lastMeasure)
-			time.sleep(2)
-		#app.stop()
-	except KeyboardInterrupt:
-		app.stop()
+    app = Smart4l()
+    try:
+        app.start()
+        # Si on sort de la boucle, l'exception KeyboardInterrupt n'est plus gérée
+        # while not input() == Status.STOP.value:
+        while True:
+            print(Smart4l.lastMeasure)
+            time.sleep(2)
+        # app.stop()
+    except KeyboardInterrupt:
+        app.stop()
 else:
-	Message.error("smart4l.py : must be run as a script\n")
+    Message.error("smart4l.py : must be run as a script\n")
 
 
 """
@@ -184,4 +189,3 @@ def send_message(pid):
     pipe.send_message('Hello, World!\n')
 
 """
-

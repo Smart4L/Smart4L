@@ -6,7 +6,13 @@ from utils import Message, Status, ServiceObjectInterface
 
 # Class de gestions de service
 class Service(Thread):
-    def __init__(self, service_object: ServiceObjectInterface, timeout=0, name="unname", description="description unavailable"):
+    def __init__(
+        self,
+        service_object: ServiceObjectInterface,
+        timeout=0,
+        name="unname",
+        description="description unavailable",
+    ):
         Thread.__init__(self)
         self.status = Status.START.value
         self.eventStopService = Event()

@@ -8,14 +8,15 @@ import sys
 
 
 def none():
-	pass
+    pass
+
 
 app = Smart4l()
 try:
-	app.add_service(Service(Smart4lServer(none)))
+    app.add_service(Service(Smart4lServer(none)))
 
-	app.reload()
-	while True:
-		continue
+    app.reload()
+    while True:
+        continue
 except KeyboardInterrupt:
-	app.stop()
+    app.stop()

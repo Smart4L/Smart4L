@@ -5,9 +5,9 @@ import socket
 
 
 class Smart4lServer(ServiceObjectInterface):
-    def __init__(self,do_func):
+    def __init__(self, do_func):
         self.doFunc = do_func
-        self.s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.status = Status.START.value
         self.s.bind((socket.gethostname(), 7545))
         self.s.listen(5)
@@ -22,7 +22,6 @@ class Smart4lServer(ServiceObjectInterface):
             if not response == "":
                 print(response)
         client.close()
-        
 
     def receive_message(self):
         self.doFunc()
@@ -32,14 +31,14 @@ class Smart4lServer(ServiceObjectInterface):
         self.s.close()
 
 
-
-class Smart4lClient():
+class Smart4lClient:
     def __init__(self,):
-        self.s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.connect((socket.gethostname(), 7545))
 
     def send_message(self, uid, value):
-        self.s.send(bytes(f"{uid}: {value}","utf-8"))
+        self.s.send(bytes(f"{uid}: {value}", "utf-8"))
+
 
 """
 # Client.py

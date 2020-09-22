@@ -1,18 +1,18 @@
 # Partie Embarquée
 
-Cette branche héberge la partie embarquée, connexion aux capteurs, services automatiques, serveur. 
+Cette branche héberge la partie embarquée, connexion aux capteurs, services automatiques, serveur.
 
 ## 5 niveaux
 
-### Interface, ReactJS
+### Interface → ReactJS
 
 Branch : web-client
 
-### API, Python récupérer les mesures t réel temps
+### API → Python, afin de récupérer les mesures en temps réel
 
 Folder : smart4l_api
 
-### Service enregistrement en base + broadcast RabbitMQ + automatisation (loop infinie) 
+### Service enregistrement en base + broadcast RabbitMQ + automatisation (loop infinie)
 
 Folder : smart4l_service
 

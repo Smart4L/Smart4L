@@ -7,24 +7,29 @@ def index():
 	return str(DHT11.measure())
 """
 
+
 def tempExt():
-	pass
+    pass
+
 
 def tempInt():
-	pass
+    pass
+
 
 # url /engine
 # Post → Start
 # Get → temp + tr/min
 def engine():
-	pass
+    pass
+
 
 def headlight():
-	pass
+    pass
+
 
 def cockpit():
-	pass
+    pass
+
 
 def camera():
-	pass	
-
+    pass

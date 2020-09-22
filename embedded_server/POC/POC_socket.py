@@ -15,12 +15,12 @@ class Server:
         # Connexion en mode IPV4 avec le protocole TCP
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Précisez une ip permet de restreindre les connexion sur une interface réseaux précise, le port est compris entre 1-65535, Some systems may require superuser privileges if the port is < 1024.
-        self.connection.bind(('',8520))
+        self.connection.bind(('', 8520))
         # Nombre de connection maximum en attente d'acceptation, peut être laissé vide
         self.connection.listen(5)
         # Attente d'une connexion cliente, renvoie le socket de communication et l'ip du client dans la configuration IPV4, légèrement différent pour IPV6
         self.conn, self.addr = self.connection.accept()
-        
+
         with self.conn:
             print('Connected by', self.addr)
             while True:
@@ -30,13 +30,11 @@ class Server:
                 self.conn.sendall(data)
 
         # Fermeture du socket de communication avec le client
-        #self.client.close()
-    
+        # self.client.close()
+
     def stop(self):
         # Fermeture du socket d'écoute du serveur
         self.connection.close()
-
-
 
 
 class Client:
@@ -49,5 +47,4 @@ class Client:
         print(f"Received : {repr(data)}")
 
     def stop(self):
-        self.connection.close()		
-
+        self.connection.close()

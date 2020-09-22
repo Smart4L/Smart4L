@@ -35,9 +35,10 @@ from flask import Flask, jsonify, request
 sys.path.insert(1, '../sensor_camera_module')
 from DHT11 import DHT11
 from utils import Message, Status, ServiceObjectInterface
+
 # Custom Modules
-#from embedded_server.sensor_camera_module.DHT11 import DHT11
-#from embedded_server.smart4l_service.utils import Message, Status, ServiceObjectInterface
+# from embedded_server.sensor_camera_module.DHT11 import DHT11
+# from embedded_server.smart4l_service.utils import Message, Status, ServiceObjectInterface
 
 
 # Class de gestions de service
@@ -57,7 +58,9 @@ class Service(Thread):
             self.eventStopService.wait(self.timeout)
 
     def __start__(self):
-        Message.out(f"Service \"{self.serviceObject.uid}\" now started") if hasattr(self.serviceObject, 'uid') else None
+        Message.out(
+            f"Service \"{self.serviceObject.uid}\" now started"
+        ) if hasattr(self.serviceObject, 'uid') else None
         self.start()
 
     def __repr__(self):
@@ -79,7 +82,7 @@ class FlaskAPI(ServiceObjectInterface):
 
     def do(self,):
         # get the host and the port as keywords attributes for flaskApp.run()
-        app_kwargs = {'host':"localhost", 'port':80}
+        app_kwargs = {'host': "localhost", 'port': 80}
         # run the flaskApp on a thread
         self.app.run(**app_kwargs)
 
@@ -102,14 +105,13 @@ class FlaskAPI(ServiceObjectInterface):
         con.close()
         return jsonify(res)
 
-
     # Must be call from HTTP request
     def shutdown(self):
         app_shutdown = request.environ.get('werkzeug.server.shutdown')
         if app_shutdown is None:
             raise RuntimeError('The function is unavailable!')
         else:
-            app_shutdown()  
+            app_shutdown()
         return "FlaskAPI shuting down ..."
 
     def stop(self):
@@ -134,7 +136,9 @@ class Persistent(ServiceObjectInterface):
     def __init__(self):
         self.con = sqlite3.connect('smart4l.db')
         cur = self.con.cursor()
-        cur.execute("create table if not exists smart4l(date varchar(50), data json)")
+        cur.execute(
+            "create table if not exists smart4l(date varchar(50), data json)"
+        )
         cur.close()
         self.con.close()
 
@@ -143,7 +147,10 @@ class Persistent(ServiceObjectInterface):
         self.con = sqlite3.connect('smart4l.db')
         cur = self.con.cursor()
 
-        cur.execute('insert into smart4l(date, data) values(?,?)', [str(time.time()),json.dumps(app.lastMeasure)])
+        cur.execute(
+            'insert into smart4l(date, data) values(?,?)',
+            [str(time.time()), json.dumps(app.lastMeasure)],
+        )
         cur.close()
         self.con.commit()
         self.con.close()
@@ -162,14 +169,28 @@ class Persistent(ServiceObjectInterface):
 
 
 # Class des gestions de l'application / service
-class Smart4l():
+class Smart4l:
     def __init__(self):
         # TODO implement message Queue
         # TODO implement singleton pattern
         self.lastMeasure = {}
         self.services = []
-        self.services.append(Service(service_object=Capteur(DHT11(),"DHT11 ext",self.update_measure), timeout=2))
-        self.services.append(Service(service_object=Capteur(DHT11(),"DHT11 int",self.update_measure), timeout=5))
+        self.services.append(
+            Service(
+                service_object=Capteur(
+                    DHT11(), "DHT11 ext", self.update_measure
+                ),
+                timeout=2,
+            )
+        )
+        self.services.append(
+            Service(
+                service_object=Capteur(
+                    DHT11(), "DHT11 int", self.update_measure
+                ),
+                timeout=5,
+            )
+        )
         self.services.append(Service(service_object=Persistent(), timeout=20))
         self.services.append(Service(service_object=FlaskAPI()))
 
@@ -179,11 +200,19 @@ class Smart4l():
     def start(self):
         Message.out("Started !")
         # Run thread
-        [service.__start__() for service in self.services if not service.is_alive()]
+        [
+            service.__start__()
+            for service in self.services
+            if not service.is_alive()
+        ]
         Message.out("Running ...")
 
     def reload(self):
-        [service.__start__() for service in self.services if not service.is_alive()]
+        [
+            service.__start__()
+            for service in self.services
+            if not service.is_alive()
+        ]
 
     def addService(self, service):
         self.services.append(service)
@@ -204,30 +233,39 @@ if __name__ == "__main__":
         Message.err("File pid already exists")
         sys.exit(1)
     else:
-        open("smart4l.pid","w+").write(str(os.getpid()))
-    
+        open("smart4l.pid", "w+").write(str(os.getpid()))
+
     app = Smart4l()
     try:
         app.start()
         # Si on sort de la boucle, l'exception KeyboardInterrupt n'est plus gérée
-        #while not input() == Status.STOP.value:
+        # while not input() == Status.STOP.value:
         run = True
-        
+
         switcher = {
-                "measure"  : lambda : Message.out(app.lastMeasure)
-                , "add"    : lambda : app.addService(Service(Capteur(DHT11(),str(randint(100,999)), lambda x, y: app.update_measure(x,y)),5))
-                , "reload" : app.reload
-                , "service": lambda : Message.out(app.services)
-            }
-        
+            "measure": lambda: Message.out(app.lastMeasure),
+            "add": lambda: app.addService(
+                Service(
+                    Capteur(
+                        DHT11(),
+                        str(randint(100, 999)),
+                        lambda x, y: app.update_measure(x, y),
+                    ),
+                    5,
+                )
+            ),
+            "reload": app.reload,
+            "service": lambda: Message.out(app.services),
+        }
+
         while run:
-            try :
+            try:
                 Message.out(switcher.get(input("Saisir une action : "))())
             except KeyboardInterrupt:
                 run = False
             except:
                 Message.out("Invalid input")
-            #time.sleep(2)
+            # time.sleep(2)
     except KeyboardInterrupt:
         pass
     finally:

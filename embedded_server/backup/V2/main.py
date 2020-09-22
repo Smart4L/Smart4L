@@ -70,9 +70,10 @@ import time
 sys.path.insert(1, '../sensor_camera_module')
 from DHT11 import DHT11
 from utils import Message, Status, ServiceObjectInterface
+
 # Custom Modules
-#from embedded_server.sensor_camera_module.DHT11 import DHT11
-#from embedded_server.smart4l_service.utils import Message, Status, ServiceObjectInterface
+# from embedded_server.sensor_camera_module.DHT11 import DHT11
+# from embedded_server.smart4l_service.utils import Message, Status, ServiceObjectInterface
 
 from smart4l import Smart4l
 from sensor import Sensor
@@ -95,7 +96,7 @@ if __name__ == "__main__":
         # TODO check if python process run with this pid
         Message.wrn("PID file  already exists")
         os.remove("smart4l.lock")
-    open("smart4l.lock","w+").write(str(os.getpid()))
+    open("smart4l.lock", "w+").write(str(os.getpid()))
     # --- === ---
 
     app = Smart4l()
@@ -104,11 +105,11 @@ if __name__ == "__main__":
     app.httpApi = FlaskAPI(app.persistent)
     app.socket = Smart4lServeur(app.update_measure)
 
-
-    app.add_service(Service(Sensor(DHT11(), "DHT11", app.update_measure), 1, "Temperature"))
+    app.add_service(
+        Service(Sensor(DHT11(), "DHT11", app.update_measure), 1, "Temperature")
+    )
     app.add_service(Service(app.persistent, 20, "DB"))
     app.add_service(Service(app.httpApi, "API Http"))
-
 
     app.reload()
 

@@ -3,10 +3,11 @@ from enum import Enum
 import sys
 import abc
 
+
 class Status(Enum):
-	START = 'start'
-	STOP = 'stop'
-	RESTART = 'restart'
+    START = 'start'
+    STOP = 'stop'
+    RESTART = 'restart'
 
 
 class ServiceObjectInterface(abc.ABC):
@@ -19,16 +20,16 @@ class ServiceObjectInterface(abc.ABC):
         pass
 
 
-class Message():
-	@staticmethod
-	def err(msg):
-		sys.stderr.write(f"Error : {msg}\n")
-		#sys.exit(1)
-	
-	@staticmethod
-	def std(msg=""):
-		sys.stdout.write(f"{msg}\n")
+class Message:
+    @staticmethod
+    def err(msg):
+        sys.stderr.write(f"Error : {msg}\n")
+        # sys.exit(1)
 
-	@staticmethod
-	def wrn(msg):
-		pass
+    @staticmethod
+    def std(msg=""):
+        sys.stdout.write(f"{msg}\n")
+
+    @staticmethod
+    def wrn(msg):
+        pass

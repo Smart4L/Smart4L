@@ -30,7 +30,6 @@ asyncio.get_event_loop().run_forever()
 """
 
 
-
 import time
 import websockets
 import asyncio
@@ -42,8 +41,9 @@ from websockets import WebSocketServerProtocol
 logging.basicConfig(level=logging.INFO)
 
 
-class ServerWS():
+class ServerWS:
     clients = set()
+
     async def register(self, ws: WebSocketServerProtocol) -> None:
         self.clients.add(ws)
         logging.info(f"{ws.remote_address} connects.")
@@ -54,7 +54,9 @@ class ServerWS():
 
     async def send_to_clients(self, message: str) -> None:
         if self.clients:
-            await asyncio.wait([client.send(message) for client in self.clients])
+            await asyncio.wait(
+                [client.send(message) for client in self.clients]
+            )
 
     async def ws_handler(self, ws: WebSocketServerProtocol, uri: str) -> None:
         await self.register(ws)
@@ -71,16 +73,9 @@ class ServerWS():
         pass
 
 
-
 server = ServerWS()
 
 start_server = websockets.serve(server.ws_handler, "127.0.0.1", 8520)
 loop = asyncio.get_event_loop()
 loop.run_until_complete(start_server)
 loop.run_forever()
-
-
-
-
-
-
