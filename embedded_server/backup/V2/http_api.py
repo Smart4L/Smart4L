@@ -10,7 +10,7 @@ class FlaskAPI(ServiceObjectInterface):
     def __init__(self, db):
         self.db = db
         self.conf = {"host": "localhost", "port": 80}
-        
+
         self.app = Flask(__name__)
         self.socketio = SocketIO(self.app)
         self.app.add_url_rule('/', 'index', self.index)
@@ -25,7 +25,7 @@ class FlaskAPI(ServiceObjectInterface):
     def index(self):
         # TODO fix this ugly thing, should not use app variable
         return jsonify(self.db.app.data)
-        
+
     def history(self):
         # TODO fix this ugly thing, should not use app variable
         return jsonify(self.db.history())
@@ -36,16 +36,18 @@ class FlaskAPI(ServiceObjectInterface):
     def measure(self, data):
         self.socketio.emit('receive_message', data)
 
-
-
     # Must be call from HTTP request
     def shutdown(self):
         app_shutdown = request.environ.get('werkzeug.server.shutdown')
         if app_shutdown is None:
-            raise RuntimeError("Http FlaskAPI can\'t be shutdown with this server version, check for WSGI version")
+            raise RuntimeError(
+                "Http FlaskAPI can\'t be shutdown with this server version, check for WSGI version"
+            )
         else:
-            app_shutdown()  
+            app_shutdown()
         return "FlaskAPI shuting down ..."
 
     def stop(self):
-        requests.get(f"http://{self.conf.get('host')}:{self.conf.get('port')}/shutdown")
+        requests.get(
+            f"http://{self.conf.get('host')}:{self.conf.get('port')}/shutdown"
+        )

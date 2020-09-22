@@ -46,7 +46,8 @@ https://gist.github.com/dmfigol/3e7d5b84a16d076df02baa9f53271058
 https://realpython.com/python-sockets/
 """
 
-class ServerWS():
+
+class ServerWS:
     clients = set()
     messages = []
 
@@ -55,38 +56,40 @@ class ServerWS():
         self.clients.add(ws)
         logging.info(f"{ws.remote_address} connects.")
 
-
     # remove client from clients list
     async def unregister(self, ws: WebSocketServerProtocol) -> None:
-        await ws.close(1000,"Normal Closure")
+        await ws.close(1000, "Normal Closure")
         self.clients.remove(ws)
         logging.info(f"{ws.remote_address} disconnects.")
 
-
     # send message to one client
-    async def send_to_client(self, ws: WebSocketServerProtocol, message: str) -> None:
+    async def send_to_client(
+        self, ws: WebSocketServerProtocol, message: str
+    ) -> None:
         await ws.send(message)
-
 
     # Send message to all clients
     async def send_to_clients(self, message: str) -> None:
         self.messages.append(message)
         if self.clients:
-            await asyncio.wait([client.send(message) for client in self.clients])
-
+            await asyncio.wait(
+                [client.send(message) for client in self.clients]
+            )
 
     # TODO find what do this thing
     async def ws_handler(self, ws: WebSocketServerProtocol, uri: str) -> None:
         await self.register(ws)
         try:
             # Flush all previous messages to the new client
-            [await self.send_to_client(ws, message) for message in self.messages]
+            [
+                await self.send_to_client(ws, message)
+                for message in self.messages
+            ]
             # Start communication
             await self.distribute(ws)
         finally:
             # Remove client from clients list
             await self.unregister(ws)
-
 
     # TODO find what do this thing
     async def distribute(self, ws: WebSocketServerProtocol) -> None:
@@ -94,14 +97,16 @@ class ServerWS():
         async for message in ws:
             await self.send_to_clients(message)
 
-
-    # Close connection for all client in clients list 
+    # Close connection for all client in clients list
     async def close_all_connections(self):
-        await asyncio.wait([self.unregister(client) for client in self.clients])
+        await asyncio.wait(
+            [self.unregister(client) for client in self.clients]
+        )
 
     def stop(self):
         pass
-        #loop.close()
+        # loop.close()
+
 
 server = ServerWS()
 
@@ -114,8 +119,6 @@ def runWebsocket(loop: asyncio.AbstractEventLoop) -> None:
     loop.run_forever()
 
 
-
-
 loop = asyncio.get_event_loop()
 
 t = Thread(target=runWebsocket, args=(loop,))
@@ -124,10 +127,14 @@ t.start()
 
 try:
     while True:
-        asyncio.run_coroutine_threadsafe(server.send_to_clients(str(randint(100,999))), loop)
+        asyncio.run_coroutine_threadsafe(
+            server.send_to_clients(str(randint(100, 999))), loop
+        )
         time.sleep(0.001)
 except KeyboardInterrupt:
-    task = asyncio.run_coroutine_threadsafe(server.close_all_connections(), loop)
+    task = asyncio.run_coroutine_threadsafe(
+        server.close_all_connections(), loop
+    )
     loop.stop()
     """
     while loop.is_running():
@@ -137,11 +144,6 @@ except KeyboardInterrupt:
         pass
     loop.close()
     """
-
-
-
-
-
 
 
 # --- ----------------------------------------------------- ---
@@ -186,4 +188,3 @@ t.start()
 
 
 """
-

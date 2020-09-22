@@ -10,21 +10,20 @@ import paho.mqtt.client as mqtt
 
 
 def on_message(client, userdata, msg):
-	print(msg.topic+" "+str(msg.payload))
+    print(msg.topic + " " + str(msg.payload))
+
 
 try:
-	client = mqtt.Client()
-	client.connect("127.0.0.1", 1883, 60)
-	client.subscribe('channel1', 1)
-	client.loop_start()
-	client.on_message = on_message
-	while True:
-		time.sleep(5)
+    client = mqtt.Client()
+    client.connect("127.0.0.1", 1883, 60)
+    client.subscribe('channel1', 1)
+    client.loop_start()
+    client.on_message = on_message
+    while True:
+        time.sleep(5)
 except KeyboardInterrupt:
-	pass
+    pass
 finally:
-	client.loop_stop()
-	client.unsubscribe('channel1')
-	client.disconnect()
-
-
+    client.loop_stop()
+    client.unsubscribe('channel1')
+    client.disconnect()

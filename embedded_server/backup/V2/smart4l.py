@@ -3,9 +3,9 @@
 from utils import Message, Status, ServiceObjectInterface
 
 # Class des gestions de l'application / service
-class Smart4l():
+class Smart4l:
     # TODO implement Early Loading Singleton
-    
+
     def __init__(self):
         # TODO implement message Queue
         Message.out("Started !")
@@ -13,10 +13,10 @@ class Smart4l():
         self.persistent = None
         self.httpApi = None
         self.websocket = None
-        
+
         self.data = {}
         self.services = []
-    
+
         Message.out("Running ...")
 
     def update_measure(self, uid, value):
@@ -24,7 +24,11 @@ class Smart4l():
         # emit websocket event
 
     def reload(self):
-        [service.__start__() for service in self.services if not service.is_alive()]
+        [
+            service.__start__()
+            for service in self.services
+            if not service.is_alive()
+        ]
 
     def add_service(self, service):
         self.services.append(service)
@@ -35,4 +39,3 @@ class Smart4l():
         [service.stop() for service in self.services]
         self.services = []
         Message.out("Stopped !")
-

@@ -8,6 +8,7 @@ import ssl
 from flask import Flask, jsonify, request, render_template
 from utils import RunnableObjectInterface
 
+
 class FlaskAPI(RunnableObjectInterface):
     def __init__(self, data, host, port, ssl_key_path, ssl_cert_path):
         self.app = Flask(__name__)
@@ -15,7 +16,7 @@ class FlaskAPI(RunnableObjectInterface):
         context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
         context.load_cert_chain(ssl_cert_path, ssl_key_path)
 
-        self.conf = {"host": host, "port": port, "ssl_context":context}
+        self.conf = {"host": host, "port": port, "ssl_context": context}
 
         self.db = data
         self.app.add_url_rule('/', 'index', self.index)
@@ -41,18 +42,19 @@ class FlaskAPI(RunnableObjectInterface):
     def shutdown(self):
         app_shutdown = request.environ.get('werkzeug.server.shutdown')
         if app_shutdown is None:
-            raise RuntimeError("Http FlaskAPI can\'t be shutdown with this server version, check for WSGI version")
+            raise RuntimeError(
+                "Http FlaskAPI can\'t be shutdown with this server version, check for WSGI version"
+            )
         else:
-            app_shutdown()  
+            app_shutdown()
         return "FlaskAPI shuting down ..."
 
     def log(self):
-        with open ("smart4l.log", "r") as smart4l_log_file:
+        with open("smart4l.log", "r") as smart4l_log_file:
             return smart4l_log_file.readlines()
 
     def stop(self):
-        requests.get(f"https://{self.conf.get('host')}:{self.conf.get('port')}/shutdown", verify=False)
-
-
-
-
+        requests.get(
+            f"https://{self.conf.get('host')}:{self.conf.get('port')}/shutdown",
+            verify=False,
+        )

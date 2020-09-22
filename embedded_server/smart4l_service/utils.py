@@ -12,6 +12,7 @@ class Status(Enum):
     BLOCKED = 'blocked'
     TERMINATED = 'terminated'
 
+
 class RunnableObjectInterface(abc.ABC):
     @abc.abstractmethod
     def do(self):
@@ -20,6 +21,7 @@ class RunnableObjectInterface(abc.ABC):
     @abc.abstractmethod
     def stop(self):
         pass
+
 
 class SensorInterface(abc.ABC):
     @abc.abstractmethod

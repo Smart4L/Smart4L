@@ -7,9 +7,9 @@ from threading import Thread
 
 
 class Status(Enum):
-	START = 'start'
-	STOP = 'stop'
-	RESTART = 'restart'
+    START = 'start'
+    STOP = 'stop'
+    RESTART = 'restart'
 
 
 class ServiceObjectInterface(abc.ABC):
@@ -23,31 +23,32 @@ class ServiceObjectInterface(abc.ABC):
 
 
 class Wrapper(Thread):
-	def __init__(self, service_object:ServiceObjectInterface):
-		super().__init__()
-		self.service_object = service_object
-		self.status = Status.START.value
-	def run(self):
-		while self.status == Status.START.value:
-			self.service_object.do()
+    def __init__(self, service_object: ServiceObjectInterface):
+        super().__init__()
+        self.service_object = service_object
+        self.status = Status.START.value
 
-	def stop(self):
-		self.status = Status.STOP.value
-		self.service_object.stop()
-		print("Stopped !")
+    def run(self):
+        while self.status == Status.START.value:
+            self.service_object.do()
+
+    def stop(self):
+        self.status = Status.STOP.value
+        self.service_object.stop()
+        print("Stopped !")
 
 
 class TestRunner(ServiceObjectInterface):
-	def __init__(self):
-		self.status = Status.START.value
+    def __init__(self):
+        self.status = Status.START.value
 
-	def do(self):
-		while self.status == Status.START.value:
-			print("running ...")
-			time.sleep(1)
+    def do(self):
+        while self.status == Status.START.value:
+            print("running ...")
+            time.sleep(1)
 
-	def stop(self):
-		self.status = Status.STOP.value
+    def stop(self):
+        self.status = Status.STOP.value
 
 
 w = Wrapper(TestRunner())

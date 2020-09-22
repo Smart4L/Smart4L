@@ -8,14 +8,20 @@ import sys
 import time
 from random import randint
 from threading import Thread, Event
+
 sys.path.insert(1, '../sensor_camera_module')
 from DHT11 import DHT11
 from utils import Message, Status, ServiceObjectInterface
 
 
-
 class Service(Thread):
-    def __init__(self, service_object: ServiceObjectInterface, timeout=0, name="unname", description="description unavailable"):
+    def __init__(
+        self,
+        service_object: ServiceObjectInterface,
+        timeout=0,
+        name="unname",
+        description="description unavailable",
+    ):
         Thread.__init__(self)
         self.status = Status.START.value
         self.eventStopService = Event()
@@ -42,6 +48,7 @@ class Service(Thread):
         self.eventStopService.set()
         self.serviceObject.stop()
 
+
 class Capteur(ServiceObjectInterface):
     def __init__(self, sensor_object, uid, values):
         self.sensorObject = sensor_object
@@ -55,8 +62,7 @@ class Capteur(ServiceObjectInterface):
         self.sensorObject.clean()
 
 
-
-class Server():
+class Server:
     def __init__(self):
         pass
 
@@ -67,7 +73,7 @@ class Server():
         pass
 
 
-class Client():
+class Client:
     def __init__(self):
         pass
 
@@ -76,14 +82,21 @@ class Client():
 
     def receive_message(self):
         pass
-
 
 
 if __name__ == "__main__":
     services = []
     lastMeasure = {}
-    capteurs = [Capteur(DHT11(), "DHT11 EXT RPI2", lastMeasure), Capteur(DHT11(), "DHT11 INT RPI2", lastMeasure)]
-    [services.append(Service(service_object=capteur, timeout=2, name=capteur.uid)) for capteur in capteurs]
+    capteurs = [
+        Capteur(DHT11(), "DHT11 EXT RPI2", lastMeasure),
+        Capteur(DHT11(), "DHT11 INT RPI2", lastMeasure),
+    ]
+    [
+        services.append(
+            Service(service_object=capteur, timeout=2, name=capteur.uid)
+        )
+        for capteur in capteurs
+    ]
     [service.__start__() for service in services if not service.is_alive()]
     try:
         while True:
@@ -93,7 +106,6 @@ if __name__ == "__main__":
         [service.stop() for service in services]
 else:
     Message.err("POC_network.py : must be run as a script\n")
-
 
 
 """

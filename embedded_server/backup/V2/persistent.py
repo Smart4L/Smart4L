@@ -12,7 +12,9 @@ class Persistent(ServiceObjectInterface):
         self.app = app
         con = sqlite3.connect('smart4l.db')
         cur = con.cursor()
-        cur.execute("create table if not exists smart4l(date varchar(50), data json)")
+        cur.execute(
+            "create table if not exists smart4l(date varchar(50), data json)"
+        )
         cur.close()
         con.commit()
         con.close()
@@ -21,7 +23,10 @@ class Persistent(ServiceObjectInterface):
         # TODO DB registration
         con = sqlite3.connect('smart4l.db')
         cur = con.cursor()
-        cur.execute('insert into smart4l(date, data) values(?,?)', [str(time.time()), json.dumps(self.app.data)])
+        cur.execute(
+            'insert into smart4l(date, data) values(?,?)',
+            [str(time.time()), json.dumps(self.app.data)],
+        )
         cur.close()
         con.commit()
         con.close()
@@ -39,7 +44,7 @@ class Persistent(ServiceObjectInterface):
         cur.close()
         con.commit()
         con.close()
-        
+
         return res
 
     def stop(self):

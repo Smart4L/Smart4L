@@ -54,9 +54,10 @@ sys.path.insert(1, '../sensor_camera_module')
 from DHT11 import DHT11
 from utils import Message, Status, ServiceObjectInterface
 import smart4_websocket
+
 # Custom Modules
-#from embedded_server.sensor_camera_module.DHT11 import DHT11
-#from embedded_server.smart4l_service.utils import Message, Status, ServiceObjectInterface
+# from embedded_server.sensor_camera_module.DHT11 import DHT11
+# from embedded_server.smart4l_service.utils import Message, Status, ServiceObjectInterface
 
 
 # execute only if run as a script
@@ -65,15 +66,32 @@ if __name__ == "__main__":
     if os.path.isfile('smart4l.pid'):
         Message.wrn("PID file  already exists")
         os.remove("smart4l.pid")
-    open("smart4l.pid","w+").write(str(os.getpid()))
+    open("smart4l.pid", "w+").write(str(os.getpid()))
 
     app = Smart4l()
     persistent = Persistent(data=app.lastMeasure)
-    
-    app.add_service(Service(service_object=persistent, timeout=20, name="Persistent"))
-    app.add_service(Service(service_object=FlaskAPI(db=persistent), name="Http API"))
-    app.add_service(Service(service_object=Capteur(DHT11(), "DHT11 ext", app.update_measure), timeout=0.2, name="DHT11 ext", description="Capteur de température extérieur"))
-    app.add_service(Service(service_object=Capteur(DHT11(), "DHT11 int", app.update_measure), timeout=0.2, name="DHT11 int"))
+
+    app.add_service(
+        Service(service_object=persistent, timeout=20, name="Persistent")
+    )
+    app.add_service(
+        Service(service_object=FlaskAPI(db=persistent), name="Http API")
+    )
+    app.add_service(
+        Service(
+            service_object=Capteur(DHT11(), "DHT11 ext", app.update_measure),
+            timeout=0.2,
+            name="DHT11 ext",
+            description="Capteur de température extérieur",
+        )
+    )
+    app.add_service(
+        Service(
+            service_object=Capteur(DHT11(), "DHT11 int", app.update_measure),
+            timeout=0.2,
+            name="DHT11 int",
+        )
+    )
 
     app.reload()
 

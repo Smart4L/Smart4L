@@ -10,7 +10,6 @@ import random
 
 
 class DHT11:
-
     def measure(self):
         return 42 + random.randint(0, 500)
 
