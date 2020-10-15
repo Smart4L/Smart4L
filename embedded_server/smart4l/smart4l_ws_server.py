@@ -46,9 +46,6 @@ from websockets import WebSocketServerProtocol
     "code": Integer
   }
 }
-
-
-
 """
 
 class ServerWS():
