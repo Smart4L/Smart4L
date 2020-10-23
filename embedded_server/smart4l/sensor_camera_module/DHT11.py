@@ -11,24 +11,16 @@ pip3 install Adafruit_DHT
 """
 from random import randint
 from utils import SensorInterface
-try:
-    import Adafruit_DHT
-except ImportError:
-    print("--- Adafruit_DHT import failed ---")
+import Adafruit_DHT
 
 class DHT11(SensorInterface):
     def __init__(self, pin=None):
         self.DHT11_pin = pin
-        if pin is not None:
-            self.sensor = Adafruit_DHT.DHT11
+        self.sensor = Adafruit_DHT.DHT11
 
     def measure(self):
-        if self.DHT11_pin is None:
-            temperature = 15+randint(0,20)
-            humidity = 80+randint(0,20)
-        else:
-            humidity, temperature = Adafruit_DHT.read_retry(self.sensor, self.DHT11_pin)
-            # {"temperature":{0:0.1f}  ,"Humidity":{1:0.1f}}
+        humidity, temperature = Adafruit_DHT.read_retry(self.sensor, self.DHT11_pin)
+        # {"temperature":{0:0.1f}  ,"Humidity":{1:0.1f}}
         if humidity is not None and temperature is not None:
             return {"temperature": temperature  ,"humidity": humidity}
         else:

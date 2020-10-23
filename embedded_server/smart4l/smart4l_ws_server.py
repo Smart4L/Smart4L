@@ -10,6 +10,7 @@ import websockets
 from random import randint
 from threading import Thread
 from websockets import WebSocketServerProtocol
+import store_smart4l
 """
 # Message convention :
 
@@ -50,9 +51,7 @@ from websockets import WebSocketServerProtocol
 
 class ServerWS():
     clients = set()
-    def __init__(self, data):
-        self.data = data
-
+    
     # add client to clients list
     async def register(self, ws: WebSocketServerProtocol) -> None:
         self.clients.add(ws)
@@ -79,7 +78,7 @@ class ServerWS():
         try:
             # Start communication
             # Flush messages to the new client
-            await asyncio.wait([ self.send_to_client(ws, json.dumps( {"type": "UPDATE_SENSOR", "content": {"id": k,"value": v}})) for k,v in self.data.items()])
+            await asyncio.wait([ self.send_to_client(ws, json.dumps( {"type": "UPDATE_SENSOR", "content": {"id": k,"value": v}})) for k,v in store_smart4l.last_measure.items()])
             await self.distribute(ws)
         finally:
             # Remove client from clients list
@@ -97,16 +96,19 @@ class ServerWS():
 
 
 class Smart4lWebSocket:
-    def __init__(self, loop: asyncio.AbstractEventLoop, host:str, port:int, ssl_key_path:str, ssl_cert_path:str, data):
+    def __init__(self, loop: asyncio.AbstractEventLoop, host:str, port:int, ssl_key_path:str=None, ssl_cert_path:str=None):
         self.loop = loop
-        self.ws_server = ServerWS(data)
-        self.conf = {"host": host, "port": port, "ssl_cert": ssl_cert_path, "ssl_key": ssl_key_path}
+        self.ws_server = ServerWS()
+        #self.conf = {"host": host, "port": port, "ssl_cert": ssl_cert_path, "ssl_key": ssl_key_path}
+        self.conf = {"host": host, "port": port}
 
     def do(self,):
         asyncio.set_event_loop(self.loop)
-        ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-        ssl_context.load_cert_chain(self.conf["ssl_cert"], self.conf["ssl_key"])
-        start_server = websockets.serve(self.ws_server.ws_handler, self.conf["host"], self.conf["port"], ssl=ssl_context)
+
+        #ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        #ssl_context.load_cert_chain(self.conf["ssl_cert"], self.conf["ssl_key"])
+        #start_server = websockets.serve(self.ws_server.ws_handler, self.conf["host"], self.conf["port"], ssl=ssl_context)
+        start_server = websockets.serve(self.ws_server.ws_handler, self.conf["host"], self.conf["port"])
         self.loop.run_until_complete(start_server)
         self.loop.run_forever()
     

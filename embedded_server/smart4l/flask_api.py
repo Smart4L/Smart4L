@@ -4,13 +4,12 @@
 import logging
 import requests
 import ssl
-
 from flask import Flask, jsonify, request, render_template
 from utils import RunnableObjectInterface
+import store_smart4l
 
 class FlaskAPI(RunnableObjectInterface):
-    
-    def __init__(self, data, host, port, ssl_key_path=None, ssl_cert_path=None):
+    def __init__(self, host, port, ssl_key_path=None, ssl_cert_path=None):
         self.app = Flask(__name__)
         if ssl_key_path is not None:
             context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
@@ -18,8 +17,6 @@ class FlaskAPI(RunnableObjectInterface):
             self.conf = {"host": host, "port": port, "ssl_context":context}
         else:
             self.conf = {"host": host, "port": port}
-        self.db = data
-    
         self.router()
    
     def router(self):
@@ -33,14 +30,14 @@ class FlaskAPI(RunnableObjectInterface):
         self.app.run(**self.conf)
 
     def index(self):
-        return jsonify(self.db.data["measure"])
+        return jsonify(store_smart4l.last_measure)
 
     def service(self):
-        return jsonify(str(self.db.data["service"]))
+        return jsonify(str(store_smart4l.services))
 
     def history(self):
         # TODO fix this ugly thing, should not use app variable
-        return jsonify(self.db.history())
+        return jsonify(store_smart4l.database.history())
 
     # Must be call from HTTP request
     def shutdown(self):

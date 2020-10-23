@@ -34,8 +34,6 @@ class DS18B20(SensorInterface):
 		self.id_sonde = id
 
 	def measure(self):
-	    if self.id_sonde is None:
-	    	return 42
 	    return str(float(open("/sys/bus/w1/devices/%s/w1_slave" % self.id_sonde).read().split()[-1][2:])/1000)
 
 	def stop(self):

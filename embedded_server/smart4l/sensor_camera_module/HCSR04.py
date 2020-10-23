@@ -32,9 +32,6 @@ class HCSR04(SensorInterface):
             pass
 
     def measure(self):
-        if self.GPIO_ECHO is None:
-            return randint(1,4)
-
         GPIO.output(self.GPIO_TRIGGER, True)
         time.sleep(0.00001)
         GPIO.output(self.GPIO_TRIGGER, False)

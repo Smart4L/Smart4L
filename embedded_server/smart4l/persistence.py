@@ -5,12 +5,11 @@ import sqlite3
 import time
 import logging
 from utils import RunnableObjectInterface
-
+import store_smart4l
 
 # TODO rework this class
 class Persistent(RunnableObjectInterface):
-    def __init__(self, data):
-        self.data = data
+    def __init__(self):
         con = sqlite3.connect('smart4l.db')
         cur = con.cursor()
         cur.execute("create table if not exists smart4l(date varchar(50), data json)")
@@ -22,7 +21,7 @@ class Persistent(RunnableObjectInterface):
         # TODO DB registration
         con = sqlite3.connect('smart4l.db')
         cur = con.cursor()
-        cur.execute('insert into smart4l(date, data) values(?,?)', [str(time.time()), json.dumps(self.data["measure"])])
+        cur.execute('insert into smart4l(date, data) values(?,?)', [str(time.time()), json.dumps(store_smart4l.last_measure)])
         cur.close()
         con.commit()
         con.close()
