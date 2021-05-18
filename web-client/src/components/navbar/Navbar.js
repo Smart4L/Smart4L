@@ -35,7 +35,7 @@ export default class Navbar extends React.Component{
                 <a><FaRegLightbulb size={32} className={`navbar_item light ${this.state.light_on ? "shine" : ""}`} onClick={() => this.setLight()}/></a>
                 <a><FaFan size={32} className={`navbar_item ${this.state.fan_turn ? "turn" : ""}`} onClick={() => this.setFan()}/></a>
                 <NavLink exact to="/" activeClassName="active"><FaBullhorn size={32} className={`navbar_item`}/></NavLink>
-                <NavLink exact to="/" activeClassName="active"><AiFillSetting size={32} className={`navbar_item`}/></NavLink>
+                <NavLink exact to="/settings" activeClassName="active"><AiFillSetting size={32} className={`navbar_item`}/></NavLink>
             </div>
         )
     }

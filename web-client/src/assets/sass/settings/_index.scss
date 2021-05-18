@@ -1,0 +1,23 @@
+.settings_container{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $third-back-color;
+    color: $third-text-color;
+    height: 90vh;
+
+    .left_settings_container{
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-evenly;
+        background-color: $second-back-color;
+        flex-grow: 1;
+    }
+
+    .right_settings_container{
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: space-evenly;
+    }
+}

@@ -5,6 +5,7 @@ import Home from './components/home/Home';
 import Navbar from './components/navbar/Navbar';
 import Stats from './components/stats/Stats';
 import Map from './components/map/Map';
+import Settings from './components/settings/Settings';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Switch>
         <Route exact path="/stats" component={withRouter(Stats)}/>
         <Route exact path="/map" component={withRouter(Map)}/>
+        <Route exact path="/settings" component={withRouter(Settings)}/>
         <Route exact path="/" component={withRouter(Home)}/>
       </Switch>
       <Navbar/>
