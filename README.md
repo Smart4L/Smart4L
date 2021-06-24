@@ -98,28 +98,28 @@ Actions automatiques : allumage phares 🔅, allumage ventillateur, passage en v
 
 ### Sprint 1
 
-* [ ] #Front - Structure du site 
+* [X] #Front - Structure du site 
 * [X] #Front - Menu navigation
-* [ ] #Front - Page d'accueil, carte 🗺
+* [X] #Front - Page d'accueil, carte 🗺
 * [X] #Back - Capteur température 🌡, distance, humidité
-* [ ] #Back - Caméra avant 📷
+* [X] #Back - Caméra avant 📷
 * [ ] #Back - Api web
 
 ### Sprint 2
 
-* [ ] #Front - Page caméras 📷, paramètres ⚙
-* [ ] #Back - Capteur pression, accélération, luminosité
+* [X] #Front - Page caméras 📷, paramètres ⚙
+* [X] #Back - Capteur pression, accélération, luminosité
 * [ ] #Back - Base de données
 
 ### Sprint 3
 
-* [ ] #Front - Page radar, graphiques 📊
-* [ ] #Back - Capteur inclinaison
+* [X] #Front - Page radar, graphiques 📊
+* [X] #Back - Capteur inclinaison
 * [ ] #Back - Caméra arrière 📷
 
 ### Sprint 4
 
-* [ ] #Front - Site page raid44l.fr/smart4l
+* [X] #Front - Site page https://raid44l.fr/#/follow
 * [ ] #Front - Affichage temps réel
 * [ ] #Back - Position GPS 🛰
 * [ ] #Back - Capteur réservoir, régime moteur
