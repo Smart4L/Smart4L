@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import Leaflet from 'leaflet';
 import L from 'leaflet';
-import { Map as LMap, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Map as LMap, Marker, Popup, TileLayer, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 Leaflet.Icon.Default.imagePath = '../node_modules/leaflet';
@@ -16,8 +16,8 @@ Leaflet.Icon.Default.mergeOptions({
 });
 
 export const suitcasePoint = new L.Icon({
-    iconUrl: require('../../assets/images/4l.png'),
-    iconRetinaUrl: require('../../assets/images/4l.png'),
+    iconUrl: require('../../assets/images/4l-blue.png'),
+    iconRetinaUrl: require('../../assets/images/4l-blue.png'),
     iconAnchor: [20, 40],
     popupAnchor: [0, -35],
     iconSize: [40, 40],
@@ -41,6 +41,7 @@ export default class Map extends React.Component{
                 lng: -1.553621,
             },
             isCenter: true,
+            vehiclePath: [],
             tab:[
                 {
                     lat: 47.185711,
@@ -64,7 +65,7 @@ export default class Map extends React.Component{
 
     componentDidMount() {
         this.interval = setInterval(() => this.setState({ now: moment() }), 500);
-        this.changePos  =  setInterval( () => this.updateCar(this.state.tab[Math.floor(this.state.tab.length * Math.random())]) , 1500)
+        // this.changePos  =  setInterval( () => this.updateCar(this.state.tab[Math.floor(this.state.tab.length * Math.random())]) , 1500)
     }
     
     componentWillUnmount() {
@@ -74,7 +75,11 @@ export default class Map extends React.Component{
 
     updateCar = (newPosition) => {
         this.setState({ 
-            carPosition: newPosition
+            carPosition: newPosition,
+            vehiclePath: [
+                ...this.state.vehiclePath,
+                newPosition
+            ],
         })
         if(this.state.isCenter){
             this.setState({ 
@@ -99,7 +104,6 @@ export default class Map extends React.Component{
     }
 
     onMoveEvent = () => {
-        console.log('move')
         if(this.state.isCenter){
             this.setState({
                 isCenter: false
@@ -108,13 +112,20 @@ export default class Map extends React.Component{
     }
 
     recenter = () => {
+        let newPosition = {}
+        newPosition.lat = this.state.mapPosition.lat - 0.0000001
+        newPosition.lng = this.state.mapPosition.lng - 0.0000001
+        console.log(newPosition)
         this.setState({
             isCenter: true,
+            mapPosition: newPosition
         })
     }
 
     render(){
+        let lineOption = { color: 'lime' };
         let nantes = [47.218371,-1.553621];
+
         return(
             <div className="map_container">
                 <div className="top">
@@ -140,6 +151,7 @@ export default class Map extends React.Component{
                                 L'équipage 404L
                             </Popup>
                         </Marker>
+                        <Polyline pathOptions={lineOption} positions={this.state.vehiclePath} />
                     </LMap>
                 </div>
                 <div className={`bottom ${this.state.isCenter ? '' : 'show'}`} onClick={this.recenter}>

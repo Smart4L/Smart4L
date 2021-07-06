@@ -20,8 +20,12 @@
                 border-radius: 5px;
             }
             
-            &.turn{
+            &.turn-1{
                 animation:spin 3s linear infinite;
+            }
+
+            &.turn-2{
+                animation:spin 1s linear infinite;
             }
     
             &.active{

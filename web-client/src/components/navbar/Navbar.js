@@ -10,12 +10,20 @@ export default class Navbar extends React.Component{
         super(props);
         this.state = {
             light_on: false,
-            fan_turn: false,
+            fan_turn: 0,
         };
     }
 
     setFan = () => {
-        let fan_turn = !this.state.fan_turn;
+        let fan_turn
+        if(this.state.fan_turn < 2){
+            fan_turn = this.state.fan_turn + 1;
+        } else {
+            fan_turn = 0
+        }
+
+        // POST http://localhost:80/api/fan-speed/{fan_turn}
+
         this.setState({fan_turn});
     }
 
@@ -33,7 +41,7 @@ export default class Navbar extends React.Component{
                 <NavLink exact to="/" activeClassName="active"><GiRadarSweep size={32} className={`navbar_item`}/></NavLink>
                 <NavLink exact to="/stats" activeClassName="active"><GoGraph size={32} className={`navbar_item`}/></NavLink>
                 <a><FaRegLightbulb size={32} className={`navbar_item light ${this.state.light_on ? "shine" : ""}`} onClick={() => this.setLight()}/></a>
-                <a><FaFan size={32} className={`navbar_item ${this.state.fan_turn ? "turn" : ""}`} onClick={() => this.setFan()}/></a>
+                <a><FaFan size={32} className={`navbar_item turn-${this.state.fan_turn}`} onClick={() => this.setFan()}/></a>
                 <NavLink exact to="/" activeClassName="active"><FaBullhorn size={32} className={`navbar_item`}/></NavLink>
                 <NavLink exact to="/settings" activeClassName="active"><AiFillSetting size={32} className={`navbar_item`}/></NavLink>
             </div>
