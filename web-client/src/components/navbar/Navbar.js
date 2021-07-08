@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { FaFan, FaRegLightbulb, FaRegMap, FaBullhorn } from 'react-icons/fa';
 import { GoGraph } from "react-icons/go";
 import { GiRadarSweep } from "react-icons/gi";
@@ -28,7 +29,7 @@ export default class Navbar extends React.Component{
             <div className="navbar_container">
                 <FaRegMap className={`navbar_item`}/>
                 <AiFillVideoCamera className={`navbar_item`}/>
-                <GiRadarSweep className={`navbar_item`}/>
+                <NavLink to="/radar"><GiRadarSweep className={`navbar_item`} /></NavLink>
                 <GoGraph className={`navbar_item`}/>
                 <FaRegLightbulb className={`navbar_item light ${this.state.light_on ? "shine" : ""}`} onClick={() => this.setLight()}/>
                 <FaFan className={`navbar_item ${this.state.fan_turn ? "turn" : ""}`} onClick={() => this.setFan()}/>
