@@ -2,11 +2,8 @@ import React from 'react';
 import moment from 'moment'
 import { Capitalize } from '../../utils/utils';
 import { Line as ProgressLine} from 'rc-progress';
-import { w3cwebsocket as WebSocket } from 'websocket';
 import { MdSignalCellularConnectedNoInternet0Bar, MdSignalCellular1Bar, MdSignalCellular2Bar, MdSignalCellular3Bar, MdSignalCellular4Bar } from "react-icons/md";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-
-const client = WebSocket('wss://aws.cbarange.ovh:8520');
 
 export default class Home extends React.Component{
     constructor(props){
@@ -14,6 +11,7 @@ export default class Home extends React.Component{
         this.state = {
             now :  moment(),
             temp: "NaN",
+            speed: 8,
             fuel: Math.floor(Math.random() * Math.floor(100)),
             connect: Math.floor(Math.random() * Math.floor(5))
         }
@@ -21,22 +19,10 @@ export default class Home extends React.Component{
 
     componentDidMount() {
         this.interval = setInterval(() => this.setState({ now: moment() }), 500);
-        client.onpen = () => {
-            console.log('WebSocket Client Connected');
-        };
-        client.onmessage = (message) => {
-            let data = JSON.parse(message.data);
-            if(data.type === "UPDATE_SENSOR"){
-                if(data.content.id === "DHT11_in"){
-                    this.setState({ temp: data.content.value[0].measure });
-                }
-            }
-        };
     }
     
     componentWillUnmount() {
         clearInterval(this.interval);
-        client.close(1000, "End of connection");
     }
 
     /**
@@ -69,7 +55,7 @@ export default class Home extends React.Component{
                     <span className="title little">{ Capitalize(this.state.now.format('dddd')) }</span>
                     <span className="content">{ this.state.now.format('DD') } { Capitalize(this.state.now.format('MMMM')) }</span>
                     <span className="title little">Température</span>
-                    <span className="content">{ this.state.temp } °C</span>      
+                    <span className="content">{ this.props.tempExt } °C</span>
                     <span class="circle">
                         <span className="engine">ENGINE</span>
                         <span className="start_stop">START <hr></hr> STOP</span>
@@ -79,7 +65,7 @@ export default class Home extends React.Component{
                     <div className="title little top">3G {this.getConnection()}</div>
                     <div className="speed">
                         <span className="title little head">Vitesse</span>
-                        <span className="measure">80</span>
+                        <span className="measure">{ this.props.speed }</span>
                         <span className="title little unit">km/h</span>
                     </div>
                     <div className="fuel">

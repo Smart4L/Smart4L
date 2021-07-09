@@ -1,10 +1,8 @@
 import React from 'react';
-import { w3cwebsocket as WebSocket } from 'websocket';
 import { FaTemperatureHigh, FaTools } from "react-icons/fa";
 import { IoMdSpeedometer } from "react-icons/io";
 import { GiGears } from "react-icons/gi";
 
-const client = WebSocket('wss://aws.cbarange.ovh:8520');
 
 export default class Stats extends React.Component{
     constructor(props){
@@ -15,31 +13,28 @@ export default class Stats extends React.Component{
     }
 
     componentDidMount() {
-        client.onpen = () => {
-            console.log('WebSocket Client Connected');
-        };
-        client.onmessage = (message) => {
-            let data = JSON.parse(message.data);
-            console.log(data)
-            if(data.type === "UPDATE_SENSOR"){
-                let tab =  this.state.tab;
-                if(tab.filter(el => el.id === data.content.id).length > 0){
-                    console.log('find');
-                    let value = data.content.value;
-                    this.setState({
-                        tab: this.state.tab.map(el => (el.id === data.content.id ? Object.assign({}, el, { value }) : el))
-                    });
-                } 
-                else {
-                    console.log('dont find');
-                    tab.push(data.content);
-                    console.log(tab)
-                    this.setState({
-                        tab
-                    })
-                }
-            };
-        }
+        // client.onmessage = (message) => {
+        //     let data = JSON.parse(message.data);
+        //     console.log(data)
+        //     if(data.type === "UPDATE_SENSOR"){
+        //         let tab =  this.state.tab;
+        //         if(tab.filter(el => el.id === data.content.id).length > 0){
+        //             console.log('find');
+        //             let value = data.content.value;
+        //             this.setState({
+        //                 tab: this.state.tab.map(el => (el.id === data.content.id ? Object.assign({}, el, { value }) : el))
+        //             });
+        //         } 
+        //         else {
+        //             console.log('dont find');
+        //             tab.push(data.content);
+        //             console.log(tab)
+        //             this.setState({
+        //                 tab
+        //             })
+        //         }
+        //     };
+        // }
     }
 
     /**

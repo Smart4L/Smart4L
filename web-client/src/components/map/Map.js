@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{ useState, useEffect, forwardRef } from 'react';
 import moment from 'moment';
 import Leaflet from 'leaflet';
 import L from 'leaflet';
@@ -15,7 +15,7 @@ Leaflet.Icon.Default.mergeOptions({
     shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 });
 
-export const suitcasePoint = new L.Icon({
+const suitcasePoint = new L.Icon({
     iconUrl: require('../../assets/images/4l-blue.png'),
     iconRetinaUrl: require('../../assets/images/4l-blue.png'),
     iconAnchor: [20, 40],
@@ -26,65 +26,27 @@ export const suitcasePoint = new L.Icon({
     shadowAnchor: [7, 40],
 })
 
-export default class Map extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            now :  moment(),
-            zoom: 13,
-            carPosition: {
-                lat: 47.218371,
-                lng: -1.553621,
-            },
-            mapPosition:{
-                lat: 47.218371,
-                lng: -1.553621,
-            },
-            isCenter: true,
-            vehiclePath: [],
-            tab:[
-                {
-                    lat: 47.185711,
-                    lng: -1.521606
-                },
-                {
-                    lat: 47.187578,
-                    lng: -1.613617
-                },
-                {
-                    lat: 47.230958,
-                    lng: -1.571388
-                },
-                {
-                    lat: 47.228160,
-                    lng: -1.527786
-                }
-            ]
-        }
-    }
+export const Map = forwardRef((props, ref) => {
+    const [time, setTime] = useState(moment());
+    const [zoom, setZoom] = useState(13);
+    const [carPosition, setCarPosition] = useState({ lat: 47.218371, lng: -1.553621 });
+    const [mapPosition, setMapPosition] = useState({ lat: 47.218371, lng: -1.553621 });
+    const [isCenter, setIsCenter] = useState(true);
+    const [vehiclePath, setVehiclePath] = useState([]);
 
-    componentDidMount() {
-        this.interval = setInterval(() => this.setState({ now: moment() }), 500);
-        // this.changePos  =  setInterval( () => this.updateCar(this.state.tab[Math.floor(this.state.tab.length * Math.random())]) , 1500)
-    }
-    
-    componentWillUnmount() {
-        clearInterval(this.interval);
-        clearInterval(this.changePos);
-    }
+    useEffect(() => {
+        const interval = setInterval(() => {
+          setTime(moment())
+        }, 500);
+        return () => clearInterval(interval);
+      }, []);
+    useEffect(() => { updateCar(props.carPosition) }, [props.carPosition])
 
-    updateCar = (newPosition) => {
-        this.setState({ 
-            carPosition: newPosition,
-            vehiclePath: [
-                ...this.state.vehiclePath,
-                newPosition
-            ],
-        })
-        if(this.state.isCenter){
-            this.setState({ 
-                mapPosition: newPosition
-            })
+    const updateCar = (newPosition) => {
+        setCarPosition(newPosition)
+        setVehiclePath([...vehiclePath, newPosition])
+        if(isCenter){
+            setMapPosition(newPosition)
         }
     }
 
@@ -93,7 +55,7 @@ export default class Map extends React.Component{
      * @param {L.LatLng} obj Object you want to get the position
      * @return {[]} Object position in array
      */
-    getPosition = (obj) => {
+    const getPosition = (obj) => {
         try{
             return [obj.lat, obj.lng];
         }
@@ -103,63 +65,57 @@ export default class Map extends React.Component{
         }
     }
 
-    onMoveEvent = () => {
-        if(this.state.isCenter){
-            this.setState({
-                isCenter: false
-            })
+    const onMoveEvent = () => {
+        if(isCenter){
+            setIsCenter(false);
         }
     }
 
-    recenter = () => {
+    const recenter = () => {
         let newPosition = {}
-        newPosition.lat = this.state.mapPosition.lat - 0.0000001
-        newPosition.lng = this.state.mapPosition.lng - 0.0000001
+        newPosition.lat = mapPosition.lat - 0.0000001
+        newPosition.lng = mapPosition.lng - 0.0000001
         console.log(newPosition)
-        this.setState({
-            isCenter: true,
-            mapPosition: newPosition
-        })
+        setIsCenter(true)
+        setMapPosition(newPosition)
     }
 
-    render(){
-        let lineOption = { color: 'lime' };
-        let nantes = [47.218371,-1.553621];
-
-        return(
-            <div className="map_container">
-                <div className="top">
-                    <span className="content">
-                        { this.state.now.format('HH:mm') }
-                    </span>
-                </div>
-                <div className="leaflet-container">
-                    <LMap center={this.getPosition(this.state.mapPosition)} zoom={this.state.zoom}
-                        onmouseup={this.onMoveEvent}
-                    >
-                        <TileLayer
-                        attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        />
-                        <Marker position={nantes}>
-                            <Popup>
-                                Nantes <br/> Une belle ville 
-                            </Popup>
-                        </Marker>
-                        <Marker position={this.getPosition(this.state.carPosition)} icon={suitcasePoint}>
-                            <Popup>
-                                L'équipage 404L
-                            </Popup>
-                        </Marker>
-                        <Polyline pathOptions={lineOption} positions={this.state.vehiclePath} />
-                    </LMap>
-                </div>
-                <div className={`bottom ${this.state.isCenter ? '' : 'show'}`} onClick={this.recenter}>
-                    <span className="content">
-                        Recentrer
-                    </span>
-                </div>
+    let lineOption = { color: 'lime' };
+    let nantes = [47.218371,-1.553621];
+  
+    return (
+        <div className="map_container">
+            <div className="top">
+                <span className="content">
+                    { time.format('HH:mm') }
+                </span>
             </div>
+            <div className="leaflet-container">
+                <LMap center={getPosition(mapPosition)} zoom={zoom}
+                    onmouseup={onMoveEvent}
+                >
+                    <TileLayer
+                    attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <Marker position={nantes}>
+                        <Popup>
+                            Nantes <br/> Une belle ville 
+                        </Popup>
+                    </Marker>
+                    <Marker position={getPosition(carPosition)} icon={suitcasePoint}>
+                        <Popup>
+                            L'équipage 404L
+                        </Popup>
+                    </Marker>
+                    <Polyline pathOptions={lineOption} positions={vehiclePath} />
+                </LMap>
+            </div>
+            <div className={`bottom ${isCenter ? '' : 'show'}`} onClick={recenter}>
+                <span className="content">
+                    Recentrer
+                </span>
+            </div>
+        </div>
         )
-    }
-}
+  });
