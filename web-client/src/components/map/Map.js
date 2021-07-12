@@ -75,7 +75,6 @@ export const Map = forwardRef((props, ref) => {
         let newPosition = {}
         newPosition.lat = mapPosition.lat - 0.0000001
         newPosition.lng = mapPosition.lng - 0.0000001
-        console.log(newPosition)
         setIsCenter(true)
         setMapPosition(newPosition)
     }

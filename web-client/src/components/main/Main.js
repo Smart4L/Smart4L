@@ -28,14 +28,13 @@ export const Main = () => {
             if(data.label === "Température extérieure"){
                 setTempExt(data.measure)
             }
-                if(data.label === "GPS longitude" || data.label === "GPS latitude"){
-                    let newPosition = {
-                        lat: data.measure,
-                        lng: data.measure,
-                    }
-                    setCarPosition(newPosition)
+            if(data.label === "GPS longitude" || data.label === "GPS latitude"){
+                let newPosition = {
+                    lat: data.measure,
+                    lng: data.measure,
                 }
-            
+                setCarPosition(newPosition)
+            }
         };
 
         client.onclose = function(e) {

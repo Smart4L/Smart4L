@@ -13,7 +13,8 @@
         padding: 0 15px;
         .navbar_item{
             color: $second-text-color;
-            transition: all 0.5s ease-in-out;
+            animation-delay: 1s;
+            animation-fill-mode: forwards;
     
             &.shine{
                 fill: yellow;
