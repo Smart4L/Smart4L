@@ -24,9 +24,11 @@ Nous développons une solution opensource 👍, ce repository héberge les sourc
 
 <!--![](https://www.societegenerale.com/sites/default/files/2018/societe-generale-logo.png =250)-->
 <!-- <img alt="Société Generale chargement..." src="https://github.com/smart4l/smart4l/raw/master/doc/Sponsor/societe_generale.png" style="height: 7%;" />  -->
-<img alt="Société Generale chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Sponsor/societe_generale.png" height="60px" /> 
-
-
+<div align="center">
+  <img alt="Logo Société Generale chargement..." style="margin:0 40px" src="https://raw.github.com/smart4l/smart4l/master/doc/Sponsor/societe_generale.png" height="60px" /> 
+  <img alt="Logo Dynamips chargement..." style="margin:0 40px" src="https://raw.github.com/smart4l/smart4l/master/doc/Sponsor/dynamips.jpg" height="85px" margin="50px"/> 
+  <!-- file:///D:/Documents/epsi/workspace/Smart4L/Smart4L/ -->
+</div>
 <h3 align="center"> Soyez le prochain !</h3>
 
 
