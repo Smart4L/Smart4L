@@ -33,13 +33,15 @@ Nous développons une solution opensource 👍, ce repository héberge les sourc
 
 
 
-## Mesures & Capteurs
+## Présentation
 
 <!-- <img alt="Schema capteur chargement..." src="https://github.com/smart4l/smart4l/raw/master/doc/Schema_Smat4L-Schema_Smart4LCapteur.png" style="height: 80%;" /> -->
 <!--![*Schema capteur chargement...*](https://github.com/smart4l/smart4l/raw/master/doc/Schema_Smat4L-Schema_Smart4LCapteur.png)-->
-<img alt="Schema capteur chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Schema_Smat4L-Schema_Smart4LCapteur.png" />
+<!-- <img alt="Schema capteur chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Schema_Smat4L-Schema_Smart4LCapteur.png" /> -->
 
+<img alt="Build chargement..." src="https://raw.github.com/smart4l/smart4l/master/doc/Image_Schema/build_gif.gif" /> 
 
+<!--  -->
 
 ## Données & Traitements
 
