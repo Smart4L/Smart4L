@@ -31,12 +31,13 @@ export const Voiture = ({ rotation }) => {
   return (
     <group>
       <mesh visible geometry={nodes.nodes.Mesh_0.geometry}  ref={mesh}>
-        <meshStandardMaterial
+      <meshStandardMaterial
           attach="material"
           color="blue"
           roughness={0.4}
           metalness={0.1}
         />
+      
       </mesh>
     </group>
   );

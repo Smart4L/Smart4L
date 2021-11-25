@@ -28,13 +28,13 @@ export default class Navbar extends React.Component{
         return(
             <div className="navbar_container">
                 <FaRegMap className={`navbar_item`}/>
-                <AiFillVideoCamera className={`navbar_item`}/>
+                <NavLink to="/video"><AiFillVideoCamera className={`navbar_item`}/></NavLink>
                 <NavLink to="/radar"><GiRadarSweep className={`navbar_item`} /></NavLink>
                 <GoGraph className={`navbar_item`}/>
                 <FaRegLightbulb className={`navbar_item light ${this.state.light_on ? "shine" : ""}`} onClick={() => this.setLight()}/>
                 <FaFan className={`navbar_item ${this.state.fan_turn ? "turn" : ""}`} onClick={() => this.setFan()}/>
                 <FaBullhorn className={`navbar_item`}/>
-                <AiFillSetting className={`navbar_item`}/>
+                <NavLink to="/settings"><AiFillSetting className={`navbar_item`}/></NavLink>
             </div>
         )
     }
