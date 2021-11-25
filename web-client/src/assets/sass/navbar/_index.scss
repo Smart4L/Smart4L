@@ -5,19 +5,45 @@
     align-items: center;
     background-color: $main-back-color;
     height: 10vh;
+
+    a{
+        display: flex;
+        align-items: center;
+        height: 100%;
+        padding: 0 15px;
+        .navbar_item{
+            color: $second-text-color;
+            animation-delay: 1s;
+            animation-fill-mode: forwards;
+    
+            &.shine{
+                fill: yellow;
+                border-radius: 5px;
+            }
+            
+            &.turn-1{
+                animation:spin 3s linear infinite;
+            }
+
+            &.turn-2{
+                animation:spin 1s linear infinite;
+            }
+    
+            &.active{
+                fill: $main-text-color;
+            }
+        }
+
+        &.active{
+            background-color: $second-text-color;
+            // border-radius create with https://9elements.github.io/fancy-border-radius/
+            border-radius: 0% 0% 28% 28% / 0% 0% 38% 38%;
+
+            .navbar_item{             
+                fill: $main-text-color;
+            }
+        }
+    }
 }
 
-.navbar_item{
-    color: $second-text-color;
-    transition: all 0.5s ease-in-out;
-}
-
-.shine{
-    fill: yellow;
-    border-radius: 5px;
-}
-
-.turn{
-    animation:spin 3s linear infinite;
-}
 @keyframes spin { 100% { transform:rotate(360deg); } }

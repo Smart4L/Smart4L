@@ -19,7 +19,7 @@
     "react-bootstrap": "^1.6.1",
     "react-bootstrap-input-spinner": "^1.0.2",
     "react-country-flag": "^2.3.1",
-    "react-dom": "^17.0.1",
+    "react-dom": "^16.13.1",
     "react-icons": "^3.11.0",
     "react-numeric-input": "^2.2.3",
     "react-numeric-input2": "^3.1.0",
@@ -31,7 +31,11 @@
     "react-three-renderer-objects": "0.0.6",
     "react-toastify": "^7.0.4",
     "three": "^0.122.0",
-    "three-stl-loader": "^1.0.6"
+    "three-stl-loader": "^1.0.6",
+    "leaflet.offline": "^2.0.0-beta.3",
+    "rc-progress": "^3.1.0",
+    "react-leaflet": "^2.7.0",
+    "websocket": "^1.0.32"
   },
   "scripts": {
     "start": "react-scripts start",
