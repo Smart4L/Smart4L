@@ -5,9 +5,9 @@ import { HashRouter as Switch, Route, withRouter } from "react-router-dom";
 import Home from '../home/Home';
 import Stats from '../stats/Stats';
 import { Map } from '../map/Map';
-import Settings from '../settings/Settings';
+import { Settings } from '../settings/Settings';
 
-const client = WebSocket('wss://smart4l-websockets-mock.herokuapp.com');
+const client = WebSocket('ws://172.24.1.2:8082');
 
 export const Main = () => {
     const [speed, setSpeed] = useState(0);
@@ -28,10 +28,10 @@ export const Main = () => {
             if(data.label === "Température extérieure"){
                 setTempExt(data.measure)
             }
-            if(data.label === "GPS longitude" || data.label === "GPS latitude"){
+            if(data.id === "SIM7600G_H_GPS"){
                 let newPosition = {
-                    lat: data.measure,
-                    lng: data.measure,
+                    lat: data.value.latitude,
+                    lng: data.value.longitude,
                 }
                 setCarPosition(newPosition)
             }

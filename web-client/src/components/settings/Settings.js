@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import Axios from 'axios';
 import NumericInput from 'react-numeric-input2';
+
 export const Settings = () => {
 
 
