@@ -116,5 +116,5 @@ export const Map = forwardRef((props, ref) => {
                 </span>
             </div>
         </div>
-        )
-  });
+    )
+});

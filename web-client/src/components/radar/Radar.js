@@ -5,7 +5,7 @@ import Loading from './Loading';
 import { Canvas} from "react-three-fiber";
 
 
-const Radar = ({propsName}) =>
+export const Radar = ({propsName}) =>
 {
 
   // Rotation Target
@@ -75,5 +75,3 @@ const Radar = ({propsName}) =>
     
   );
 }
-
-export default Radar

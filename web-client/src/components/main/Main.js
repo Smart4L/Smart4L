@@ -5,6 +5,8 @@ import { HashRouter as Switch, Route, withRouter } from "react-router-dom";
 import Home from '../home/Home';
 import Stats from '../stats/Stats';
 import { Map } from '../map/Map';
+import { Video } from '../video/Video';
+import { Radar } from '../radar/Radar';
 import { Settings } from '../settings/Settings';
 
 const client = WebSocket('ws://172.24.1.2:8082');
@@ -50,6 +52,8 @@ export const Main = () => {
         <Switch>
             <Route exact path="/stats" component={withRouter(Stats)}/>
             <Route exact path="/map" render={() => <Map carPosition={carPosition} />}/>
+            <Route exact path="/video" render={() => <Video />}/>
+            <Route exact path="/radar" render={() => <Radar />}/>
             <Route exact path="/settings" component={withRouter(Settings)}/>
             <Route exact path="/" render={() => <Home speed={speed} tempExt={tempExt}/>}/>
         </Switch>

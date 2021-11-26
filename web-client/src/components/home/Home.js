@@ -58,7 +58,7 @@ export default class Home extends React.Component{
                     <span className="content">{ this.props.tempExt } °C</span>
                     <span class="circle">
                         <span className="engine">ENGINE</span>
-                        <span className="start_stop">START <hr></hr> STOP</span>
+                        <span className="start_stop">START<hr/>STOP</span>
                     </span>
                 </div>
                 <div className="home_item right_home_container">

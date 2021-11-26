@@ -1,7 +1,18 @@
 .video_container {
     height: 90vh;
+    max-height: 90vh;
     display: flex;
     flex-flow: column nowrap;
+
+    .top{
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        max-height: 90vh;
+        height: 90vh;
+        overflow: hidden;
+    }
  
     .button_photo {
         display: flex;
@@ -28,10 +39,6 @@
                 color: red;
             }
         }
-
-       
     }
-
-
 }
 

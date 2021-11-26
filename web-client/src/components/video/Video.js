@@ -51,19 +51,14 @@ export const Video = () => {
 
     }
 
-
-
-
-        return (
-            <div className="video_container">
-             <img src = "http://172.24.1.2:3000/stream/video.mjpeg" alt = "streaming 4L Avant" />
-            <div className="button_photo">
+    return (
+        <div className="video_container">
+            <div className="top">
+              <img src = "http://172.24.1.2:3000/stream/video.mjpeg" alt = "streaming 4L Avant" />
+            </div>
+          <div className="button_photo">
             <DisplayLoading/>
-            </div>
-
-
-            </div>
-            
-        )
-
+          </div>
+        </div>
+    )
 }
