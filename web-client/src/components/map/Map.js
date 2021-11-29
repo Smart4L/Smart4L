@@ -33,6 +33,7 @@ export const Map = forwardRef((props, ref) => {
     const [mapPosition, setMapPosition] = useState({ lat: 47.218371, lng: -1.553621 });
     const [isCenter, setIsCenter] = useState(true);
     const [vehiclePath, setVehiclePath] = useState([]);
+    const [speed, setSpeed] = useState([]);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -41,6 +42,7 @@ export const Map = forwardRef((props, ref) => {
         return () => clearInterval(interval);
       }, []);
     useEffect(() => { updateCar(props.carPosition) }, [props.carPosition])
+    useEffect(() => { setSpeed(props.speed) }, [props.speed])
 
     const updateCar = (newPosition) => {
         setCarPosition(newPosition)
@@ -88,6 +90,15 @@ export const Map = forwardRef((props, ref) => {
                 <span className="content">
                     { time.format('HH:mm') }
                 </span>
+
+                <div className="speed">
+                    <div className="circle">
+                        {speed}
+                        <div className="unit">
+                            Km/h
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className="leaflet-container">
                 <LMap center={getPosition(mapPosition)} zoom={zoom}

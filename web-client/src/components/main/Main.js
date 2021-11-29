@@ -15,6 +15,7 @@ export const Main = () => {
     const [speed, setSpeed] = useState(0);
     const [tempExt, setTempExt] = useState(0);
     const [carPosition, setCarPosition] = useState({ lat: 47.218371, lng: -1.553621 });
+    const [gyroPosition, setGyroPosition] = useState({ x: 0, y: 0, z:0 });
 
 
     useEffect(() => {
@@ -36,6 +37,16 @@ export const Main = () => {
                     lng: data.value.longitude,
                 }
                 setCarPosition(newPosition)
+                setSpeed(Math.floor((data.value.speed * 1.852) * 10) / 10)
+            }
+            if(data.id === "GY521_MPU6050"){
+                let newPosition = {
+                    x: data.value.gyroscope.X,
+                    y: data.value.gyroscope.Y,
+                    z: data.value.gyroscope.Z,
+                }
+                setGyroPosition(newPosition)
+                setTempExt(data.value.temperature)
             }
         };
 
@@ -51,9 +62,9 @@ export const Main = () => {
     return (
         <Switch>
             <Route exact path="/stats" component={withRouter(Stats)}/>
-            <Route exact path="/map" render={() => <Map carPosition={carPosition} />}/>
+            <Route exact path="/map" render={() => <Map carPosition={carPosition} speed={speed}/>}/>
             <Route exact path="/video" render={() => <Video />}/>
-            <Route exact path="/radar" render={() => <Radar />}/>
+            <Route exact path="/radar" render={() => <Radar gyroPosition={gyroPosition} />}/>
             <Route exact path="/settings" component={withRouter(Settings)}/>
             <Route exact path="/" render={() => <Home speed={speed} tempExt={tempExt}/>}/>
         </Switch>

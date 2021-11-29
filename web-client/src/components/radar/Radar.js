@@ -1,12 +1,11 @@
-import React, { Suspense,  useState } from 'react';
+import React, { Suspense, useEffect, useState, forwardRef } from 'react';
 import { Voiture } from './Voiture';
 import CameraControls from './CameraControl';
 import Loading from './Loading';
-import { Canvas} from "react-three-fiber";
+import { Canvas } from "react-three-fiber";
 
 
-export const Radar = ({propsName}) =>
-{
+export const Radar = forwardRef((props, ref) => {
 
   // Rotation Target
   const [rotation, setRotation] = useState({
@@ -15,63 +14,40 @@ export const Radar = ({propsName}) =>
     z : 0
   })
   
-  const generateur = () => {
-    const min = 1;
-    const max = 100;
-    const rand = min + Math.random() * (max - min);
-  //  this.setRandom( random + rand );
+  useEffect(() => { updatePosition(props.gyroPosition) }, [props.gyroPosition])
+
+  const updatePosition = (newPosition) => {
+    setRotation({x: newPosition.x/20, y: newPosition.y/20, z: newPosition.z/10})
   }
 
-   return (
+  const resetGyro = () => {
+    setRotation({
+      x : 0,
+      y: 0,
+      z: 0
+    })
+  }
 
-     <React.Fragment>
-     <button onClick={() => setRotation({
-       x : rotation.x+0.01,
-       y: rotation.y,
-       z: rotation.z
-     })}>
-        Axe X+
-      </button>
-      <button onClick={() => setRotation({
-       x : rotation.x-0.01,
-       y: rotation.y,
-       z: rotation.z
-     })}>
-        Axe X-
-      </button>
-      <button onClick={() => setRotation({
-       x : rotation.x,
-       y: rotation.y,
-       z: rotation.z+0.01
-     })}>
-        Axe Z+
-      </button>
-      <button onClick={() => setRotation({
-       x : rotation.x,
-       y: rotation.y,
-       z: rotation.z-0.01
-     })}>
-        Axe Z-
-      </button>
+  return (
 
-      <button onClick={() => setRotation({
-       x : 0,
-       y: 0,
-       z: 0
-     })}>
-        Reset
-      </button>
-
+    <React.Fragment>      
       <Canvas >
-      <CameraControls/>
-      <ambientLight intensity={0.5} />
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-      <pointLight position={[-10, -10, -10]} />
-      <Suspense fallback={<Loading />}>
-        <Voiture rotation={rotation}/>
-      </Suspense>
-    </Canvas>
-     </React.Fragment>
+        <CameraControls/>
+        <ambientLight intensity={0.5} />
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+        <pointLight position={[-10, -10, -10]} />
+        <Suspense fallback={<Loading />}>
+          <Voiture rotation={rotation}/>
+        </Suspense>
+      </Canvas>
+      <div className='radar_container' onClick={resetGyro}>
+        <div className='bottom' onClick={resetGyro}>
+          <span className="content">
+            Reset
+          </span>
+        </div>
+      </div>
+    </React.Fragment>
     
   );
-}
+});

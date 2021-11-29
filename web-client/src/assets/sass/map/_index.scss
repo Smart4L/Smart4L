@@ -20,6 +20,32 @@
             z-index: 500;
             font-size: 20px;
         }
+
+        .speed {
+            position: absolute;
+            margin-top: 200px;
+            margin-right: 200px;
+            right: 0;
+            z-index: 500;
+
+            .circle{
+                height: 100px;
+                width: 100px;
+                padding-top: 10px;
+                line-height: 40px;
+                font-size: 50px;
+                background-color: white;
+                border-radius: 50%;
+                border: 5px solid red;
+                display: inline-block;
+                text-align: center;
+
+                .unit {
+                    font-size: 18px;
+                }
+            }
+            
+        }
     }
 
     .bottom{
