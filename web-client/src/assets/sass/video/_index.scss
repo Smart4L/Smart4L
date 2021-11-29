@@ -1,0 +1,44 @@
+.video_container {
+    height: 90vh;
+    max-height: 90vh;
+    display: flex;
+    flex-flow: column nowrap;
+
+    .top{
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        max-height: 90vh;
+        height: 90vh;
+        overflow: hidden;
+    }
+ 
+    .button_photo {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+
+        .content{
+            background-color: $main-back-color;
+            color: $third-text-color;
+            height: 50px;
+            padding: 5px 50px;
+            border-top-right-radius: 50%;
+            border-top-left-radius: 50%;
+            position: absolute;
+            margin-bottom: 50px;
+            line-height: 50px;
+            z-index: 500;
+            font-size: 20px;
+
+            &.error {
+                color: red;
+            }
+        }
+    }
+}
+

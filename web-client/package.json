@@ -6,12 +6,36 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "moment": "^2.27.0",
+    "axios": "^0.21.1",
+    "bootstrap": "^5.0.2",
+    "bootstrap-switch-button-react": "^1.2.0",
+    "chonky": "^2.2.0",
+    "chonky-icon-fontawesome": "^2.2.0",
+    "moment": "^2.29.1",
     "node-sass": "^4.14.1",
-    "react": "^16.13.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.14.0",
+    "react-3d-viewer": "^1.0.12",
+    "react-bootstrap": "^1.6.1",
+    "react-bootstrap-input-spinner": "^1.0.2",
+    "react-country-flag": "^2.3.1",
     "react-dom": "^16.13.1",
-    "react-icons": "^3.10.0",
-    "react-scripts": "3.4.1"
+    "react-icons": "^3.11.0",
+    "react-numeric-input": "^2.2.3",
+    "react-numeric-input2": "^3.1.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "react-three-fiber": "^5.1.7",
+    "react-three-renderer": "^3.2.4",
+    "react-three-renderer-fiber": "^0.0.6",
+    "react-three-renderer-objects": "0.0.6",
+    "react-toastify": "^7.0.4",
+    "three": "^0.122.0",
+    "three-stl-loader": "^1.0.6",
+    "leaflet.offline": "^2.0.0-beta.3",
+    "rc-progress": "^3.1.0",
+    "react-leaflet": "^2.7.0",
+    "websocket": "^1.0.32"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -33,5 +57,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "parcel-plugin-static-files-copy": "^2.5.0"
   }
 }

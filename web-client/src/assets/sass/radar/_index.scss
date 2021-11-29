@@ -1,0 +1,20 @@
+.radar_container{
+
+    .bottom{
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+
+        .content{
+            background-color: $main-back-color;
+            color: $third-text-color;
+            height: 50px;
+            padding: 5px 50px;
+            border-top-right-radius: 50%;
+            border-top-left-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    }
+}
