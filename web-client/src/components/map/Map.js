@@ -1,4 +1,4 @@
-import React ,{ useState, useEffect, forwardRef } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import moment from 'moment';
 import Leaflet from 'leaflet';
 import L from 'leaflet';
@@ -28,7 +28,7 @@ const suitcasePoint = new L.Icon({
 
 export const Map = forwardRef((props, ref) => {
     const [time, setTime] = useState(moment());
-    const [zoom, setZoom] = useState(13);
+    const [zoom] = useState(13);
     const [carPosition, setCarPosition] = useState({ lat: 47.218371, lng: -1.553621 });
     const [mapPosition, setMapPosition] = useState({ lat: 47.218371, lng: -1.553621 });
     const [isCenter, setIsCenter] = useState(true);
@@ -41,16 +41,17 @@ export const Map = forwardRef((props, ref) => {
         }, 500);
         return () => clearInterval(interval);
       }, []);
-    useEffect(() => { updateCar(props.carPosition) }, [props.carPosition])
-    useEffect(() => { setSpeed(props.speed) }, [props.speed])
-
-    const updateCar = (newPosition) => {
-        setCarPosition(newPosition)
-        setVehiclePath([...vehiclePath, newPosition])
-        if(isCenter){
-            setMapPosition(newPosition)
-        }
-    }
+      
+      useEffect(() => { updateCar(props.carPosition) }, [props.carPosition])
+      useEffect(() => { setSpeed(props.speed) }, [props.speed])
+      
+      const updateCar = (newPosition) => {
+          setCarPosition(newPosition)
+          setVehiclePath([...vehiclePath, newPosition])
+          if(isCenter){
+              setMapPosition(newPosition)
+          }
+      }
 
     /**
      * 

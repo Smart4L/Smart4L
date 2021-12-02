@@ -1,31 +1,22 @@
-import React,{useRef,useState} from  "react";
+import React, { useRef } from  "react";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import voiture_3d from "../../assets/Modele/voiture3.glb";
-import {useLoader,useFrame} from "react-three-fiber";
+import { useLoader, useFrame } from "react-three-fiber";
 
-// entre les parenthee tu met toutes tes props,
 export const Voiture = ({ rotation }) => {
   const mesh = useRef()
   const nodes = useLoader(GLTFLoader, voiture_3d);
- 
-  const state = useState({
 
-    axe_x : 0,
-
-  })
-
-   useFrame(() => {
-
+  useFrame(() => {
     // Augmentation Axe X
-     if(mesh.current.rotation.x != rotation.x) {
+    if(mesh.current.rotation.x !== rotation.x) {
       mesh.current.rotation.x = rotation.x;
-     }
+    }
     // Augmentation Axe Z
-     if(mesh.current.rotation.z != rotation.z) {
+    if(mesh.current.rotation.z !== rotation.z) {
       mesh.current.rotation.z = rotation.z;
-     }
-
-   })
+    }
+  })
    
 
   return (

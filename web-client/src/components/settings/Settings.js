@@ -1,8 +1,7 @@
 import React,{ useState, useEffect } from 'react';
 import ReactCountryFlag from "react-country-flag"
 import { ListGroup } from 'react-bootstrap'
-import { BiSun,BiMoon} from "react-icons/bi";
-import InputSpinner from 'react-bootstrap-input-spinner'  
+import { BiSun,BiMoon } from "react-icons/bi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
@@ -22,9 +21,7 @@ export const Settings = () => {
             timeout: 1000,
           })
             .then(result => {
-                console.log(result.data)
                 setdelaiPhoto(result.data)
-                console.log(delaiphoto)
                     
             })
             .catch(error => {

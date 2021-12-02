@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { w3cwebsocket as WebSocket } from 'websocket';
 import { HashRouter as Switch, Route, withRouter } from "react-router-dom";
 
-import Home from '../home/Home';
+import { Home } from '../home/Home';
 import Stats from '../stats/Stats';
 import { Map } from '../map/Map';
 import { Video } from '../video/Video';
 import { Radar } from '../radar/Radar';
 import { Settings } from '../settings/Settings';
 
-const client = WebSocket('ws://172.24.1.2:8082');
+const client = WebSocket('ws://172.20.10.2:8082');
 
 export const Main = () => {
     const [speed, setSpeed] = useState(0);
     const [tempExt, setTempExt] = useState(0);
+    const [humidityExt, setHumidityExt] = useState(0);
     const [carPosition, setCarPosition] = useState({ lat: 47.218371, lng: -1.553621 });
     const [gyroPosition, setGyroPosition] = useState({ x: 0, y: 0, z:0 });
 
@@ -30,6 +31,9 @@ export const Main = () => {
             }
             if(data.label === "Température extérieure"){
                 setTempExt(data.measure)
+            }
+            if(data.id === "DHT11_25"){
+                setHumidityExt(data.value.humidity)
             }
             if(data.id === "SIM7600G_H_GPS"){
                 let newPosition = {
@@ -66,7 +70,7 @@ export const Main = () => {
             <Route exact path="/video" render={() => <Video />}/>
             <Route exact path="/radar" render={() => <Radar gyroPosition={gyroPosition} />}/>
             <Route exact path="/settings" component={withRouter(Settings)}/>
-            <Route exact path="/" render={() => <Home speed={speed} tempExt={tempExt}/>}/>
+            <Route exact path="/" render={() => <Home speed={speed} tempExt={tempExt} humidityExt={humidityExt}/>}/>
         </Switch>
     )
 }

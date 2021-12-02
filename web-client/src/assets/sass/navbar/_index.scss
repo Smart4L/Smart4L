@@ -9,7 +9,9 @@
     a{
         display: flex;
         align-items: center;
+        justify-content: center;
         height: 100%;
+        width: 100%;
         padding: 0 15px;
         .navbar_item{
             color: $second-text-color;
