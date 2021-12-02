@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { w3cwebsocket as WebSocket } from 'websocket';
 import { HashRouter as Switch, Route, withRouter } from "react-router-dom";
-
 import { Home } from '../home/Home';
 import Stats from '../stats/Stats';
 import { Map } from '../map/Map';
 import { Video } from '../video/Video';
 import { Radar } from '../radar/Radar';
 import { Settings } from '../settings/Settings';
+import env from "react-dotenv";
 
-const client = WebSocket('ws://172.20.10.2:8082');
+
+const client = WebSocket(`${env.websocket}`);
 
 export const Main = () => {
     const [speed, setSpeed] = useState(0);
@@ -25,13 +26,7 @@ export const Main = () => {
         };
         client.onmessage = (message) => {
             let data = JSON.parse(message.data);
-            console.log(data)
-            if(data.label === "Vitesse"){
-                setSpeed(data.measure)
-            }
-            if(data.label === "Température extérieure"){
-                setTempExt(data.measure)
-            }
+            
             if(data.id === "DHT11_25"){
                 setHumidityExt(data.value.humidity)
             }

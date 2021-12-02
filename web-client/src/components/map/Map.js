@@ -4,6 +4,7 @@ import Leaflet from 'leaflet';
 import L from 'leaflet';
 import { Map as LMap, Marker, Popup, TileLayer, Polyline } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import env from "react-dotenv"
 
 Leaflet.Icon.Default.imagePath = '../node_modules/leaflet';
 
@@ -107,7 +108,7 @@ export const Map = forwardRef((props, ref) => {
                 >
                     <TileLayer
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    url={env.api_map}
                     />
                     <Marker position={nantes}>
                         <Popup>

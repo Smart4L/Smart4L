@@ -3,7 +3,9 @@ import { Voiture } from './Voiture';
 import CameraControls from './CameraControl';
 import Loading from './Loading';
 import { Canvas } from "react-three-fiber";
+import env from "react-dotenv";
 
+const axios = require('axios');
 
 export const Radar = forwardRef((props, ref) => {
 
@@ -26,6 +28,14 @@ export const Radar = forwardRef((props, ref) => {
       y: 0,
       z: 0
     })
+
+    axios.get(`${env.api_websocket}/reset-gyro`)
+      .then((response) => {
+        
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   return (

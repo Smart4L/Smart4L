@@ -4,9 +4,9 @@ import { Capitalize } from '../../utils/utils';
 import { Line as ProgressLine} from 'rc-progress';
 import { MdSignalCellularConnectedNoInternet0Bar, MdSignalCellular1Bar, MdSignalCellular2Bar, MdSignalCellular3Bar, MdSignalCellular4Bar } from "react-icons/md";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import env from "react-dotenv";
 
 const axios = require('axios');
-const endpoint = 'http://172.20.10.2:8080'
 
 export const Home = forwardRef((props, ref) => {
 
@@ -31,7 +31,7 @@ export const Home = forwardRef((props, ref) => {
 
     const powerUp = (e) => {
         e.preventDefault();
-        axios.post(`${endpoint}/relay/klaxon`)
+        axios.post(`${env.api_websocket}/relay/klaxon`)
             .then((response) => {
             })
             .catch(function (error) {
@@ -40,7 +40,7 @@ export const Home = forwardRef((props, ref) => {
     }
 
     const powerDown = () => {
-        axios.delete(`${endpoint}/relay/klaxon`)
+        axios.delete(`${env.api_websocket}/relay/klaxon`)
             .then((response) => {
             })
             .catch(function (error) {

@@ -4,9 +4,9 @@ import { FaFan, FaRegLightbulb, FaRegMap, FaBullhorn } from 'react-icons/fa';
 import { GoGraph } from "react-icons/go";
 import { GiRadarSweep } from "react-icons/gi";
 import { AiFillHome, AiFillVideoCamera, AiFillSetting } from "react-icons/ai";
+import env from "react-dotenv";
 
 const axios = require('axios');
-const endpoint = 'http://172.20.10.2:8080'
 
 export const Navbar = () => {
     const [isLight, setLight] = useState(false)
@@ -14,7 +14,7 @@ export const Navbar = () => {
 
     const changeFan = () => {
         if(fan === 0){
-            axios.post(`${endpoint}/relay/ventilateur1`)
+            axios.post(`${env.api_websocket}/relay/ventilateur1`)
             .then((response) => {
                 if(response.status === 200) {
                     if(response.data.status == 'on'){
@@ -26,7 +26,7 @@ export const Navbar = () => {
                 console.log(error);
               });
         } else if (fan === 1){
-            axios.post(`${endpoint}/relay/ventilateur2`)
+            axios.post(`${env.api_websocket}/relay/ventilateur2`)
             .then((response) => {
                 if(response.status === 200) {
                     if(response.data.status == 'on'){
@@ -40,7 +40,7 @@ export const Navbar = () => {
         } else {
             let fan_1
             let fan_2
-            axios.delete(`${endpoint}/relay/ventilateur1`)
+            axios.delete(`${env.api_websocket}/relay/ventilateur1`)
             .then((response) => {
                 if(response.status === 200) {
                     if(response.data.status == 'off'){
@@ -51,7 +51,7 @@ export const Navbar = () => {
               .catch(function (error) {
                 console.log(error);
               });
-            axios.delete(`${endpoint}/relay/ventilateur2`)
+            axios.delete(`${env.api_websocket}/relay/ventilateur2`)
             .then((response) => {
                 if(response.status === 200) {
                     if(response.data.status == 'off'){
@@ -71,7 +71,7 @@ export const Navbar = () => {
 
     const changeLight = () => {
         if(isLight){
-            axios.delete(`${endpoint}/relay/phare`)
+            axios.delete(`${env.api_websocket}/relay/phare`)
             .then((response) => {
                 if(response.status === 200) {
                     if(response.data.status == 'off'){
@@ -83,7 +83,7 @@ export const Navbar = () => {
                 console.log(error);
               });
         } else {
-            axios.post(`${endpoint}/relay/phare`)
+            axios.post(`${env.api_websocket}/relay/phare`)
               .then((response) => {
                 if(response.status === 200) {
                     if(response.data.status == 'on'){
@@ -99,7 +99,7 @@ export const Navbar = () => {
 
     const klaxonUp = (e) => {
         e.preventDefault();
-        axios.post(`${endpoint}/relay/klaxon`)
+        axios.post(`${env.api_websocket}/relay/klaxon`)
             .then((response) => {
             })
             .catch(function (error) {
@@ -108,7 +108,7 @@ export const Navbar = () => {
     }
 
     const klaxonDown = () => {
-        axios.delete(`${endpoint}/relay/klaxon`)
+        axios.delete(`${env.api_websocket}/relay/klaxon`)
             .then((response) => {
             })
             .catch(function (error) {

@@ -8,6 +8,8 @@ import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import Axios from 'axios';
 import NumericInput from 'react-numeric-input2';
 
+import env from "react-dotenv";
+
 export const Settings = () => {
 
 
@@ -17,7 +19,7 @@ export const Settings = () => {
 
         Axios({
             method: "get",
-            url: 'http://172.24.1.2:8080/interval',
+            url:`${env.api_photo}/interval`,
             timeout: 1000,
           })
             .then(result => {
