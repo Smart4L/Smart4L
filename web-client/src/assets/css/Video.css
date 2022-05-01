@@ -1,0 +1,38 @@
+.video_container {
+    height: 90vh;
+    max-height: 90vh;
+    display: flex;
+    flex-flow: column nowrap;
+}
+.video_container .top {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    max-height: 90vh;
+    height: 90vh;
+    overflow: hidden;
+}
+.video_container .button_photo {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.video_container .button_photo .content {
+    background-color: #18242a;
+    color: #4f5b62;
+    height: 50px;
+    padding: 5px 50px;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    position: absolute;
+    margin-bottom: 50px;
+    line-height: 50px;
+    z-index: 500;
+    font-size: 20px;
+}
+.video_container .button_photo .content.error {
+    color: red;
+}

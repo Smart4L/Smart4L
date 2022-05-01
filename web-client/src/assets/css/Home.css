@@ -1,0 +1,107 @@
+.home_container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    height: 90vh;
+}
+.home_container .title {
+    color: #eee;
+    font-size: 30px;
+}
+.home_container .title.little {
+    font-size: 20px;
+}
+.home_container .left_home_container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-evenly;
+    background-color: #4f5b62;
+    padding: 0 15px;
+}
+.home_container .left_home_container .content {
+    color: #00e5ff;
+    font-size: 25px;
+}
+.home_container .left_home_container .circle {
+    height: 150px;
+    width: 150px;
+    background-color: #263238;
+    border: 5px solid #00e5ff;
+    border-radius: 50%;
+    text-align: center;
+    color: #00e5ff;
+    margin: 35px;
+    display: flex;
+    flex-flow: column nowrap;
+}
+.home_container .left_home_container .engine {
+    margin-top: 15px;
+    margin-bottom: 35px;
+}
+.home_container .left_home_container .start_stop hr {
+    color: #00e5ff;
+    width: 70px;
+    margin: 0px auto;
+}
+.home_container .right_home_container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #263238;
+    flex-grow: 1;
+}
+.home_container .right_home_container .top {
+    margin: 7px;
+    align-self: flex-end;
+}
+.home_container .right_home_container .speed {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.home_container .right_home_container .speed .head {
+    align-self: flex-start;
+}
+.home_container .right_home_container .speed .measure {
+    color: #00e5ff;
+    font-size: 100px;
+}
+.home_container .right_home_container .speed .unit {
+    align-self: flex-end;
+}
+.home_container .right_home_container .fuel {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 15em;
+}
+.home_container .right_home_container .fuel .head {
+    color: #00e5ff;
+}
+.home_container .right_home_container .fuel .progress {
+    border: solid 2px #00e5ff;
+}
+.home_container .right_home_container .carousel {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    margin: 30px 0;
+}
+.home_container .right_home_container .carousel .arrow {
+    margin: 0 50px;
+    color: #4f5b62;
+}
+.home_container .right_home_container .carousel .carousel-data {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.home_container .right_home_container .carousel .carousel-data .carousel-content {
+    color: #00e5ff;
+}

@@ -1,0 +1,17 @@
+.radar_container .bottom {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+}
+.radar_container .bottom .content {
+    background-color: #18242a;
+    color: #00e5ff;
+    height: 50px;
+    line-height: 50px;
+    padding: 5px 50px;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+}

@@ -1,0 +1,46 @@
+.navbar_container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #18242A;
+    height: 10vh;
+}
+.navbar_container a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    padding: 0 15px;
+}
+.navbar_container a .navbar_item {
+    color:  #00E5FF;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+.navbar_container a .navbar_item.shine {
+    fill: yellow;
+    border-radius: 5px;
+}
+.navbar_container a .navbar_item.turn-1 {
+    animation: spin 3s linear infinite;
+}
+.navbar_container a .navbar_item.turn-2 {
+    animation: spin 1s linear infinite;
+}
+.navbar_container a .navbar_item.active {
+    fill: gray;
+}
+.navbar_container a.active {
+    background-color: #00E5FF;
+    border-radius: 0% 0% 28% 28% / 0% 0% 38% 38%;
+}
+.navbar_container a.active .navbar_item {
+    fill: #000A12;
+}
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+   }
+}
