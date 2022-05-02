@@ -66,7 +66,7 @@ window.env = {
   "WINDOWPATH": "2",
   "npm_package_browserslist_development_0": "last 1 chrome version",
   "npm_package_dependencies_axios": "^0.26.1",
-  "PATH": "/tmp/yarn--1651512473838-0.12631267111272737:/home/jules/Code/Smart4L/web-client/node_modules/.bin:/home/jules/.config/yarn/link/node_modules/.bin:/home/jules/.yarn/bin:/home/jules/.nvm/versions/node/v16.6.0/libexec/lib/node_modules/npm/bin/node-gyp-bin:/home/jules/.nvm/versions/node/v16.6.0/lib/node_modules/npm/bin/node-gyp-bin:/home/jules/.nvm/versions/node/v16.6.0/bin/node_modules/npm/bin/node-gyp-bin:/home/jules/anaconda3/condabin:/home/jules/.nvm/versions/node/v16.6.0/bin:/home/jules/.cargo/bin:/home/jules/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin",
+  "PATH": "/tmp/yarn--1651513755022-0.826949138543773:/home/jules/Code/Smart4L/web-client/node_modules/.bin:/home/jules/.config/yarn/link/node_modules/.bin:/home/jules/.yarn/bin:/home/jules/.nvm/versions/node/v16.6.0/libexec/lib/node_modules/npm/bin/node-gyp-bin:/home/jules/.nvm/versions/node/v16.6.0/lib/node_modules/npm/bin/node-gyp-bin:/home/jules/.nvm/versions/node/v16.6.0/bin/node_modules/npm/bin/node-gyp-bin:/home/jules/anaconda3/condabin:/home/jules/.nvm/versions/node/v16.6.0/bin:/home/jules/.cargo/bin:/home/jules/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin",
   "NODE": "/home/jules/.nvm/versions/node/v16.6.0/bin/node",
   "SESSION_MANAGER": "local/jules-pop-os:@/tmp/.ICE-unix/2823,unix/jules-pop-os:/tmp/.ICE-unix/2823",
   "INVOCATION_ID": "0bced37562e64dad83d04ebfb169764a",
