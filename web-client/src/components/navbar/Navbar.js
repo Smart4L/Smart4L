@@ -1,4 +1,5 @@
 import React,{ useState } from 'react';
+import { useLongPress } from "react-use";
 import { NavLink } from "react-router-dom";
 import { FaFan, FaKey, FaRegMap, FaBullhorn } from 'react-icons/fa';
 import { GoGraph } from "react-icons/go";
@@ -14,6 +15,7 @@ const axios = require('axios');
 export const Navbar = () => {
     const [isLight, setLight] = useState(false)
     const [fan, setFan] = useState(0)
+    const [mapIsDisplayed, setMapIsDisplayed] = useState(false)
 
     const changeFan = () => {
         if(fan === 0){
@@ -86,8 +88,7 @@ export const Navbar = () => {
         }
     }
 
-    const klaxon = (e) => {
-        e.preventDefault();
+    const klaxon = () => {
         axios.post(`${API_URL}/relay/klaxon`)
         .then((response) => {
         })
@@ -96,16 +97,33 @@ export const Navbar = () => {
         });
     }
 
+    const displayMap = () => {
+        if(mapIsDisplayed){
+            return (<NavLink to="/map" activeClassName="active"><FaRegMap size={32} className={`navbar_item`}/></NavLink>)
+        }
+    }
+
+    const onLongPress = () => {
+        console.log("long pressed");
+        let invert = !mapIsDisplayed;
+        setMapIsDisplayed(invert);
+    };
+    const defaultOptions = {
+        isPreventDefault: true,
+        delay: 1500
+    };
+    const longPressEvent = useLongPress(onLongPress, defaultOptions);
+
     return(
         <div className="navbar_container">
-            <NavLink to="/" activeClassName="active"><AiFillHome size={32} className={`navbar_item`}/></NavLink>
-            <NavLink to="/map" activeClassName="active"><FaRegMap size={32} className={`navbar_item`}/></NavLink>
+            <NavLink to="/" activeClassName="active"><AiFillHome size={32} className={`navbar_item`}  {...longPressEvent}/></NavLink>
+            {displayMap()}
             <NavLink to="/video" activeClassName="active"><AiFillVideoCamera size={32} className={`navbar_item`}/></NavLink>
             <NavLink to="/radar" activeClassName="active"><GiRadarSweep size={32} className={`navbar_item`}/></NavLink>
             <NavLink to="/stats" activeClassName="active"><GoGraph size={32} className={`navbar_item`}/></NavLink>
             <a href="#light"><FaKey size={32} className={`navbar_item light ${isLight ? "shine" : ""}`} onClick={() => startUp()}/></a>
             <a href="#fan"><FaFan size={32} className={`navbar_item turn-${fan}`} onClick={() => changeFan()}/></a>
-            <a href="#horn"><FaBullhorn size={32} className={`navbar_item`} onClik={e => klaxon(e)} /></a>
+            <a href="#horn"><FaBullhorn size={32} className={`navbar_item`} onClick={() => klaxon()} /></a>
             <NavLink to="/settings" activeClassName="active"><AiFillSetting size={32} className={`navbar_item`}/></NavLink>
         </div>
     )
