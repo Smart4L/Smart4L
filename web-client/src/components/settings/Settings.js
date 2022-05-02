@@ -7,8 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import BootstrapSwitchButton from 'bootstrap-switch-button-react'
 import Axios from 'axios';
 import NumericInput from 'react-numeric-input2';
-
 import env from "react-dotenv";
+import { API_URL } from '../../utils/variables';
 
 import '../../assets/css/Settings.css';
 
@@ -21,7 +21,7 @@ export const Settings = () => {
 
         Axios({
             method: "get",
-            url:`${env.api_photo}/interval`,
+            url:`${API_URL}/interval`,
             timeout: 1000,
           })
             .then(result => {
@@ -43,7 +43,7 @@ export const Settings = () => {
 
         Axios({
             method: "post",
-            url: 'http://172.24.1.2:8080/interval',
+            url: `${API_URL}/interval`,
             params: {num : numPhoto},
             timeout: 1000,
           })

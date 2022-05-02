@@ -4,6 +4,7 @@ import CameraControls from './CameraControl';
 import Loading from './Loading';
 import { Canvas } from "react-three-fiber";
 import env from "react-dotenv";
+import { API_URL } from '../../utils/variables';
 
 import '../../assets/css/Radar.css';
 
@@ -31,7 +32,7 @@ export const Radar = forwardRef((props, ref) => {
       z: 0
     })
 
-    axios.get(`${env.api_websocket}/reset-gyro`)
+    axios.get(`${API_URL}/reset-gyro`)
       .then((response) => {
         
       })

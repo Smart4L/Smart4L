@@ -7,11 +7,11 @@ import { Video } from '../video/Video';
 import { Radar } from '../radar/Radar';
 import { Stats } from '../stats/Stats';
 import { Settings } from '../settings/Settings';
-import env from "react-dotenv";
+import { WS_URL } from '../../utils/variables';
 
 import '../../assets/css/Main.css';
 
-const client = WebSocket(`${env.websocket}`);
+const client = WebSocket(WS_URL);
 
 export const Main = () => {
     const [speed, setSpeed] = useState(0);
@@ -60,10 +60,10 @@ export const Main = () => {
                 setWaterTemp(data.value.temperature)
             }
             if(data.id === "DS18B20_RED"){
-                setOilTemp(data.value.temperature)
+                setExteriorTemp(data.value.temperature)
             }
             if(data.id === "DS18B20_BLUE"){
-                setExteriorTemp(data.value.temperature)
+                setOilTemp(data.value.temperature)
             }
         };
 

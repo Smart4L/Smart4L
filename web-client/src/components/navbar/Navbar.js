@@ -5,6 +5,7 @@ import { GoGraph } from "react-icons/go";
 import { GiRadarSweep } from "react-icons/gi";
 import { AiFillHome, AiFillVideoCamera, AiFillSetting } from "react-icons/ai";
 import env from "react-dotenv";
+import { API_URL } from '../../utils/variables';
 
 import '../../assets/css/Navbar.css';
 
@@ -16,7 +17,7 @@ export const Navbar = () => {
 
     const changeFan = () => {
         if(fan === 0){
-            axios.post(`${env.api_websocket}/relay/ventilateur1`)
+            axios.post(`${API_URL}/relay/ventilateur1`)
             .then((response) => {
                 if(response.status === 200) {
                     if(response.data.status == 'on'){
@@ -28,7 +29,7 @@ export const Navbar = () => {
                 console.log(error);
               });
         } else if (fan === 1){
-            axios.post(`${env.api_websocket}/relay/ventilateur2`)
+            axios.post(`${API_URL}/relay/ventilateur2`)
             .then((response) => {
                 if(response.status === 200) {
                     if(response.data.status == 'on'){
@@ -42,7 +43,7 @@ export const Navbar = () => {
         } else {
             let fan_1
             let fan_2
-            axios.delete(`${env.api_websocket}/relay/ventilateur1`)
+            axios.delete(`${API_URL}/relay/ventilateur1`)
             .then((response) => {
                 if(response.status === 200) {
                     if(response.data.status == 'off'){
@@ -53,7 +54,7 @@ export const Navbar = () => {
               .catch(function (error) {
                 console.log(error);
               });
-            axios.delete(`${env.api_websocket}/relay/ventilateur2`)
+            axios.delete(`${API_URL}/relay/ventilateur2`)
             .then((response) => {
                 if(response.status === 200) {
                     if(response.data.status == 'off'){
@@ -75,7 +76,7 @@ export const Navbar = () => {
         let resultat = window.confirm('Démarrer ?')
 
         if(resultat){
-            axios.post(`${env.api_websocket}/relay/demarreur`)
+            axios.post(`${API_URL}/relay/demarreur`)
             .then((response) => {
 
             })
@@ -85,23 +86,14 @@ export const Navbar = () => {
         }
     }
 
-    const klaxonUp = (e) => {
+    const klaxon = (e) => {
         e.preventDefault();
-        axios.post(`${env.api_websocket}/relay/klaxon`)
-            .then((response) => {
-            })
-            .catch(function (error) {
+        axios.post(`${API_URL}/relay/klaxon`)
+        .then((response) => {
+        })
+        .catch(function (error) {
             console.log(error);
-            });
-    }
-
-    const klaxonDown = () => {
-        axios.delete(`${env.api_websocket}/relay/klaxon`)
-            .then((response) => {
-            })
-            .catch(function (error) {
-            console.log(error);
-            });
+        });
     }
 
     return(
@@ -113,7 +105,7 @@ export const Navbar = () => {
             <NavLink to="/stats" activeClassName="active"><GoGraph size={32} className={`navbar_item`}/></NavLink>
             <a href="#light"><FaKey size={32} className={`navbar_item light ${isLight ? "shine" : ""}`} onClick={() => startUp()}/></a>
             <a href="#fan"><FaFan size={32} className={`navbar_item turn-${fan}`} onClick={() => changeFan()}/></a>
-            <a href="#horn"><FaBullhorn size={32} className={`navbar_item`} onMouseDown={e => klaxonUp(e)} onMouseUp={() => klaxonDown() } /></a>
+            <a href="#horn"><FaBullhorn size={32} className={`navbar_item`} onClik={e => klaxon(e)} /></a>
             <NavLink to="/settings" activeClassName="active"><AiFillSetting size={32} className={`navbar_item`}/></NavLink>
         </div>
     )

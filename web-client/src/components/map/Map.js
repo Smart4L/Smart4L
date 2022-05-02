@@ -7,6 +7,7 @@ import Switch from "react-switch";
 import 'leaflet/dist/leaflet.css';
 import '../../assets/css/Map.css';
 import env from "react-dotenv";
+import { MAP_URL } from '../../utils/variables';
 
 Leaflet.Icon.Default.imagePath = '../node_modules/leaflet';
 
@@ -48,18 +49,6 @@ export const Map = forwardRef((props, ref) => {
       
     useEffect(() => { updateCar(props.carPosition) }, [props.carPosition])
     useEffect(() => { setSpeed(props.speed) }, [props.speed])
-      
-    const getUrl = () => {
-        if(isOnline){
-            return "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        }
-        return "http://192.168.1.95:8081/tiles/{z}/{x}/{y}.png"
-    }
-
-    const changeOfflineMode = () => {
-        let invertOfflineMode = !isOnline
-        setIsOnline(invertOfflineMode)
-    }
 
     const updateCar = (newPosition) => {
         setCarPosition(newPosition)
@@ -106,7 +95,6 @@ export const Map = forwardRef((props, ref) => {
             <div className="top">
                 <span className="content">
                     { time.format('HH:mm') }
-                    {/* <Switch onChange={() => changeOfflineMode()} checked={isOnline} /> */}
                 </span>
 
                 <div className="speed">
@@ -124,7 +112,7 @@ export const Map = forwardRef((props, ref) => {
                 >
                     <TileLayer
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url={env.api_map}
+                    url={MAP_URL}
                     />
                     <Marker position={nantes}>
                         <Popup>

@@ -5,6 +5,7 @@ import { Line as ProgressLine} from 'rc-progress';
 import { MdSignalCellularConnectedNoInternet0Bar, MdSignalCellular1Bar, MdSignalCellular2Bar, MdSignalCellular3Bar, MdSignalCellular4Bar } from "react-icons/md";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import env from "react-dotenv";
+import { API_URL } from '../../utils/variables';
 
 import '../../assets/css/Home.css';
 
@@ -34,7 +35,7 @@ export const Home = forwardRef((props, ref) => {
         let resultat = window.confirm('Démarrer ?')
 
         if(resultat){
-            axios.post(`${env.api_websocket}/relay/demarreur`)
+            axios.post(`${API_URL}/relay/demarreur`)
             .then((response) => {
 
             })
