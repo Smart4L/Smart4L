@@ -107,13 +107,13 @@ Actions automatiques : allumage phares 🔅, allumage ventillateur, passage en v
 * [X] #Front - Page d'accueil, carte 🗺
 * [X] #Back - Capteur température 🌡, distance, humidité
 * [X] #Back - Caméra avant 📷
-* [ ] #Back - Api web
+* [X] #Back - Api web
 
 ### Sprint 2
 
 * [X] #Front - Page caméras 📷, paramètres ⚙
 * [X] #Back - Capteur pression, accélération, luminosité
-* [ ] #Back - Base de données
+* [X] #Back - Base de données
 
 ### Sprint 3
 
@@ -124,14 +124,14 @@ Actions automatiques : allumage phares 🔅, allumage ventillateur, passage en v
 ### Sprint 4
 
 * [X] #Front - Site page https://raid44l.fr/#/follow
-* [ ] #Front - Affichage temps réel
-* [ ] #Back - Position GPS 🛰
+* [X] #Front - Affichage temps réel
+* [X] #Back - Position GPS 🛰
 * [ ] #Back - Capteur réservoir, régime moteur
 
 ### Sprint 5
 
 * [ ] #Front - Automatisation éclairage 🔅, ventilation, radar de recul
-* [ ] #Back - Branchement au circuit électrique ⚡ de la voiture
+* [X] #Back - Branchement au circuit électrique ⚡ de la voiture
 
 
 ## Capteurs
